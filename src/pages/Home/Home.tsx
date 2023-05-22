@@ -2,7 +2,7 @@
 import { styled } from "@mui/material/styles";
 // components
 import Page from "../../components/Page";
-import HomeSection from "../../sections/home/Home";
+import { HomeSection } from "../../sections/home";
 
 type Props = {};
 

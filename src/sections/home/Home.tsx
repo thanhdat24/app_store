@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 // @mui
 import { useTheme, styled } from "@mui/material/styles";
 import { Box, Container, Typography, Pagination, Stack } from "@mui/material";
+import { useSelector } from "react-redux";
 // components
+import { ProductCardList } from "../../components/ProductCard";
+import { RootState, useAppDispatch } from "../../redux/store";
+import { getAllProduct } from "../../redux/slices/productReducer";
 
 type Props = {};
 
@@ -15,6 +19,13 @@ const RootStyle = styled("div")(({ theme }) => ({
 }));
 
 export default function HomeSection({}: Props) {
+  const { productList } = useSelector((state: RootState) => state.product);
+  console.log("productList", productList);
+  const dispatch = useAppDispatch();
+
+  // useEffect(() => {
+  //   dispatch(getAllProduct());
+  // }, []);
   return (
     <RootStyle>
       <Container>
@@ -25,8 +36,10 @@ export default function HomeSection({}: Props) {
           }}
         >
           <Box>
-            <Typography variant="h2">New Product</Typography>
+            <div className="">New Product</div>
           </Box>
+
+          <ProductCardList productList={productList} />
         </Box>
       </Container>
     </RootStyle>

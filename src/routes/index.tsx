@@ -5,7 +5,7 @@ import Cart from "../pages/Cart/CartWidget";
 import Checkout from "../pages/Checkout/Checkout";
 import Detail from "../pages/Detail/Detail";
 import HomePage from "../pages/Home/Home";
-import Login from "../pages/Login/Login";
+import { Login } from "../sections/auth";
 import Profile from "../pages/Profile/Profile";
 import Register from "../pages/Register/Register";
 import Search from "../pages/Search/Search";

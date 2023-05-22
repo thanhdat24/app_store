@@ -2,12 +2,7 @@ import { useState, useEffect } from "react";
 import { NavLink as RouterLink, useLocation } from "react-router-dom";
 // @mui
 import { styled, alpha } from "@mui/material/styles";
-import {
-  Box,
-  Link,
-  Stack,
-  ListItem,
-} from "@mui/material";
+import { Box, Link, Stack, ListItem } from "@mui/material";
 // components
 
 // ----------------------------------------------------------------------
@@ -154,8 +149,6 @@ function MenuDesktopItem({
   onClose,
 }: MenuDesktopItemProps) {
   const { title, path, children } = item;
-  console.log("title", title);
-  console.log("item", item);
   const transparent = alpha("#919EAB", 0.16);
   return (
     <LinkStyle
