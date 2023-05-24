@@ -1,0 +1,55 @@
+import PropTypes from "prop-types";
+import { Link as RouterLink } from "react-router-dom";
+// @mui
+import { alpha, styled } from "@mui/material/styles";
+import { Box, Link, Typography } from "@mui/material";
+// hooks
+// routes
+import { PATH_DASHBOARD } from "../../../routes/paths";
+// components
+
+//
+
+// ----------------------------------------------------------------------
+
+const RootStyle = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  padding: theme.spacing(2, 2.5),
+  borderRadius: Number(theme.shape.borderRadius) * 1.5,
+  backgroundColor: alpha("#919EAB", 0.12),
+  transition: theme.transitions.create("opacity", {
+    duration: theme.transitions.duration.shorter,
+  }),
+}));
+
+// ----------------------------------------------------------------------
+
+const NavbarAccount: React.FC = () => {
+  return (
+    <Link underline="none" color="inherit" component={RouterLink} to="/">
+      <RootStyle>
+        {/* <MyAvatar /> */}
+
+        <Box
+          sx={{
+            ml: 2,
+            transition: (theme) =>
+              theme.transitions.create("width", {
+                duration: theme.transitions.duration.shorter,
+              }),
+          }}
+        >
+          <Typography variant="subtitle2" noWrap>
+            Lê Thành Đạt
+          </Typography>
+          <Typography variant="body2" noWrap sx={{ color: "text.secondary" }}>
+            Admin
+          </Typography>
+        </Box>
+      </RootStyle>
+    </Link>
+  );
+};
+
+export default NavbarAccount;

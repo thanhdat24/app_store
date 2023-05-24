@@ -1,6 +1,12 @@
 // API
+
+import { PATH_DASHBOARD } from "../routes/paths";
+
 // ----------------------------------------------------------------------
 export const HOST_API = "https://shop.cyberlearn.vn";
+
+// ROOT PATH AFTER LOGIN SUCCESSFUL
+export const PATH_AFTER_LOGIN = PATH_DASHBOARD.general.dashboard; // as '/dashboard/app'
 
 // LAYOUT
 // ----------------------------------------------------------------------
@@ -20,4 +26,9 @@ export const NAVBAR = {
   DASHBOARD_ITEM_ROOT_HEIGHT: 48,
   DASHBOARD_ITEM_SUB_HEIGHT: 40,
   DASHBOARD_ITEM_HORIZONTAL_HEIGHT: 32,
+};
+
+export const ICON = {
+  NAVBAR_ITEM: 22,
+  NAVBAR_ITEM_HORIZONTAL: 20,
 };

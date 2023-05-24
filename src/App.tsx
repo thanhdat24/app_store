@@ -1,10 +1,14 @@
 import { useState } from "react";
 // routes
 import Router from "./routes";
+// theme
+import ThemeProvider from "./theme";
 function App() {
-  const [count, setCount] = useState(0);
-
-  return <Router />;
+  return (
+    <ThemeProvider>
+      <Router />
+    </ThemeProvider>
+  );
 }
 
 export default App;

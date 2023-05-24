@@ -7,8 +7,11 @@ import Detail from "../pages/Detail/Detail";
 import HomePage from "../pages/Home/Home";
 import { Login } from "../sections/auth";
 import Profile from "../pages/Profile/Profile";
-import Register from "../pages/Register/Register";
 import Search from "../pages/Search/Search";
+import DashboardLayout from "../layouts/dashboard";
+import { PATH_AFTER_LOGIN } from "../utils/config";
+import GeneralApp from "../pages/Dashboard/GeneralApp";
+import UserList from "../pages/Dashboard/UserList";
 
 type Props = {};
 
@@ -31,9 +34,26 @@ export default function Router({}: Props) {
           path: "login",
           element: <Login />,
         },
+      ],
+    },
+
+    // Dashboard Routes
+    {
+      path: "admin",
+      element: <DashboardLayout />,
+      children: [
+        { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
+        { path: "dashboard", element: <GeneralApp /> },
         {
-          path: "register",
-          element: <Register />,
+          path: "user",
+          children: [
+            {
+              element: <Navigate to="/admin/user/profile" replace />,
+              index: true,
+            },
+
+            { path: "list", element: <UserList /> },
+          ],
         },
       ],
     },

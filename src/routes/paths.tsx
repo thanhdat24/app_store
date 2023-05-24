@@ -6,6 +6,7 @@ function path(root: string, sublink: string) {
 
 const ROOTS = "/";
 const ROOTS_AUTH = "/auth";
+const ROOTS_DASHBOARD = "/admin";
 
 export const PATH_AUTH = {
   home: ROOTS,
@@ -26,4 +27,18 @@ export const PATH_PAGE = {
   page404: "/404",
   page500: "/500",
   components: "/components",
+};
+
+export const PATH_DASHBOARD = {
+  root: ROOTS_DASHBOARD,
+  general: {
+    dashboard: path(ROOTS_DASHBOARD, "/dashboard"),
+  },
+  user: {
+    root: path(ROOTS_DASHBOARD, "/user"),
+    new: path(ROOTS_DASHBOARD, "/user/new"),
+    list: path(ROOTS_DASHBOARD, "/user/list"),
+    account: path(ROOTS_DASHBOARD, "/user/account"),
+    edit: (name: string) => path(ROOTS_DASHBOARD, `/user/${name}/edit`),
+  },
 };
