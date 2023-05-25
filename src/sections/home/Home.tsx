@@ -23,6 +23,7 @@ export default function HomeSection({}: Props) {
   console.log("productList", productList);
   const dispatch = useAppDispatch();
 
+
   // useEffect(() => {
   //   dispatch(getAllProduct());
   // }, []);
@@ -36,10 +37,11 @@ export default function HomeSection({}: Props) {
           }}
         >
           <Box>
-            <div className="">New Product</div>
+            <Box className="">Trang chủ</Box>
           </Box>
-
-          <ProductCardList productList={productList} />
+          
+          
+          {/* <ProductCardList productList={productList} /> */}
         </Box>
       </Container>
     </RootStyle>

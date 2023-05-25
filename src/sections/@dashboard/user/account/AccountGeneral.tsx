@@ -7,7 +7,7 @@ import { Box, Grid, Card, Stack, Typography } from "@mui/material";
 import { Form } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
 // components
-import { RHFTextField, FormProvider } from "../../../components/hook-form";
+import { RHFTextField, FormProvider } from "../../../../components/hook-form";
 type Props = {};
 
 export default function AccountGeneral({}: Props) {

@@ -49,23 +49,17 @@ interface MenuDesktopItemProps {
   isOpen: boolean;
   onClose: () => void;
   onOpen: () => void;
-  item: NavConfig;
+  item: any;
 }
 
 interface Menu {
   isHome: boolean;
   isOffset: boolean;
-  item: NavConfig;
+  item: any;
 }
 
 interface IconBulletProps {
   type: "item" | "subheader";
-}
-
-interface MenuDesktopProps {
-  isHome: boolean;
-  isOffset: boolean;
-  navConfig: NavConfig[];
 }
 
 type ChildItemType = {
@@ -125,7 +119,7 @@ export default function Menu({ isOffset, isHome, item }: Menu) {
 
   return (
     <Stack direction="row">
-      {item.map((link) => (
+      {item.map((link: any) => (
         <MenuDesktopItem
           key={link.title}
           item={link}

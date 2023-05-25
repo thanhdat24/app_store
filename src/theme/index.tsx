@@ -9,7 +9,7 @@ import {
 } from "@mui/material/styles";
 //
 import typography from "./typography";
-
+import componentsOverride from "./overrides";
 type Props = {};
 
 interface ThemeProviderProps {
@@ -23,6 +23,7 @@ const ThemeProvider = ({ children }: ThemeProviderProps) => {
     []
   );
   const theme = createTheme(themeOptions);
+  theme.components = componentsOverride(theme);
 
   return (
     <StyledEngineProvider injectFirst>

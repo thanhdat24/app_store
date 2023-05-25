@@ -1,5 +1,5 @@
 // components
-import Iconify from '../../components/Iconify';
+import Iconify from "../../components/Iconify";
 
 // ----------------------------------------------------------------------
 
@@ -10,25 +10,25 @@ const ICON_SIZE = {
 
 const menuConfig = [
   {
-    title: 'Trang chủ',
-    icon: <Iconify icon={'eva:home-fill'} {...ICON_SIZE} />,
-    path: '/',
+    title: "Trang chủ",
+    icon: <Iconify icon={"eva:home-fill"} {...ICON_SIZE} />,
+    path: "/",
   },
 
   {
-    title: 'Nam',
-    path: '/gender?q=Nam',
-    icon: <Iconify icon={'eva:file-fill'} {...ICON_SIZE} />,
+    title: "Giới thiệu",
+    path: "/giothieu",
+    icon: <Iconify icon={"eva:file-fill"} {...ICON_SIZE} />,
   },
   {
-    title: 'Nữ',
-    path: '/gender?q=Nữ',
-    icon: <Iconify icon={'eva:file-fill'} {...ICON_SIZE} />,
+    title: "Tin tức",
+    path: "/tintuc",
+    icon: <Iconify icon={"eva:file-fill"} {...ICON_SIZE} />,
   },
   {
-    title: 'Trẻ em',
-    path: '/gender?q=Trẻ em',
-    icon: <Iconify icon={'eva:file-fill'} {...ICON_SIZE} />,
+    title: "Dịch vụ",
+    path: "/dichvu",
+    icon: <Iconify icon={"eva:file-fill"} {...ICON_SIZE} />,
   },
 ];
 

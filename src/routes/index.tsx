@@ -1,7 +1,6 @@
 import { Suspense, lazy } from "react";
 import { Navigate, useRoutes, useLocation } from "react-router-dom";
 import MainLayout from "../layouts/main";
-import Cart from "../pages/Cart/CartWidget";
 import Checkout from "../pages/Checkout/Checkout";
 import Detail from "../pages/Detail/Detail";
 import HomePage from "../pages/Home/Home";
@@ -13,6 +12,7 @@ import { PATH_AFTER_LOGIN } from "../utils/config";
 import GeneralApp from "../pages/Dashboard/GeneralApp";
 import CustomerList from "../pages/Dashboard/Customer/CustomerList";
 import Account from "../pages/Dashboard/Customer/Account";
+import CustomerActions from "../pages/Dashboard/Customer/CustomerAction";
 
 type Props = {};
 
@@ -54,6 +54,7 @@ export default function Router({}: Props) {
             },
 
             { path: "list", element: <CustomerList /> },
+            { path: "new", element: <CustomerActions /> },
             { path: "account", element: <Account /> },
           ],
         },
@@ -65,10 +66,6 @@ export default function Router({}: Props) {
       element: <MainLayout />,
       children: [
         { element: <HomePage />, index: true },
-        {
-          path: "carts",
-          element: <Cart />,
-        },
         {
           path: "detail",
           children: [{ path: ":id", element: <Detail /> }],

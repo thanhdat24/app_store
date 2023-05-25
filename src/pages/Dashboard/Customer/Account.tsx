@@ -29,7 +29,7 @@ export default function Account({}: Props) {
   ];
 
   return (
-    <Page title="User: Account Settings">
+    <Page title="Customer: Account Settings">
       <Container maxWidth={"lg"}>
         <HeaderBreadcrumbs
           heading="Tài khoản"

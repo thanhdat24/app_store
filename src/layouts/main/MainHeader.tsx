@@ -15,7 +15,6 @@ import useOffSetTop from "../../hooks/useOffSetTop";
 // components
 import Logo from "../../components/Logo";
 import Label from "../../components/Label";
-import CartWidget from "../../pages/Cart/CartWidget";
 import Avatar from "../../components/Avatar";
 //
 import Menu from "./Menu";
@@ -165,7 +164,6 @@ export default function MainHeader({}: Props) {
               {/* {createAvatar(user?.displayName).name} */}
             </Avatar>
           </Button>
-          <CartWidget />
         </Container>
       </ToolbarStyle>
 

@@ -75,8 +75,7 @@ const navConfig = [
         icon: ICONS.user,
         children: [
           { title: "Danh sách", path: PATH_DASHBOARD.user.list },
-          // { title: 'Tạo', path: PATH_DASHBOARD.user.new },
-
+          { title: 'Tạo', path: PATH_DASHBOARD.user.new },
           { title: "Tài khoản", path: PATH_DASHBOARD.user.account },
         ],
       },

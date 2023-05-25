@@ -16,7 +16,9 @@ export default function MainLayout({}: Props) {
   const isHome = pathname === "/";
   return (
     <Box>
-      <Stack sx={{ minHeight: 1 }}>
+      <Stack
+        sx={{ minHeight: 1,  }}
+      >
         <MainHeader />
 
         <Outlet />

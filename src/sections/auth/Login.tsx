@@ -73,7 +73,7 @@ export default function Login({}: Props) {
         <SectionStyle>
           <Image
             alt="login"
-            src="https://res.cloudinary.com/web-app-shoes/image/upload/v1682922011/bjafzeqxahulaqclbvmw.png"
+            src="https://www.spiritualunite.com/articles/wp-content/uploads/2021/08/78ol.jpg"
             ratio="1/1"
           />
         </SectionStyle>

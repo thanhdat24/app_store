@@ -23,7 +23,7 @@ export default function Detail({}: Props) {
           }}
         >
           <Box>
-            <div className="">New Product</div>
+            <div className="">Detail</div>
           </Box>
         </Box>
       </Container>

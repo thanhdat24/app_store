@@ -42,7 +42,7 @@ export default function CustomerList({}: Props) {
               to={PATH_DASHBOARD.user.new}
               startIcon={<Iconify icon={"eva:plus-fill"} />}
             >
-              Thêm người dùng
+              Thêm khách hàng
             </Button>
           }
         />
