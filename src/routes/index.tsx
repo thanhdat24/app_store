@@ -11,7 +11,8 @@ import Search from "../pages/Search/Search";
 import DashboardLayout from "../layouts/dashboard";
 import { PATH_AFTER_LOGIN } from "../utils/config";
 import GeneralApp from "../pages/Dashboard/GeneralApp";
-import UserList from "../pages/Dashboard/UserList";
+import CustomerList from "../pages/Dashboard/Customer/CustomerList";
+import Account from "../pages/Dashboard/Customer/Account";
 
 type Props = {};
 
@@ -52,7 +53,8 @@ export default function Router({}: Props) {
               index: true,
             },
 
-            { path: "list", element: <UserList /> },
+            { path: "list", element: <CustomerList /> },
+            { path: "account", element: <Account /> },
           ],
         },
       ],

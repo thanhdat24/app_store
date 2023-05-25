@@ -2,12 +2,14 @@ import * as Yup from "yup";
 import { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 // form
-import { FormProvider as Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+// mui
 import { IconButton, InputAdornment, Stack } from "@mui/material";
-import RHFTextField from "../../components/hook-form/RHFTextField";
-import Iconify from "../../components/Iconify";
 import { LoadingButton } from "@mui/lab";
+// components
+import Iconify from "../../components/Iconify";
+import { FormProvider, RHFTextField } from "../../components/hook-form";
 
 type Props = {};
 
@@ -51,43 +53,41 @@ export default function LoginForm({}: Props) {
   };
 
   return (
-    <Form {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack spacing={3}>
-          <RHFTextField name="email" label="Email" />
+    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      <Stack spacing={3}>
+        <RHFTextField name="email" label="Email" />
 
-          <RHFTextField
-            name="password"
-            label="Mật khẩu"
-            type={showPassword ? "text" : "password"}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowPassword(!showPassword)}
-                    edge="end"
-                  >
-                    <Iconify
-                      icon={showPassword ? "eva:eye-fill" : "eva:eye-off-fill"}
-                    />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Stack>
+        <RHFTextField
+          name="password"
+          label="Mật khẩu"
+          type={showPassword ? "text" : "password"}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
+                >
+                  <Iconify
+                    icon={showPassword ? "eva:eye-fill" : "eva:eye-off-fill"}
+                  />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Stack>
 
-        <LoadingButton
-            sx={{ my: 2 }}
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-          loading={isSubmitting}
-        >
-          Đăng nhập
-        </LoadingButton>
-      </form>
-    </Form>
+      <LoadingButton
+        sx={{ my: 2 }}
+        fullWidth
+        size="large"
+        type="submit"
+        variant="contained"
+        loading={isSubmitting}
+      >
+        Đăng nhập
+      </LoadingButton>
+    </FormProvider>
   );
 }

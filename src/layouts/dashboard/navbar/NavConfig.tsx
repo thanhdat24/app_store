@@ -70,7 +70,7 @@ const navConfig = [
     items: [
       // USER
       {
-        title: "Người dùng",
+        title: "Khách hàng",
         path: PATH_DASHBOARD.user.root,
         icon: ICONS.user,
         children: [

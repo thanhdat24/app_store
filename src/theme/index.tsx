@@ -7,13 +7,22 @@ import {
   ThemeProvider as MUIThemeProvider,
   StyledEngineProvider,
 } from "@mui/material/styles";
+//
+import typography from "./typography";
+
 type Props = {};
 
 interface ThemeProviderProps {
   children: React.ReactNode;
 }
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const theme = createTheme();
+  const themeOptions = useMemo(
+    () => ({
+      typography,
+    }),
+    []
+  );
+  const theme = createTheme(themeOptions);
 
   return (
     <StyledEngineProvider injectFirst>
