@@ -6,7 +6,7 @@ import SvgIconStyle from "../../../components/SvgIconStyle";
 
 // ----------------------------------------------------------------------
 
-type IconName = "ic_user" | "ic_invoice" | "ic_analytics" | "ic_billing";
+type IconName = "ic_user" | "ic_invoice" | "ic_analytics" | "ic_billing" | "ic_permission" | "ic_district";
 
 const getIcon = (name: IconName): React.ReactNode => (
   <SvgIconStyle src={`/icons/${name}.svg`} sx={{ width: 1, height: 1 }} />
@@ -17,6 +17,8 @@ const ICONS = {
   user: getIcon("ic_user"),
   receipt: getIcon("ic_invoice"),
   billing: getIcon("ic_billing"),
+  permission: getIcon("ic_permission"),
+  district: getIcon("ic_district"),
 };
 
 const navConfig = [
@@ -100,8 +102,30 @@ const navConfig = [
           { title: "Tạo", path: PATH_DASHBOARD.staff.new },
         ],
       },
+      {
+        title: "Quyền",
+        path: PATH_DASHBOARD.permission.root,
+        icon: ICONS.permission,
+        children: [
+          { title: "Danh sách", path: PATH_DASHBOARD.permission.list },
+          { title: "Tạo", path: PATH_DASHBOARD.permission.new },
+        ],
+      },
+      {
+        title: "Quận Huyện",
+        path: PATH_DASHBOARD.district.root,
+        icon: ICONS.district,
+        children: [
+          { title: "Danh sách", path: PATH_DASHBOARD.district.list },
+          { title: "Tạo", path: PATH_DASHBOARD.district.new },
+        ],
+      },
     ],
   },
+
+
+
+
 
   // APP
   // ----------------------------------------------------------------------

@@ -61,4 +61,14 @@ export const PATH_DASHBOARD = {
     list: path(ROOTS_DASHBOARD, "/billing-period/list"),
     new: path(ROOTS_DASHBOARD, "/billing-period/new"),
   },
+  permission: {
+    root: path(ROOTS_DASHBOARD, "/permission"),
+    list: path(ROOTS_DASHBOARD, "/permission/list"),
+    new: path(ROOTS_DASHBOARD, "/permission/new"),
+  },
+  district: {
+    root: path(ROOTS_DASHBOARD, "/district"),
+    list: path(ROOTS_DASHBOARD, "/district/list"),
+    new: path(ROOTS_DASHBOARD, "/district/new"),
+  },
 };
