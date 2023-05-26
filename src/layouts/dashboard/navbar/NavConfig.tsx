@@ -79,6 +79,16 @@ const navConfig = [
           { title: "Tài khoản", path: PATH_DASHBOARD.user.account },
         ],
       },
+      // Loại khách hàng
+      {
+        title: "Loại Khách hàng",
+        path: PATH_DASHBOARD.user.root,
+        icon: ICONS.user,
+        children: [
+          { title: "Danh sách", path: PATH_DASHBOARD.user.list },
+          { title: 'Tạo', path: PATH_DASHBOARD.user.new },
+        ],
+      },
     ],
   },
 
