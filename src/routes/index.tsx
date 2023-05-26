@@ -13,6 +13,8 @@ import GeneralApp from "../pages/Dashboard/GeneralApp";
 import CustomerList from "../pages/Dashboard/Customer/CustomerList";
 import Account from "../pages/Dashboard/Customer/Account";
 import CustomerActions from "../pages/Dashboard/Customer/CustomerAction";
+import CustomerType from "../pages/Dashboard/Customer/CustomerType";
+import CustomerActionType from "../pages/Dashboard/Customer/CustomerActionType";
 
 type Props = {};
 
@@ -54,6 +56,8 @@ export default function Router({}: Props) {
             },
 
             { path: "list", element: <CustomerList /> },
+            { path: "typeList", element: <CustomerType /> },
+            { path: "type", element: <CustomerActionType /> },
             { path: "new", element: <CustomerActions /> },
             { path: "account", element: <Account /> },
           ],
