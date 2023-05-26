@@ -15,6 +15,12 @@ import Account from "../pages/Dashboard/Customer/Account";
 import CustomerActions from "../pages/Dashboard/Customer/CustomerAction";
 import CustomerType from "../pages/Dashboard/Customer/CustomerType";
 import CustomerActionType from "../pages/Dashboard/Customer/CustomerActionType";
+import ReceiptList from "../pages/Dashboard/Receipt/ReceiptList";
+import ReceiptAction from "../pages/Dashboard/Receipt/ReceiptAction";
+import BillingPeriodNew from "../pages/Dashboard/BillingPeriod/BillingPeriodNew";
+import BillingPeriodList from "../pages/Dashboard/BillingPeriod/BillingPeriodList";
+import StaffList from "../pages/Dashboard/Staff/StaffList";
+import StaffAction from "../pages/Dashboard/Staff/StaffAction";
 
 type Props = {};
 
@@ -56,10 +62,53 @@ export default function Router({}: Props) {
             },
 
             { path: "list", element: <CustomerList /> },
-            { path: "typeList", element: <CustomerType /> },
-            { path: "type", element: <CustomerActionType /> },
             { path: "new", element: <CustomerActions /> },
             { path: "account", element: <Account /> },
+          ],
+        },
+        {
+          path: "user-type",
+          children: [
+            {
+              element: <Navigate to="/admin/user-type/list" replace />,
+              index: true,
+            },
+
+            { path: "list", element: <CustomerType /> },
+            { path: "new", element: <CustomerActionType /> },
+          ],
+        },
+        {
+          path: "billing-period",
+          children: [
+            {
+              element: <Navigate to="/admin/billing-period/list" replace />,
+              index: true,
+            },
+            { path: "list", element: <BillingPeriodList /> },
+            { path: "new", element: <BillingPeriodNew /> },
+          ],
+        },
+        {
+          path: "receipt",
+          children: [
+            {
+              element: <Navigate to="/admin/receipt/list" replace />,
+              index: true,
+            },
+            { path: "list", element: <ReceiptList /> },
+            { path: "new", element: <ReceiptAction /> },
+          ],
+        },
+        {
+          path: "staff",
+          children: [
+            {
+              element: <Navigate to="/admin/staff/list" replace />,
+              index: true,
+            },
+            { path: "list", element: <StaffList /> },
+            { path: "new", element: <StaffAction /> },
           ],
         },
       ],

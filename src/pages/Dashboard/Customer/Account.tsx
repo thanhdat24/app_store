@@ -6,7 +6,7 @@ import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
 import { PATH_DASHBOARD } from "../../../routes/paths";
 import Iconify from "../../../components/Iconify";
-import { AccountGeneral } from "../../../sections/@dashboard/user";
+import AccountGeneral from "../../../sections/@dashboard/user/account/AccountGeneral";
 type Props = {};
 
 export default function Account({}: Props) {
