@@ -24,7 +24,7 @@ import {
 import Label from "../../../../components/Label";
 import dayjs, { Dayjs } from "dayjs";
 import { FormProvider, RHFTextField } from "../../../../components/hook-form";
-import RHFSelect from "../../../../components/RHFSelect";
+import RHFSelect from "../../../../components/hook-form/RHFSelect";
 
 type Props = {
   isEdit: boolean;
