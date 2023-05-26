@@ -39,7 +39,7 @@ export default function DistrictList({}: Props) {
               sx={{ borderRadius: 2, textTransform: "none" }}
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.permission.new}
+              to={PATH_DASHBOARD.district.new}
               startIcon={<Iconify icon={"eva:plus-fill"} />}
             >
               Thêm quận huyện

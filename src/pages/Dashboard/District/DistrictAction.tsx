@@ -25,7 +25,7 @@ export default function DistrictAction({}: Props) {
           heading={!isEdit ? "Tạo quận huyện" : "Chỉnh sửa quận huyện"}
           links={[
             { name: "Trang chủ", href: PATH_DASHBOARD.root },
-            { name: "Quận huyện", href: PATH_DASHBOARD.permission.list },
+            { name: "Quận huyện", href: PATH_DASHBOARD.district.list },
             { name: !isEdit ? "Quận huyện mới" : id },
           ]}
         />
