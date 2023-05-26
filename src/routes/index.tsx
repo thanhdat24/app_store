@@ -21,6 +21,10 @@ import BillingPeriodNew from "../pages/Dashboard/BillingPeriod/BillingPeriodNew"
 import BillingPeriodList from "../pages/Dashboard/BillingPeriod/BillingPeriodList";
 import StaffList from "../pages/Dashboard/Staff/StaffList";
 import StaffAction from "../pages/Dashboard/Staff/StaffAction";
+import PermissionList from "../pages/Dashboard/Permission/PermissionList";
+import PermissionAction from "../pages/Dashboard/Permission/PermissionAction";
+import DistrictList from "../pages/Dashboard/District/DistrictList";
+import DistrictAction from "../pages/Dashboard/District/DistrictAction";
 
 type Props = {};
 
@@ -109,6 +113,28 @@ export default function Router({}: Props) {
             },
             { path: "list", element: <StaffList /> },
             { path: "new", element: <StaffAction /> },
+          ],
+        },
+        {
+          path: "permission",
+          children: [
+            {
+              element: <Navigate to="/admin/permission/list" replace />,
+              index: true,
+            },
+            { path: "list", element: <PermissionList /> },
+            { path: "new", element: <PermissionAction /> },
+          ],
+        },
+        {
+          path: "district",
+          children: [
+            {
+              element: <Navigate to="/admin/district/list" replace />,
+              index: true,
+            },
+            { path: "list", element: <DistrictList /> },
+            { path: "new", element: <DistrictAction /> },
           ],
         },
       ],
