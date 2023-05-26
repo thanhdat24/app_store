@@ -7,11 +7,13 @@ import { PATH_DASHBOARD } from "../../../routes/paths";
 // components
 import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
-import TypeForm from "../../../sections/@dashboard/user/Form/TypeForm";
+import CustomerForm from "../../../sections/@dashboard/user/Form/CustomerForm";
+import ReceiptForm from "../../../sections/@dashboard/receipt/ReceiptForm";
+import BillingPeriodForm from "../../../sections/@dashboard/billingPeriod/BillingPeriodForm";
 
 type Props = {};
 
-export default function CustomerActionType({}: Props) {
+export default function BillingPeriodNew({}: Props) {
   const { pathname } = useLocation();
 
   const { id = "" } = useParams();
@@ -19,20 +21,18 @@ export default function CustomerActionType({}: Props) {
   const isEdit = pathname.includes("edit");
 
   return (
-    <Page title="Customer: Create a new customer">
+    <Page title="Receipt: Create a new receipt">
       <Container maxWidth={"lg"}>
         <HeaderBreadcrumbs
-          heading={
-            !isEdit ? "Tạo loại khách hàng mới" : "Chỉnh sửa loại khách hàng"
-          }
+          heading={!isEdit ? "Tạo kỳ thu" : "Chỉnh sửa kỳ thu"}
           links={[
             { name: "Trang chủ", href: PATH_DASHBOARD.root },
-            { name: "Loại Khách hàng", href: PATH_DASHBOARD.userType.list },
-            { name: !isEdit ? "Loại Khách hàng mới" : id },
+            { name: "Kỳ thu", href: PATH_DASHBOARD.receipt.list },
+            { name: !isEdit ? "Kỳ thu mới" : id },
           ]}
         />
 
-        <TypeForm isEdit={isEdit} />
+        <BillingPeriodForm isEdit={isEdit} />
       </Container>
     </Page>
   );

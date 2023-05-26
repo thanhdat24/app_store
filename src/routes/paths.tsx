@@ -37,10 +37,28 @@ export const PATH_DASHBOARD = {
   user: {
     root: path(ROOTS_DASHBOARD, "/user"),
     new: path(ROOTS_DASHBOARD, "/user/new"),
-    type: path(ROOTS_DASHBOARD, "/user/type"),
-    typeList: path(ROOTS_DASHBOARD, "/user/typeList"),
     list: path(ROOTS_DASHBOARD, "/user/list"),
     account: path(ROOTS_DASHBOARD, "/user/account"),
     edit: (name: string) => path(ROOTS_DASHBOARD, `/user/${name}/edit`),
+  },
+  userType: {
+    root: path(ROOTS_DASHBOARD, "/user-type"),
+    list: path(ROOTS_DASHBOARD, "/user-type/list"),
+    new: path(ROOTS_DASHBOARD, "/user-type/new"),
+  },
+  staff: {
+    root: path(ROOTS_DASHBOARD, "/staff"),
+    new: path(ROOTS_DASHBOARD, "/staff/new"),
+    list: path(ROOTS_DASHBOARD, "/staff/list"),
+  },
+  receipt: {
+    root: path(ROOTS_DASHBOARD, "/receipt"),
+    new: path(ROOTS_DASHBOARD, "/receipt/new"),
+    list: path(ROOTS_DASHBOARD, "/receipt/list"),
+  },
+  billingPeriod: {
+    root: path(ROOTS_DASHBOARD, "/billing-period"),
+    list: path(ROOTS_DASHBOARD, "/billing-period/list"),
+    new: path(ROOTS_DASHBOARD, "/billing-period/new"),
   },
 };

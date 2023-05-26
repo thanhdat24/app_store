@@ -6,47 +6,17 @@ import SvgIconStyle from "../../../components/SvgIconStyle";
 
 // ----------------------------------------------------------------------
 
-type IconName =
-  | "ic_blog"
-  | "ic_cart"
-  | "ic_chat"
-  | "ic_shipper"
-  | "ic_color"
-  | "ic_shoes"
-  | "ic_brand"
-  | "ic_user"
-  | "ic_obj"
-  | "ic_cate"
-  | "ic_promotion"
-  | "ic_invoice"
-  | "ic_rating"
-  | "ic_ecommerce"
-  | "ic_analytics"
-  | "ic_dashboard";
+type IconName = "ic_user" | "ic_invoice" | "ic_analytics" | "ic_billing";
 
 const getIcon = (name: IconName): React.ReactNode => (
   <SvgIconStyle src={`/icons/${name}.svg`} sx={{ width: 1, height: 1 }} />
 );
 
 const ICONS = {
-  blog: getIcon("ic_blog"),
-  cart: getIcon("ic_cart"),
-  chat: getIcon("ic_chat"),
-  shipper: getIcon("ic_shipper"),
-  color: getIcon("ic_color"),
-  shoes: getIcon("ic_shoes"),
-  brand: getIcon("ic_brand"),
-  user: getIcon("ic_user"),
-  obj: getIcon("ic_obj"),
-  cate: getIcon("ic_cate"),
-  // kanban: getIcon('ic_kanban'),
-  promotion: getIcon("ic_promotion"),
-  invoice: getIcon("ic_invoice"),
-  rating: getIcon("ic_rating"),
-
-  ecommerce: getIcon("ic_ecommerce"),
   analytics: getIcon("ic_analytics"),
-  dashboard: getIcon("ic_dashboard"),
+  user: getIcon("ic_user"),
+  receipt: getIcon("ic_invoice"),
+  billing: getIcon("ic_billing"),
 };
 
 const navConfig = [
@@ -66,7 +36,7 @@ const navConfig = [
   // MANAGEMENT
   // ----------------------------------------------------------------------
   {
-    subheader: "Quản lý",
+    subheader: "Quản lý khách hàng",
     items: [
       // USER
       {
@@ -75,18 +45,59 @@ const navConfig = [
         icon: ICONS.user,
         children: [
           { title: "Danh sách", path: PATH_DASHBOARD.user.list },
-          { title: 'Tạo', path: PATH_DASHBOARD.user.new },
+          { title: "Tạo", path: PATH_DASHBOARD.user.new },
           { title: "Tài khoản", path: PATH_DASHBOARD.user.account },
         ],
       },
       // Loại khách hàng
       {
         title: "Loại Khách hàng",
-        path: PATH_DASHBOARD.user.root,
+        path: PATH_DASHBOARD.userType.root,
         icon: ICONS.user,
         children: [
-          { title: "Danh sách", path: PATH_DASHBOARD.user.typeList },
-          { title: 'Tạo', path: PATH_DASHBOARD.user.type },
+          { title: "Danh sách", path: PATH_DASHBOARD.userType.list },
+          { title: "Tạo", path: PATH_DASHBOARD.userType.new },
+        ],
+      },
+    ],
+  },
+
+  {
+    subheader: "Quản lý thông tin sử dụng",
+    items: [
+      // RECEIPT
+      {
+        title: "Kỳ thu",
+        path: PATH_DASHBOARD.billingPeriod.root,
+        icon: ICONS.receipt,
+        children: [
+          { title: "Danh sách", path: PATH_DASHBOARD.billingPeriod.list },
+          { title: "Tạo", path: PATH_DASHBOARD.billingPeriod.new },
+        ],
+      },
+      {
+        title: "Phiếu thu",
+        path: PATH_DASHBOARD.receipt.root,
+        icon: ICONS.receipt,
+        children: [
+          { title: "Danh sách", path: PATH_DASHBOARD.receipt.list },
+          { title: "Tạo", path: PATH_DASHBOARD.receipt.new },
+        ],
+      },
+    ],
+  },
+
+  {
+    subheader: "Quản lý danh mục hệ thống",
+    items: [
+      // RECEIPT
+      {
+        title: "Nhân viên",
+        path: PATH_DASHBOARD.staff.root,
+        icon: ICONS.user,
+        children: [
+          { title: "Danh sách", path: PATH_DASHBOARD.staff.list },
+          { title: "Tạo", path: PATH_DASHBOARD.staff.new },
         ],
       },
     ],
