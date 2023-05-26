@@ -71,4 +71,9 @@ export const PATH_DASHBOARD = {
     list: path(ROOTS_DASHBOARD, "/district/list"),
     new: path(ROOTS_DASHBOARD, "/district/new"),
   },
+  wards: {
+    root: path(ROOTS_DASHBOARD, "/wards"),
+    list: path(ROOTS_DASHBOARD, "/wards/list"),
+    new: path(ROOTS_DASHBOARD, "/wards/new"),
+  },
 };

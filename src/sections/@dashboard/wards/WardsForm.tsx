@@ -6,42 +6,31 @@ import { useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 // @mui
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { LoadingButton } from "@mui/lab";
-import {
-  Box,
-  Card,
-  Grid,
-  Stack,
-  Switch,
-  Typography,
-  FormControlLabel,
-  TextField,
-} from "@mui/material";
+import { Box, Card, Grid, Switch, Typography } from "@mui/material";
 // components
-import Label from "../../../../components/Label";
+import Label from "../../../components/Label";
 import dayjs, { Dayjs } from "dayjs";
-import { FormProvider, RHFTextField } from "../../../../components/hook-form";
-import RHFSelect from "../../../../components/hook-form/RHFSelect";
+import { FormProvider, RHFTextField } from "../../../components/hook-form";
+import RHFSelect from "../../../components/hook-form/RHFSelect";
+import Iconify from "../../../components/Iconify";
 
 type Props = {
   isEdit: boolean;
 };
 
-export default function TypeForm({ isEdit }: Props) {
+export default function WardsForm({ isEdit }: Props) {
   const NewUserSchema = Yup.object().shape({
-    LOAIKHACHHANG: Yup.string().required("Loại khách hàng là bắt buộc"),
-    TENLOAIPHI: Yup.string().required("Tên loại phí là bắt buộc"),
-    GIA: Yup.string().required("Giá là bắt buộc"),
+    XAPHUONG: Yup.string().required("Xã phường là bắt buộc"),
+    QUANHUYEN: Yup.string().required("Quận huyện là bắt buộc"),
   });
 
   const defaultValues = useMemo(
     () => ({
-      LOAIKHACHHANG: "",
-      TENLOAIPHI: "",
-      GIA: "",
+      XAPHUONG: "",
+      QUANHUYEN: "",
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -92,7 +81,7 @@ export default function TypeForm({ isEdit }: Props) {
             <Box
               sx={{
                 display: "grid",
-                columnGap: 1,
+                columnGap: 2,
                 rowGap: 3,
                 gridTemplateColumns: {
                   xs: "repeat(1, 1fr)",
@@ -100,29 +89,23 @@ export default function TypeForm({ isEdit }: Props) {
                 },
               }}
             >
-              <RHFSelect
-                name="LOAIKHACHHANG"
-                label="Loại khách hàng"
-                placeholder="Loại khách hàng"
-              >
-                <option value="" />
-                {["Hộ dân", "Doanh nghiệp"].map((option, index) => (
-                  <option value={option}>{option}</option>
-                ))}
+              <RHFTextField name="XAPHUONG" label="Tên xã phường" />
+              <RHFSelect name="QUANHUYEN" label="Quận huyện" placeholder="Quận huyện">
+                {
+                  
+                }
               </RHFSelect>
-              <RHFTextField name="TENLOAIPHI" label="Tên loại phí" />
-              <RHFTextField name="GIA" label="Giá" />
             </Box>
-
-            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
+            <Box sx={{ display: "flex", justifyContent: "end" }}>
               <LoadingButton
+                sx={{ mt: 3 }}
                 type="submit"
                 variant="contained"
                 loading={isSubmitting}
               >
                 Lưu thay đổi
               </LoadingButton>
-            </Stack>
+            </Box>
           </Card>
         </Grid>
       </Grid>

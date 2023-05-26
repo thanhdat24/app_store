@@ -25,6 +25,8 @@ import PermissionList from "../pages/Dashboard/Permission/PermissionList";
 import PermissionAction from "../pages/Dashboard/Permission/PermissionAction";
 import DistrictList from "../pages/Dashboard/District/DistrictList";
 import DistrictAction from "../pages/Dashboard/District/DistrictAction";
+import WardsAction from "../pages/Dashboard/Wards/WardsAction";
+import WardsList from "../pages/Dashboard/Wards/WardsList";
 
 type Props = {};
 
@@ -135,6 +137,17 @@ export default function Router({}: Props) {
             },
             { path: "list", element: <DistrictList /> },
             { path: "new", element: <DistrictAction /> },
+          ],
+        },
+        {
+          path: "wards",
+          children: [
+            {
+              element: <Navigate to="/admin/wards/list" replace />,
+              index: true,
+            },
+            { path: "list", element: <WardsList /> },
+            { path: "new", element: <WardsAction /> },
           ],
         },
       ],

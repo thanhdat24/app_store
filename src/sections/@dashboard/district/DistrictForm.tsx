@@ -83,7 +83,7 @@ export default function DistrictForm({ isEdit }: Props) {
                 rowGap: 3,
                 gridTemplateColumns: {
                   xs: "repeat(1, 1fr)",
-                  sm: "repeat(2, 1fr)",
+                  // sm: "repeat(2, 1fr)",
                 },
               }}
             >
