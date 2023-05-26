@@ -80,11 +80,11 @@ export default function PermissionForm({ isEdit }: Props) {
             <Box
               sx={{
                 display: "grid",
-                columnGap: 2,
+                columnGap: 1,
                 rowGap: 3,
                 gridTemplateColumns: {
                   xs: "repeat(1, 1fr)",
-                  sm: "repeat(2, 1fr)",
+                  // sm: "repeat(2, 1fr)",
                 },
               }}
             >

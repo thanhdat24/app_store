@@ -6,7 +6,7 @@ import SvgIconStyle from "../../../components/SvgIconStyle";
 
 // ----------------------------------------------------------------------
 
-type IconName = "ic_user" | "ic_invoice" | "ic_analytics" | "ic_billing" | "ic_permission" | "ic_district";
+type IconName = "ic_user" | "ic_invoice" | "ic_analytics" | "ic_billing" | "ic_permission" | "ic_district" | "ic_wards";
 
 const getIcon = (name: IconName): React.ReactNode => (
   <SvgIconStyle src={`/icons/${name}.svg`} sx={{ width: 1, height: 1 }} />
@@ -19,6 +19,7 @@ const ICONS = {
   billing: getIcon("ic_billing"),
   permission: getIcon("ic_permission"),
   district: getIcon("ic_district"),
+  wards: getIcon("ic_wards"),
 };
 
 const navConfig = [
@@ -118,6 +119,15 @@ const navConfig = [
         children: [
           { title: "Danh sách", path: PATH_DASHBOARD.district.list },
           { title: "Tạo", path: PATH_DASHBOARD.district.new },
+        ],
+      },
+      {
+        title: "Xã phường",
+        path: PATH_DASHBOARD.wards.root,
+        icon: ICONS.wards,
+        children: [
+          { title: "Danh sách", path: PATH_DASHBOARD.wards.list },
+          { title: "Tạo", path: PATH_DASHBOARD.wards.new },
         ],
       },
     ],
