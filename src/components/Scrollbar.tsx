@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import SimpleBarReact from "simplebar-react";
+
 // @mui
 import { alpha, styled } from "@mui/material/styles";
 import { Box } from "@mui/material";
@@ -61,7 +62,7 @@ const Scrollbar: React.FC<ScrollbarProps> = ({ children, sx, ...other }) => {
 
   return (
     <RootStyle>
-      <SimpleBarStyle timeout={500} clickOnTrack={false} sx={sx} {...other}>
+      <SimpleBarStyle sx={sx} {...other}>
         {children}
       </SimpleBarStyle>
     </RootStyle>

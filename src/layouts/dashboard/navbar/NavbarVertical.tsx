@@ -95,22 +95,14 @@ const NavbarVertical: React.FC<NavbarVerticalProps> = ({
   return (
     <RootStyle
       sx={{
-        width: NAVBAR.DASHBOARD_WIDTH,
+        width: {
+          lg: NAVBAR.DASHBOARD_WIDTH,
+        },
       }}
     >
       <Drawer
-        open={isOpenSidebar}
-        onClose={onCloseSidebar}
-        // PaperProps={{ sx: { width: NAVBAR.DASHBOARD_WIDTH } }}
-      >
-        {renderContent}
-      </Drawer>
-
-      <Drawer
         open
         variant="persistent"
-        // onMouseEnter={onHoverEnter}
-        // onMouseLeave={onHoverLeave}
         PaperProps={{
           sx: {
             width: NAVBAR.DASHBOARD_WIDTH,
@@ -120,11 +112,6 @@ const NavbarVertical: React.FC<NavbarVerticalProps> = ({
               theme.transitions.create("width", {
                 duration: theme.transitions.duration.standard,
               }),
-
-            // ...(collapseHover && {
-            //   ...cssStyles(theme).bgBlur(),
-            //   boxShadow: (theme) => theme.customShadows.z24,
-            // }),
           },
         }}
       >

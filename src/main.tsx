@@ -1,3 +1,6 @@
+// scroll bar
+import "simplebar-react/dist/simplebar.min.css";
+
 import ReactDOM from "react-dom/client";
 import { Provider as ReduxProvider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
