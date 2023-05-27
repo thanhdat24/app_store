@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { ProductCardList } from "../../components/ProductCard";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { getAllProduct } from "../../redux/slices/productReducer";
+import { getAllDistrict } from "../../redux/slices/districtReducer";
 
 type Props = {};
 
@@ -23,10 +24,9 @@ export default function HomeSection({}: Props) {
   console.log("productList", productList);
   const dispatch = useAppDispatch();
 
-
-  // useEffect(() => {
-  //   dispatch(getAllProduct());
-  // }, []);
+  useEffect(() => {
+    dispatch(getAllDistrict());
+  }, []);
   return (
     <RootStyle>
       <Container>
@@ -39,8 +39,7 @@ export default function HomeSection({}: Props) {
           <Box>
             <Box className="">Trang chủ</Box>
           </Box>
-          
-          
+
           {/* <ProductCardList productList={productList} /> */}
         </Box>
       </Container>

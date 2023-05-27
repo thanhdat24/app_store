@@ -51,6 +51,11 @@ export const PATH_DASHBOARD = {
     new: path(ROOTS_DASHBOARD, "/staff/new"),
     list: path(ROOTS_DASHBOARD, "/staff/list"),
   },
+  revenueRoutes: {
+    root: path(ROOTS_DASHBOARD, "/revenue-routes"),
+    new: path(ROOTS_DASHBOARD, "/revenue-routes/new"),
+    list: path(ROOTS_DASHBOARD, "/revenue-routes/list"),
+  },
   receipt: {
     root: path(ROOTS_DASHBOARD, "/receipt"),
     new: path(ROOTS_DASHBOARD, "/receipt/new"),

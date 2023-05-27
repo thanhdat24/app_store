@@ -21,12 +21,16 @@ import {
   TextField,
   InputAdornment,
   IconButton,
+  MenuItem,
+  Checkbox,
+  ListItemText,
 } from "@mui/material";
 // components
 import dayjs, { Dayjs } from "dayjs";
 import { FormProvider, RHFTextField } from "../../../components/hook-form";
 import RHFSelect from "../../../components/hook-form/RHFSelect";
 import Iconify from "../../../components/Iconify";
+import RHFSelectMultiple from "../../../components/hook-form/RHFSelectMultiple";
 
 type Props = {
   isEdit: boolean;
@@ -180,6 +184,13 @@ export default function StaffForm({ isEdit }: Props) {
                   <option value={option}>{option}</option>
                 ))} */}
               </RHFSelect>
+              {/* 
+              <RHFSelectMultiple name="QUYEN" label="Quyền" placeholder="Quyền">
+                <option value="" />
+                {["Nam", "Nữ"].map((option, index) => (
+                  <option value={option}>{option}</option>
+                ))}
+              </RHFSelectMultiple> */}
             </Box>
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
               <LoadingButton

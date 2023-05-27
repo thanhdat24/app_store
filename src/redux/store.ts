@@ -1,10 +1,12 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import productReducer from "./slices/productReducer";
+import districtReducer from "./slices/districtReducer";
 
 export const store = configureStore({
   reducer: {
     product: productReducer,
+    district: districtReducer
   },
 });
 
