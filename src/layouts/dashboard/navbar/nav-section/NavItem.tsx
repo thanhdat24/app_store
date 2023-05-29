@@ -26,8 +26,14 @@ const NavItemRoot = ({
 
   const renderContent = (
     <>
-      {icon && <ListItemIconStyle>{icon}</ListItemIconStyle>}
-      <ListItemTextStyle disableTypography primary={title} />
+      {icon && (
+        <ListItemIconStyle activeRoot={active}>{icon}</ListItemIconStyle>
+      )}
+      <ListItemTextStyle
+        disableTypography
+        primary={title}
+        activeRoot={active}
+      />
 
       <>
         {info && info}
@@ -85,7 +91,11 @@ const NavItemSub = ({ item, open, active, onOpen }: NavItemSubProps) => {
   const renderContent = (
     <>
       <DotIcon active={active || false} />
-      <ListItemText disableTypography primary={title} />
+      <ListItemText
+        disableTypography
+        primary={title}
+        sx={{ color: "#a3aed1", ...(active && { color: "#fff" }) }}
+      />
       {info && info}
       {children && <ArrowIcon open={open || false} />}
     </>
@@ -144,7 +154,7 @@ const DotIcon = ({ active }: DotIconProps) => {
           width: 4,
           height: 4,
           borderRadius: "50%",
-          bgcolor: "text.disabled",
+          bgcolor: "#a3aed1",
 
           transition: (theme) =>
             theme.transitions.create("transform", {

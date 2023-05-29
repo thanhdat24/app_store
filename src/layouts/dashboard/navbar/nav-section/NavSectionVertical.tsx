@@ -23,10 +23,10 @@ export const ListSubheaderStyle = styled(
   paddingLeft: theme.spacing(2),
   paddingBottom: theme.spacing(1),
   fontFamily: "Public Sans,sans-serif",
+  color: "#a3aed1 !important",
   fontWeight: "700",
   lineHeight: "1.5",
   fontSize: " 0.75rem",
-  color: theme.palette.text.primary,
   transition: theme.transitions.create("opacity", {
     duration: theme.transitions.duration.shorter,
   }),
@@ -60,7 +60,6 @@ const NavSectionVertical = ({
       {navConfig.map((group: NavGroup) => (
         <List key={group.subheader} disablePadding sx={{ px: 2 }}>
           <ListSubheaderStyle subheader={group.subheader} />
-
           {group.items.map((list) => (
             <NavListRoot key={list.title} list={list} />
           ))}

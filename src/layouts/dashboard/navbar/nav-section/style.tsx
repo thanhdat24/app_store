@@ -27,22 +27,15 @@ export const ListItemStyle = styled(ListItemButton)<ListItemStyleProps>(
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1.5),
     marginBottom: theme.spacing(0.5),
-    color: theme.palette.text.secondary,
 
     borderRadius: theme.shape.borderRadius,
     // activeRoot
     ...(activeRoot && {
       ...theme.typography.subtitle2,
-      color: theme.palette.primary.main,
-      backgroundColor: alpha(
-        theme.palette.primary.main,
-        theme.palette.action.selectedOpacity
-      ),
+      backgroundColor: "rgba(255,255,255,.05) !important",
     }),
     // activeSub
     ...(activeSub && {
-      ...theme.typography.subtitle2,
-      color: theme.palette.text.primary,
       fontFamily: "Public Sans,sans-serif",
       fontWeight: "700",
     }),
@@ -55,29 +48,45 @@ export const ListItemStyle = styled(ListItemButton)<ListItemStyleProps>(
 
 interface ListItemTextStyleProps {
   primary: any;
+  activeRoot?: boolean;
 }
 
 export const ListItemTextStyle = styled(ListItemText, {
   shouldForwardProp: (prop) => prop !== "isCollapse",
-})<ListItemTextStyleProps>(({ theme, primary }) => ({
+})<ListItemTextStyleProps>(({ theme, primary, activeRoot }) => ({
   whiteSpace: "nowrap",
   transition: theme.transitions.create(["width", "opacity"], {
     duration: theme.transitions.duration.shorter,
   }),
+
   fontWeight: "400",
   marginTop: "4px",
   marginBottom: "0px",
-  color: "#637381",
+  color: "#a3aed1",
   fontFamily: "Public Sans,sans-serif",
+  ...(activeRoot && {
+    color: "#fff",
+  }),
 }));
 
-export const ListItemIconStyle = styled(ListItemIcon)({
-  width: ICON.NAVBAR_ITEM,
-  height: ICON.NAVBAR_ITEM,
-  minWidth: "auto",
-  marginRight: "16px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  "& svg": { width: "100%", height: "100%" },
-});
+interface ListItemIconStyleProps {
+  activeRoot?: boolean;
+}
+
+export const ListItemIconStyle = styled(ListItemIcon)<ListItemIconStyleProps>(
+  ({ activeRoot }) => ({
+    width: ICON.NAVBAR_ITEM,
+    height: ICON.NAVBAR_ITEM,
+    minWidth: "auto",
+    marginRight: "16px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+
+    "& svg": {
+      width: "100%",
+      height: "100%",
+      fill: "blue", // Change the fill color here
+    },
+  })
+);

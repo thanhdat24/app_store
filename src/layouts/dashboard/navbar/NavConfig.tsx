@@ -10,20 +10,23 @@ type IconName =
   | "ic_user"
   | "ic_invoice"
   | "ic_analytics"
-  | "ic_billing"
+  | "ic_billing_period"
   | "ic_permission"
   | "ic_district"
   | "ic_wards";
 
 const getIcon = (name: IconName): React.ReactNode => (
-  <SvgIconStyle src={`/icons/${name}.svg`} sx={{ width: 1, height: 1 }} />
+  <SvgIconStyle
+    src={`/icons/${name}.svg`}
+    sx={{ color: "#a3aed1", fill: "#a3aed1", width: 1, height: 1 }}
+  />
 );
 
 const ICONS = {
   analytics: getIcon("ic_analytics"),
   user: getIcon("ic_user"),
   receipt: getIcon("ic_invoice"),
-  billing: getIcon("ic_billing"),
+  billing: getIcon("ic_billing_period"),
   permission: getIcon("ic_permission"),
   district: getIcon("ic_district"),
   wards: getIcon("ic_wards"),
@@ -79,7 +82,7 @@ const navConfig = [
       {
         title: "Kỳ thu",
         path: PATH_DASHBOARD.billingPeriod.root,
-        icon: ICONS.receipt,
+        icon: ICONS.billing,
         children: [
           { title: "Danh sách", path: PATH_DASHBOARD.billingPeriod.list },
           { title: "Tạo", path: PATH_DASHBOARD.billingPeriod.new },

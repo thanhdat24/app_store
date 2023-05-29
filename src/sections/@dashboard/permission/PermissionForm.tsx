@@ -1,21 +1,14 @@
 import PropTypes from "prop-types";
 import * as Yup from "yup";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo } from "react";
 // form
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-// @mui
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { LoadingButton } from "@mui/lab";
-import { Box, Card, Grid, Switch, Typography } from "@mui/material";
+import { Box, Card, Grid } from "@mui/material";
 // components
-import Label from "../../../components/Label";
-import dayjs, { Dayjs } from "dayjs";
 import { FormProvider, RHFTextField } from "../../../components/hook-form";
-import RHFSelect from "../../../components/hook-form/RHFSelect";
-import Iconify from "../../../components/Iconify";
 
 type Props = {
   isEdit: boolean;
@@ -71,7 +64,6 @@ export default function PermissionForm({ isEdit }: Props) {
     }
   };
 
-
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
@@ -88,7 +80,7 @@ export default function PermissionForm({ isEdit }: Props) {
                 },
               }}
             >
-            <RHFTextField name="QUYEN" label="Tên quyền" />
+              <RHFTextField name="QUYEN" label="Tên quyền" />
             </Box>
             <Box sx={{ display: "flex", justifyContent: "end" }}>
               <LoadingButton

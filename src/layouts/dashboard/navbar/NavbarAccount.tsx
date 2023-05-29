@@ -40,10 +40,14 @@ const NavbarAccount: React.FC = () => {
               }),
           }}
         >
-          <Typography variant="subtitle2" noWrap>
+          <Typography variant="subtitle2" noWrap sx={{ color: "#fff" }}>
             Lê Thành Đạt
           </Typography>
-          <Typography variant="body2" noWrap sx={{ color: "text.secondary" }}>
+          <Typography
+            variant="body2"
+            noWrap
+            sx={{ color: "green", fontWeight: 600 }}
+          >
             Admin
           </Typography>
         </Box>
