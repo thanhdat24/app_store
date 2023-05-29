@@ -19,7 +19,7 @@ export default function CustomerActionType({}: Props) {
   const isEdit = pathname.includes("edit");
 
   return (
-    <Page title="Customer: Create a new customer">
+    <Page title="CustomerType: Create a new customer type">
       <Container maxWidth={"lg"}>
         <HeaderBreadcrumbs
           heading={

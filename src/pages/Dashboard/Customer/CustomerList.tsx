@@ -25,7 +25,7 @@ type Props = {};
 
 export default function CustomerList({}: Props) {
   return (
-    <Page title="User: List">
+    <Page title="Customer: List">
       <Container maxWidth={"lg"}>
         <HeaderBreadcrumbs
           heading="Danh sách khách hàng"

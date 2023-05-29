@@ -25,13 +25,13 @@ type Props = {};
 
 export default function CustomerType({}: Props) {
   return (
-    <Page title="User: List">
+    <Page title="Customer Type: List">
       <Container maxWidth={"lg"}>
         <HeaderBreadcrumbs
           heading="Danh sách khách hàng"
           links={[
             { name: "Trang chủ", href: PATH_DASHBOARD.root },
-            { name: "Khách hàng", href: PATH_DASHBOARD.user.root },
+            { name: "Loại Khách hàng", href: PATH_DASHBOARD.userType.root },
             { name: "Danh sách loại" },
           ]}
           action={
@@ -39,7 +39,7 @@ export default function CustomerType({}: Props) {
               sx={{ borderRadius: 2, textTransform: "none" }}
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.user.type}
+              to={PATH_DASHBOARD.userType.new}
               startIcon={<Iconify icon={"eva:plus-fill"} />}
             >
               Thêm loại khách hàng
