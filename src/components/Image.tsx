@@ -18,7 +18,7 @@ type ImageProps = {
     | "21/9"
     | "9/21"
     | "1/1";
-  sx?: React.CSSProperties;
+  sx?: any;
 };
 
 const Image: React.FC<ImageProps> = ({
