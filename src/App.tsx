@@ -3,14 +3,10 @@ import { useState } from "react";
 import Router from "./routes";
 // theme
 import ThemeProvider from "./theme";
-// react-toastify
-import { ToastContainer } from "react-toastify";
-
 function App() {
   return (
     <ThemeProvider>
-      <ToastContainer/>
-        <Router />
+      <Router />
     </ThemeProvider>
   );
 }
