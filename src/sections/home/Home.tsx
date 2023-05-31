@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 // components
 import { ProductCardList } from "../../components/ProductCard";
 import { RootState, useAppDispatch } from "../../redux/store";
-import { getAllProduct } from "../../redux/slices/productReducer";
 import { getAllDistrict } from "../../redux/slices/districtReducer";
 
 type Props = {};
@@ -20,8 +19,6 @@ const RootStyle = styled("div")(({ theme }) => ({
 }));
 
 export default function HomeSection({}: Props) {
-  const { productList } = useSelector((state: RootState) => state.product);
-  console.log("productList", productList);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

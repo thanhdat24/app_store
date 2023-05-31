@@ -13,7 +13,7 @@ import GeneralApp from "../pages/Dashboard/GeneralApp";
 import CustomerList from "../pages/Dashboard/Customer/CustomerList";
 import Account from "../pages/Dashboard/Customer/Account";
 import CustomerActions from "../pages/Dashboard/Customer/CustomerAction";
-import CustomerType from "../pages/Dashboard/Customer/CustomerType";
+import CustomerTypeList from "../pages/Dashboard/Customer/CustomerTypeList";
 import CustomerActionType from "../pages/Dashboard/Customer/CustomerActionType";
 import ReceiptList from "../pages/Dashboard/Receipt/ReceiptList";
 import ReceiptAction from "../pages/Dashboard/Receipt/ReceiptAction";
@@ -82,8 +82,9 @@ export default function Router({}: Props) {
               index: true,
             },
 
-            { path: "list", element: <CustomerType /> },
+            { path: "list", element: <CustomerTypeList /> },
             { path: "new", element: <CustomerActionType /> },
+            { path: ":id/edit", element: <CustomerActionType /> },
           ],
         },
         {
@@ -176,16 +177,8 @@ export default function Router({}: Props) {
           children: [{ path: ":id", element: <Detail /> }],
         },
         {
-          path: "checkout",
-          element: <Checkout />,
-        },
-        {
           path: "profile",
           element: <Profile />,
-        },
-        {
-          path: "search",
-          element: <Search />,
         },
       ],
     },
