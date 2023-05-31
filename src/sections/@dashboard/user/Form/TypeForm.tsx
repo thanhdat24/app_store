@@ -41,7 +41,6 @@ export default function TypeForm({ isEdit, currentCustomerType }: Props) {
 
   const defaultValues = useMemo(
     () => ({
-      IDLOAIKH: currentCustomerType?.IDLOAIKH || "",
       TENLOAI: currentCustomerType?.TENLOAI || "",
       TENLOAIPHI: currentCustomerType?.TENLOAIPHI || "",
       GIA: currentCustomerType?.GIA || "",
@@ -78,6 +77,7 @@ export default function TypeForm({ isEdit, currentCustomerType }: Props) {
     try {
       console.log(account);
       if (isEdit) {
+        account = { ...account, IDLOAIKH: currentCustomerType?.IDLOAIKH };
         await dispatch(updateCustomerType(account));
       } else {
         await dispatch(createCustomerType(account));
@@ -111,12 +111,6 @@ export default function TypeForm({ isEdit, currentCustomerType }: Props) {
                 },
               }}
             >
-              <RHFTextField
-                name="IDLOAIKH"
-                label="ID loại"
-                sx={{ display: "none" }}
-              />
-
               <RHFTextField name="TENLOAI" label="Tên loại" />
               <RHFTextField name="TENLOAIPHI" label="Tên loại phí" />
               <RHFTextField name="GIA" label="Giá" />

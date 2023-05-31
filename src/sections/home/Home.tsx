@@ -5,7 +5,6 @@ import { useTheme, styled } from "@mui/material/styles";
 import { Box, Container, Typography, Pagination, Stack } from "@mui/material";
 import { useSelector } from "react-redux";
 // components
-import { ProductCardList } from "../../components/ProductCard";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { getAllDistrict } from "../../redux/slices/districtReducer";
 
@@ -36,8 +35,6 @@ export default function HomeSection({}: Props) {
           <Box>
             <Box className="">Trang chủ</Box>
           </Box>
-
-          {/* <ProductCardList productList={productList} /> */}
         </Box>
       </Container>
     </RootStyle>
