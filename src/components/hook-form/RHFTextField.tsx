@@ -9,9 +9,10 @@ import { TextField } from "@mui/material";
 interface RHFTextFieldProps {
   name: string;
   [key: string]: any;
+  sx?: any;
 }
 
-const RHFTextField: React.FC<RHFTextFieldProps> = ({ name, ...other }) => {
+const RHFTextField: React.FC<RHFTextFieldProps> = ({ sx, name, ...other }) => {
   const { control } = useFormContext();
 
   return (
@@ -22,6 +23,8 @@ const RHFTextField: React.FC<RHFTextFieldProps> = ({ name, ...other }) => {
         <TextField
           {...field}
           fullWidth
+          
+          sx={sx}
           error={!!error}
           helperText={error?.message}
           {...other}

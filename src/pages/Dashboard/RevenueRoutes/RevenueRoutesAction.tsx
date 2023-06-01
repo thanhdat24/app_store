@@ -7,9 +7,9 @@ import { PATH_DASHBOARD } from "../../../routes/paths";
 // components
 import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
-import RevenueRoutesForm from "../../../sections/@dashboard/revenueRoutes/RevenueRoutesForm";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { getAllRevenueRoutes } from "../../../redux/slices/revenueRoutesReducer";
+import RevenueRoutesForm from "../../../sections/@dashboard/revenueStream/RevenueRoutesForm";
 
 type Props = {};
 

@@ -21,7 +21,12 @@ import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
 import { PATH_DASHBOARD } from "../../../routes/paths";
 import Iconify from "../../../components/Iconify";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { getAllCustomer } from "../../../redux/slices/customerReducer";
+
+import {
+  deleteCustomer,
+  getAllCustomer,
+} from "../../../redux/slices/customerReducer";
+
 import useTable, { emptyRows, getComparator } from "../../../hooks/useTable";
 import useTabs from "../../../hooks/useTabs";
 import Scrollbar from "../../../components/Scrollbar";
@@ -54,9 +59,11 @@ const TABLE_HEAD = [
 
 export default function CustomerList({}: Props) {
   const dispatch = useAppDispatch();
+
+  const { deleteCustomerSuccess } = useAppSelector((state) => state.customer);
   useEffect(() => {
     dispatch(getAllCustomer());
-  }, [dispatch]);
+  }, [dispatch, deleteCustomerSuccess]);
 
   const { customerList } = useAppSelector((state) => state.customer);
   console.log("customerList", customerList);
@@ -101,6 +108,14 @@ export default function CustomerList({}: Props) {
       setTableData(customerList);
     }
   }, [customerList ?? []]);
+
+  const handleDeleteRow = (id: number) => {
+    dispatch(deleteCustomer(id));
+  };
+
+  const handleEditRow = (id: number) => {
+    // navigate(PATH_DASHBOARD.user.edit(id));
+  };
 
   return (
     <Page title="Customer: List">
@@ -165,8 +180,8 @@ export default function CustomerList({}: Props) {
                       row={row}
                       // selected={selected.includes(row.id)}
                       // onSelectRow={() => onSelectRow(row.id)}
-                      // onDeleteRow={() => handleDeleteRow(row.id)}
-                      // onEditRow={() => handleEditRow(row.name)}
+                      onDeleteRow={() => handleDeleteRow(row.IDKHACHHANG)}
+                      onEditRow={() => handleEditRow(row.IDKHACHHANG)}
                     />
                   ))}
 

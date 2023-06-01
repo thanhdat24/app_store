@@ -57,12 +57,7 @@ export default function CustomerTypeList({}: Props) {
     order,
     orderBy,
     rowsPerPage,
-    setPage,
-    //
     selected,
-    setSelected,
-    onSelectRow,
-    onSelectAllRows,
     //
     onSort,
     onChangePage,

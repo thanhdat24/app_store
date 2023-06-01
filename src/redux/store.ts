@@ -7,6 +7,7 @@ import wardReducer from "./slices/wardReducer";
 import permissionReducer from "./slices/permissionReducer";
 import revenueRoutesReducer from "./slices/revenueRoutesReducer";
 import staffReducer from "./slices/staffReducer";
+import adminReducer from "./slices/adminReducer"
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
     permission: permissionReducer,
     staff: staffReducer,
     revenueRoutes: revenueRoutesReducer,
+    admin: adminReducer,
   },
 });
 
