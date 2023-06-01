@@ -27,7 +27,7 @@ import DistrictList from "../pages/Dashboard/District/DistrictList";
 import DistrictAction from "../pages/Dashboard/District/DistrictAction";
 import WardsAction from "../pages/Dashboard/Wards/WardsAction";
 import WardsList from "../pages/Dashboard/Wards/WardsList";
-import RevenueRoutesList from "../pages/Dashboard/RevenueRoutes/RevenueRoutestList";
+import RevenueRoutesList from "../pages/Dashboard/RevenueRoutes/RevenueRoutesList";
 import RevenueRoutesAction from "../pages/Dashboard/RevenueRoutes/RevenueRoutesAction";
 
 type Props = {};
@@ -118,6 +118,7 @@ export default function Router({}: Props) {
             },
             { path: "list", element: <StaffList /> },
             { path: "new", element: <StaffAction /> },
+            { path: ":id/edit", element: <StaffAction /> },
           ],
         },
         {
@@ -129,6 +130,7 @@ export default function Router({}: Props) {
             },
             { path: "list", element: <PermissionList /> },
             { path: "new", element: <PermissionAction /> },
+            { path: ":id/edit", element: <PermissionAction /> },
           ],
         },
         {
@@ -140,6 +142,7 @@ export default function Router({}: Props) {
             },
             { path: "list", element: <DistrictList /> },
             { path: "new", element: <DistrictAction /> },
+            { path: ":id/edit", element: <DistrictAction /> },
           ],
         },
         {
@@ -151,6 +154,7 @@ export default function Router({}: Props) {
             },
             { path: "list", element: <WardsList /> },
             { path: "new", element: <WardsAction /> },
+            { path: ":id/edit", element: <WardsAction /> },
           ],
         },
         {
@@ -162,6 +166,8 @@ export default function Router({}: Props) {
             },
             { path: "list", element: <RevenueRoutesList /> },
             { path: "new", element: <RevenueRoutesAction /> },
+            { path: ":id/edit", element: <RevenueRoutesAction /> },
+
           ],
         },
       ],
