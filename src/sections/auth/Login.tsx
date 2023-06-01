@@ -1,100 +1,47 @@
-// @mui
-import { styled } from "@mui/material/styles";
-import {
-  Box,
-  Card,
-  Stack,
-  Link,
-  Alert,
-  Tooltip,
-  Container,
-  Typography,
-} from "@mui/material";
 // routes
-import { PATH_AUTH } from "../../routes/paths";
+import { PATH_AUTH, PATH_DASHBOARD } from "../../routes/paths";
 // components
-import Page from "../../components/Page";
-import Logo from "../../components/Logo";
-import Image from "../../components/Image";
 import LoginForm from "./LoginForm";
+import { useAppSelector } from "../../redux/store";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 // sections
-
-const RootStyle = styled("div")(({ theme }) => ({
-  [theme.breakpoints.up("md")]: {
-    display: "flex",
-  },
-}));
-
-const HeaderStyle = styled("header")(({ theme }) => ({
-  top: 0,
-  zIndex: 9,
-  lineHeight: 0,
-  width: "100%",
-  display: "flex",
-  alignItems: "center",
-  position: "absolute",
-  padding: theme.spacing(3),
-  justifyContent: "space-between",
-  [theme.breakpoints.up("md")]: {
-    alignItems: "flex-start",
-    padding: theme.spacing(7, 5, 0, 7),
-  },
-}));
-
-const SectionStyle = styled(Card)(({ theme }) => ({
-  width: "100%",
-  maxWidth: 464,
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  margin: theme.spacing(2, 0, 2, 2),
-}));
-
-const ContentStyle = styled("div")(({ theme }) => ({
-  maxWidth: 480,
-  margin: "auto",
-  display: "flex",
-  minHeight: "100vh",
-  flexDirection: "column",
-  justifyContent: "center",
-  padding: theme.spacing(12, 0),
-}));
 
 type Props = {};
 
 export default function Login({}: Props) {
+  const navigate = useNavigate();
+  const { userLogin } = useAppSelector((state) => state.admin);
+  useEffect(() => {
+    if (userLogin) {
+      navigate(PATH_DASHBOARD.general.dashboard);
+    }
+  }, [userLogin]);
   return (
-    <Page title="Login">
-      <RootStyle>
-        <HeaderStyle>
-          <Logo />
-        </HeaderStyle>
-
-        <SectionStyle>
-          <Image
-            alt="login"
-            src="https://www.spiritualunite.com/articles/wp-content/uploads/2021/08/78ol.jpg"
-            ratio="1/1"
-          />
-        </SectionStyle>
-
-        <Container maxWidth="sm">
-          <ContentStyle>
-            <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
-              <Box sx={{ flexGrow: 1 }}>
-                <Typography variant="h4" gutterBottom>
+    <div className="bg-[#CFD2E1] bg-login-pattern bg-cover">
+      <div className="container flex flex-row items-center max-w-screen-lg md:px-10 mx-auto z-10 justify-center min-h-screen">
+        <div className="bg-[#eff2f7] grid   select-none ">
+          <div className="grid grid-cols-2 ">
+            <div className=" text-center items-center flex justify-center">
+              <img
+                src="https://nentang.vn/app/images/pages/login.png"
+                alt="login"
+              />
+            </div>
+            <div className="bg-[#10163a] text-[#c2c6dc] text-base">
+              <div className="flex flex-col px-10">
+                <h3 className="text-xl font-normal flex items-center justify-content py-2 text-[#c2c6dc]">
                   Đăng nhập
-                </Typography>
-              </Box>
-            </Stack>
-            {/* 
-            <Alert severity="info" sx={{ mb: 3 }}>
-              Use email : <strong>admin@gmail.com</strong> / password :<strong> Dat123456</strong>
-            </Alert> */}
-            <LoginForm />
-          </ContentStyle>
-        </Container>
-      </RootStyle>
-    </Page>
+                </h3>
+                <span className="mb-7">
+                  Chào mừng bạn đến với trang Quản Lý, vui lòng Đăng nhập.
+                </span>
+                <LoginForm />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

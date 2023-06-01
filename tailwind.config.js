@@ -2,7 +2,11 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+       backgroundImage: {
+        'login-pattern': "url('/src/assets/images/login-pattern-bg.jpg')",
+      }
+    },
   },
   plugins: [],
   corePlugins: {
