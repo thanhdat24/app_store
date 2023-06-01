@@ -1,32 +1,20 @@
-export interface RevenueStreamModel {
+import { StaffModel } from "./StaffModel";
+
+export interface RevenueRoutesModel {
   IDTUYENTHU: number;
   IDXAPHUONG: number;
   MATUYENTHU: string;
   TENTUYENTHU: string;
   KHACHHANGs: any[];
-  PHANQUYENTUYENTHUs: PHANQUYENTUYENTHUs[];
+  PHANQUYENTUYENTHUs: Phanquyentuyenthu[];
   XAPHUONG: Xaphuong;
 }
 
-export interface PHANQUYENTUYENTHUs {
+export interface Phanquyentuyenthu {
   IDPHANQUYENTUYENTHU: number;
   IDNHANVIEN: number;
   IDTUYENTHU: number;
-  NHANVIEN: Nhanvien;
-}
-
-export interface Nhanvien {
-  IDNHANVIEN: number;
-  MANHANVIEN: string;
-  HOTEN: string;
-  SDT: number;
-  NGAYSINH: null;
-  DIACHI: string;
-  USERNAME: string;
-  PASSWORD: string;
-  CHITIETPHANQUYENs: any[];
-  PHANQUYENTUYENTHUs: any[];
-  PHIEUTHUs: any[];
+  NHANVIEN: StaffModel;
 }
 
 export interface Xaphuong {

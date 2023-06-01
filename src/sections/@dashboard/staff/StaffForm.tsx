@@ -31,15 +31,27 @@ import { FormProvider, RHFTextField } from "../../../components/hook-form";
 import RHFSelect from "../../../components/hook-form/RHFSelect";
 import Iconify from "../../../components/Iconify";
 import RHFSelectMultiple from "../../../components/hook-form/RHFSelectMultiple";
+import { StaffModel } from "../../../interfaces/StaffModel";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { PATH_DASHBOARD } from "../../../routes/paths";
+import { createStaff, resetStaff, updateStaff } from "../../../redux/slices/staffReducer";
 
 type Props = {
   isEdit: boolean;
+  currentStaff: StaffModel | undefined;
 };
 
-export default function StaffForm({ isEdit }: Props) {
+export default function StaffForm({ isEdit, currentStaff }: Props) {
   const [showPassword, setShowPassword] = useState(false);
+///---
+  const dispatch = useAppDispatch();
 
-  const NewUserSchema = Yup.object().shape({
+  const navigate = useNavigate();
+
+  const { createStaffSuccess, updateStaffSuccess } =
+    useAppSelector((state) => state.staff);
+
+  const StaffSchema = Yup.object().shape({
     MANHANVIEN: Yup.string().required("Mã nhân viên là bắt buộc"),
     HOTEN: Yup.string().required("Họ tên là bắt buộc"),
     SDT: Yup.string().required("Số điện thoại là bắt buộc"),
@@ -48,27 +60,25 @@ export default function StaffForm({ isEdit }: Props) {
     USERNAME: Yup.string().required("Tên đăng nhập là bắt buộc"),
     PASSWORD: Yup.string().required("Mật khẩu là bắt buộc"),
     QUYEN: Yup.string().required("Quyền là bắt buộc"),
-    LOAIKHACHHANG: Yup.string().required("Loại khách hàng là bắt buộc"),
   });
 
   const defaultValues = useMemo(
     () => ({
-      MANHANVIEN: "",
-      HOTEN: "",
-      photoURL: "",
-      SDT: "",
-      DIACHI: "",
-      NGAYSINH: dayjs("2022-04-17"),
-      USERNAME: "",
-      PASSWORD: "",
-      QUYEN: "",
+      MANHANVIEN: currentStaff?.MANHANVIEN || "",
+      HOTEN: currentStaff?.HOTEN || "",
+      SDT: currentStaff?.SDT || "",
+      DIACHI: currentStaff?.DIACHI || "",
+      NGAYSINH: currentStaff?.NGAYSINH || "",
+      USERNAME: currentStaff?.USERNAME || "",
+      PASSWORD: currentStaff?.PASSWORD || "",
+      QUYEN: currentStaff?.CHITIETPHANQUYENs || "",
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [currentStaff]
   );
 
   const methods = useForm({
-    resolver: yupResolver(NewUserSchema),
+    resolver: yupResolver(StaffSchema),
     defaultValues,
   });
 
@@ -84,25 +94,37 @@ export default function StaffForm({ isEdit }: Props) {
   const values = watch();
 
   useEffect(() => {
-    if (isEdit) {
+    if (isEdit && currentStaff) {
       reset(defaultValues);
     }
     if (!isEdit) {
       reset(defaultValues);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEdit]);
+  }, [isEdit, currentStaff]);
 
   const onSubmit = async (account: any) => {
     try {
       console.log(account);
-      // await new Promise((resolve) => setTimeout(resolve, 500));
-      // reset();
-      // enqueueSnackbar(!isEdit ? 'Create success!' : 'Update success!');
+      if (isEdit) {
+        account = { ...account, IDNHANVIEN: currentStaff?.IDNHANVIEN };
+        await dispatch(updateStaff(account));
+      } else {
+        await dispatch(createStaff(account));
+      }
     } catch (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (createStaffSuccess || updateStaffSuccess) {
+      navigate(PATH_DASHBOARD.staff.list);
+    }
+    return () => {
+      dispatch(resetStaff());
+    };
+  }, [createStaffSuccess, updateStaffSuccess]);
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -178,12 +200,13 @@ export default function StaffForm({ isEdit }: Props) {
                   ),
                 }}
               />
-              <RHFSelect name="QUYEN" label="Quyền" placeholder="Quyền">
+              <RHFSelectMultiple name="QUYEN" label="Quyền" placeholder="Quyền">
                 {/* <option value="" />
                 {["Nam", "Nữ"].map((option, index) => (
                   <option value={option}>{option}</option>
                 ))} */}
-              </RHFSelect>
+              </RHFSelectMultiple>
+              
               {/* 
               <RHFSelectMultiple name="QUYEN" label="Quyền" placeholder="Quyền">
                 <option value="" />

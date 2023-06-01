@@ -21,10 +21,12 @@ import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
 import { PATH_DASHBOARD } from "../../../routes/paths";
 import Iconify from "../../../components/Iconify";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
+
 import {
   deleteCustomer,
   getAllCustomer,
 } from "../../../redux/slices/customerReducer";
+
 import useTable, { emptyRows, getComparator } from "../../../hooks/useTable";
 import useTabs from "../../../hooks/useTabs";
 import Scrollbar from "../../../components/Scrollbar";
@@ -116,7 +118,7 @@ export default function CustomerList({}: Props) {
   };
 
   return (
-    <Page title="User: List">
+    <Page title="Customer: List">
       <Container maxWidth={"lg"}>
         <HeaderBreadcrumbs
           heading="Danh sách khách hàng"

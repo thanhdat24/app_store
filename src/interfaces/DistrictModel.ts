@@ -1,4 +1,5 @@
 export interface DistrictModel {
-  idQuanHuyen: number;
-  tenQuanHuyen: string;
+  IDQUANHUYEN: number;
+  TENQUANHUYEN: string;
+  XAPHUONGs: any[];
 }

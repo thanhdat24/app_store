@@ -20,33 +20,36 @@ import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
 import { PATH_DASHBOARD } from "../../../routes/paths";
 import Iconify from "../../../components/Iconify";
-import useTable, { emptyRows } from "../../../hooks/useTable";
-import { WardModel } from "../../../interfaces/WardModel";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { deleteWard, getAllWard } from "../../../redux/slices/wardReducer";
+import {
+  deleteRevenueRoutes,
+  getAllRevenueRoutes,
+} from "../../../redux/slices/revenueRoutesReducer";
+import useTable, { emptyRows } from "../../../hooks/useTable";
+import { RevenueRoutesModel } from "../../../interfaces/RevenueRoutesModel";
 import { TableEmptyRows, TableHeadCustom } from "../../../components/table";
-import WardsTableRow from "./WardsTableRow";
+import RevenueRoutesTableRow from "./RevenueRoutesTableRow";
 
 type Props = {};
+
 const TABLE_HEAD = [
   { id: "id", label: "ID", align: "left" },
-  { id: "TENXAPHUONG", label: "Tên xã phường", align: "left" },
-  { id: "IDQUANHUYEN", label: "Tên quận huyện", align: "left" },
+  { id: "MATUYENTHU", label: "Mã tuyến thu", align: "left" },
+  { id: "TENTUYENTHU", label: "Tên tuyến thu", align: "left" },
+  { id: "TENQUANHUYEN", label: "Tên quận huyện", align: "left" },
   { id: "" },
 ];
 
-export default function WardsList({}: Props) {
-
-
+export default function RevenueRoutesList({}: Props) {
   ///
   const dispatch = useAppDispatch();
 
-  const { wardList, deleteWardSuccess } = useAppSelector(
-    (state) => state.ward
+  const { revenueRoutesList, deleteRevenueRoutesSuccess } = useAppSelector(
+    (state) => state.revenueRoutes
   );
   useEffect(() => {
-    dispatch(getAllWard());
-  }, [dispatch, deleteWardSuccess]);
+    dispatch(getAllRevenueRoutes());
+  }, [dispatch, deleteRevenueRoutesSuccess]);
 
   const {
     dense,
@@ -68,32 +71,33 @@ export default function WardsList({}: Props) {
 
   const navigate = useNavigate();
 
-  const [tableData, setTableData] = useState<WardModel[]>([]);
+  const [tableData, setTableData] = useState<RevenueRoutesModel[]>([]);
 
   const denseHeight = dense ? 60 : 80;
 
   useEffect(() => {
-    if (wardList && wardList.length) {
-      setTableData(wardList);
+    if (revenueRoutesList && revenueRoutesList.length) {
+      setTableData(revenueRoutesList);
     }
-  }, [wardList ?? []]);
+  }, [revenueRoutesList ?? []]);
 
   const handleDeleteRow = (id: number) => {
-    dispatch(deleteWard(id));
+    dispatch(deleteRevenueRoutes(id));
   };
 
   const handleEditRow = (id: number) => {
-    navigate(PATH_DASHBOARD.wards.edit(id));
+    navigate(PATH_DASHBOARD.revenueRoutes.edit(id));
   };
+  ///
 
   return (
-    <Page title="Wards: List">
+    <Page title="RevenueRoutes: List">
       <Container maxWidth={"lg"}>
         <HeaderBreadcrumbs
-          heading="Danh sách xã phường"
+          heading="Danh sách tuyến thu"
           links={[
             { name: "Trang chủ", href: PATH_DASHBOARD.root },
-            { name: "Xã phường", href: PATH_DASHBOARD.wards.root },
+            { name: "Tuyến thu", href: PATH_DASHBOARD.revenueRoutes.root },
             { name: "Danh sách" },
           ]}
           action={
@@ -101,10 +105,10 @@ export default function WardsList({}: Props) {
               sx={{ borderRadius: 2, textTransform: "none" }}
               variant="contained"
               component={RouterLink}
-              to={PATH_DASHBOARD.wards.new}
+              to={PATH_DASHBOARD.revenueRoutes.new}
               startIcon={<Iconify icon={"eva:plus-fill"} />}
             >
-              Thêm xã phường
+              Thêm phiếu thu
             </Button>
           }
         />
@@ -126,13 +130,13 @@ export default function WardsList({}: Props) {
                 {tableData
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row: any) => (
-                    <WardsTableRow
-                      key={row.IDXAPHUONG}
+                    <RevenueRoutesTableRow
+                      key={row.IDTUYENTHU}
                       row={row}
                       // selected={selected.includes(row.id)}
                       // onSelectRow={() => onSelectRow(row.id)}
-                      onDeleteRow={() => handleDeleteRow(row.IDXAPHUONG)}
-                      onEditRow={() => handleEditRow(row.IDXAPHUONG)}
+                      onDeleteRow={() => handleDeleteRow(row.IDTUYENTHU)}
+                      onEditRow={() => handleEditRow(row.IDTUYENTHU)}
                     />
                   ))}
 

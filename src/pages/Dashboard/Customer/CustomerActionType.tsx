@@ -33,7 +33,7 @@ export default function CustomerActionType({}: Props) {
   }, [dispatch]);
 
   return (
-    <Page title="Customer: Create a new customer">
+    <Page title="CustomerType: Create a new customer type">
       <Container maxWidth={"lg"}>
         <HeaderBreadcrumbs
           heading={

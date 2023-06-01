@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 // @mui
 import { Container } from "@mui/material";
@@ -7,16 +7,32 @@ import { PATH_DASHBOARD } from "../../../routes/paths";
 // components
 import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
-import RevenueStreamForm from "../../../sections/@dashboard/revenueStream/RevenueStreamForm";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { getAllRevenueRoutes } from "../../../redux/slices/revenueRoutesReducer";
+import RevenueRoutesForm from "../../../sections/@dashboard/revenueStream/RevenueRoutesForm";
 
 type Props = {};
 
 export default function RevenueRoutesAction({}: Props) {
+
+  const dispatch = useAppDispatch();
+
   const { pathname } = useLocation();
 
   const { id = "" } = useParams();
 
   const isEdit = pathname.includes("edit");
+
+  console.log("isEdit", isEdit);
+  const { revenueRoutesList } = useAppSelector((state) => state.revenueRoutes);
+
+  const currentRevenueRoutes = revenueRoutesList?.find(
+    (revenueRoutes) => revenueRoutes.IDTUYENTHU === Number(id)
+  );
+
+  useEffect(() => {
+    dispatch(getAllRevenueRoutes());
+  }, [dispatch]);
 
   return (
     <Page title="RevenueRoutes: Create a new Revenue Routes">
@@ -25,12 +41,12 @@ export default function RevenueRoutesAction({}: Props) {
           heading={!isEdit ? "Tạo tuyến thu" : "Chỉnh tuyến thu"}
           links={[
             { name: "Trang chủ", href: PATH_DASHBOARD.root },
-            { name: "Tuyến thu", href: PATH_DASHBOARD.receipt.list },
+            { name: "Tuyến thu", href: PATH_DASHBOARD.revenueRoutes.list },
             { name: !isEdit ? "Tuyến thu mới" : id },
           ]}
         />
 
-        <RevenueStreamForm isEdit={isEdit} />
+        <RevenueRoutesForm isEdit={isEdit} currentRevenueRoutes={currentRevenueRoutes}/>
       </Container>
     </Page>
   );

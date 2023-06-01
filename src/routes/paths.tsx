@@ -44,11 +44,15 @@ export const PATH_DASHBOARD = {
     root: path(ROOTS_DASHBOARD, "/staff"),
     new: path(ROOTS_DASHBOARD, "/staff/new"),
     list: path(ROOTS_DASHBOARD, "/staff/list"),
+    edit: (id: number) => path(ROOTS_DASHBOARD, `/staff/${id}/edit`),
+
   },
   revenueRoutes: {
     root: path(ROOTS_DASHBOARD, "/revenue-routes"),
     new: path(ROOTS_DASHBOARD, "/revenue-routes/new"),
     list: path(ROOTS_DASHBOARD, "/revenue-routes/list"),
+    edit: (id: number) => path(ROOTS_DASHBOARD, `/revenue-routes/${id}/edit`),
+
   },
   receipt: {
     root: path(ROOTS_DASHBOARD, "/receipt"),
@@ -64,15 +68,20 @@ export const PATH_DASHBOARD = {
     root: path(ROOTS_DASHBOARD, "/permission"),
     list: path(ROOTS_DASHBOARD, "/permission/list"),
     new: path(ROOTS_DASHBOARD, "/permission/new"),
+    edit: (id: number) => path(ROOTS_DASHBOARD, `/permission/${id}/edit`),
   },
   district: {
     root: path(ROOTS_DASHBOARD, "/district"),
     list: path(ROOTS_DASHBOARD, "/district/list"),
     new: path(ROOTS_DASHBOARD, "/district/new"),
+    edit: (id: number) => path(ROOTS_DASHBOARD, `/district/${id}/edit`),
+  
   },
   wards: {
     root: path(ROOTS_DASHBOARD, "/wards"),
     list: path(ROOTS_DASHBOARD, "/wards/list"),
     new: path(ROOTS_DASHBOARD, "/wards/new"),
+    edit: (id: number) => path(ROOTS_DASHBOARD, `/wards/${id}/edit`),
   },
+  
 };

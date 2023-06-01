@@ -30,8 +30,6 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../../../redux/store";
-import { getAlRevenueStream } from "../../../../redux/slices/revenueStreamReducer";
-import { RevenueStreamModel } from "../../../../interfaces/RevenueStreamModel";
 import axios from "../../../../utils/axios";
 import { getAllCustomerTypes } from "../../../../redux/slices/customerTypeReducer";
 import {
@@ -39,6 +37,7 @@ import {
   resetCustomer,
 } from "../../../../redux/slices/customerReducer";
 import { PATH_DASHBOARD } from "../../../../routes/paths";
+import { getAllRevenueRoutes } from "../../../../redux/slices/revenueRoutesReducer";
 
 type Props = {
   isEdit: boolean;
@@ -50,11 +49,11 @@ export default function CustomerForm({ isEdit }: Props) {
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(getAllCustomerTypes());
-    dispatch(getAlRevenueStream());
+    dispatch(getAllRevenueRoutes());
   }, [dispatch]);
 
-  const { revenueStreamList } = useAppSelector(
-    (state: RootState) => state.revenueStream
+  const { revenueRoutesList } = useAppSelector(
+    (state: RootState) => state.revenueRoutes
   );
   const { customerTypeList } = useAppSelector(
     (state: RootState) => state.customerType
@@ -63,7 +62,7 @@ export default function CustomerForm({ isEdit }: Props) {
     (state: RootState) => state.customer
   );
 
-  console.log("revenueStreamList", revenueStreamList);
+  console.log("revenueRoutesList", revenueRoutesList);
 
   const [data, setData] = useState({
     setWard: "",
@@ -71,7 +70,7 @@ export default function CustomerForm({ isEdit }: Props) {
     setIDXAPHUONG: "",
   });
 
-  const handleSelectRevenueStream = async (selectedValue: number) => {
+  const handleSelectrevenueRoutes = async (selectedValue: number) => {
     console.log("selectedValue", selectedValue);
     try {
       const response = await axios.get(`api/TUYENTHUs/${selectedValue}`);
@@ -190,10 +189,10 @@ export default function CustomerForm({ isEdit }: Props) {
                 name="IDTUYENTHU"
                 label="Tuyến thu"
                 placeholder="Tuyến thu"
-                onChange={handleSelectRevenueStream}
+                onChange={handleSelectrevenueRoutes}
               >
                 <option value="" />
-                {revenueStreamList?.map((option, index) => (
+                {revenueRoutesList?.map((option, index) => (
                   <option key={option.IDTUYENTHU} value={option.IDTUYENTHU}>
                     {option.TENTUYENTHU}
                   </option>
