@@ -1,13 +1,10 @@
-import PropTypes from "prop-types";
 import * as Yup from "yup";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 // form
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 // @mui
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
 import { LoadingButton } from "@mui/lab";
 import { Box, Card, Grid, Switch, Typography } from "@mui/material";
 // components
@@ -15,13 +12,12 @@ import Label from "../../../components/Label";
 import dayjs, { Dayjs } from "dayjs";
 import { FormProvider, RHFTextField } from "../../../components/hook-form";
 import RHFSelect from "../../../components/hook-form/RHFSelect";
-import Iconify from "../../../components/Iconify";
 
 type Props = {
   isEdit: boolean;
 };
 
-export default function RevenueRoutesForm({ isEdit }: Props) {
+export default function RevenueStreamForm({ isEdit }: Props) {
   const NewUserSchema = Yup.object().shape({
     MATUYENTHU: Yup.string().required("Mã tuyến thu là bắt buộc"),
     TENTUYENTHU: Yup.string().required("Tên tuyến thu là bắt buộc"),

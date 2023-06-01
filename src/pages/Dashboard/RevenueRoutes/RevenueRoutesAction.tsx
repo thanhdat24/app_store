@@ -7,7 +7,7 @@ import { PATH_DASHBOARD } from "../../../routes/paths";
 // components
 import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
-import RevenueRoutesForm from "../../../sections/@dashboard/revenueRoutes/RevenueRoutesForm";
+import RevenueStreamForm from "../../../sections/@dashboard/revenueStream/RevenueStreamForm";
 
 type Props = {};
 
@@ -30,7 +30,7 @@ export default function RevenueRoutesAction({}: Props) {
           ]}
         />
 
-        <RevenueRoutesForm isEdit={isEdit} />
+        <RevenueStreamForm isEdit={isEdit} />
       </Container>
     </Page>
   );
