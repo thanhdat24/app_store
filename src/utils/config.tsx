@@ -3,7 +3,7 @@
 import { PATH_DASHBOARD } from "../routes/paths";
 
 // ----------------------------------------------------------------------
-export const HOST_API = "https://shop.cyberlearn.vn";
+export const HOST_API = "https://localhost:44363/";
 
 // ROOT PATH AFTER LOGIN SUCCESSFUL
 export const PATH_AFTER_LOGIN = PATH_DASHBOARD.general.dashboard; // as '/dashboard/app'

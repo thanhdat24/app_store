@@ -1,54 +1,55 @@
 import PropTypes from "prop-types";
 import * as Yup from "yup";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo } from "react";
 // form
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-// @mui
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { LoadingButton } from "@mui/lab";
-import {
-  Box,
-  Card,
-  Grid,
-  Stack,
-  Switch,
-  Typography,
-  FormControlLabel,
-  TextField,
-} from "@mui/material";
+import { Box, Card, Grid, Stack } from "@mui/material";
 // components
-import Label from "../../../../components/Label";
-import dayjs, { Dayjs } from "dayjs";
 import { FormProvider, RHFTextField } from "../../../../components/hook-form";
-import RHFSelect from "../../../../components/hook-form/RHFSelect";
+import {
+  createCustomerType,
+  resetCustomerType,
+  updateCustomerType,
+} from "../../../../redux/slices/customerTypeReducer";
+import { useAppDispatch, useAppSelector } from "../../../../redux/store";
+import { CustomerTypeModel } from "../../../../interfaces/CustomerTypeModel";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { PATH_DASHBOARD } from "../../../../routes/paths";
 
 type Props = {
   isEdit: boolean;
+  currentCustomerType: CustomerTypeModel | undefined;
 };
 
-export default function TypeForm({ isEdit }: Props) {
-  const NewUserSchema = Yup.object().shape({
-    LOAIKHACHHANG: Yup.string().required("Loại khách hàng là bắt buộc"),
+export default function TypeForm({ isEdit, currentCustomerType }: Props) {
+  const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+
+  const { createCustomerTypeSuccess, updateCustomerTypeSuccess } =
+    useAppSelector((state) => state.customerType);
+
+  const CustomerTypeSchema = Yup.object().shape({
+    TENLOAI: Yup.string().required("Tên loại là bắt buộc"),
     TENLOAIPHI: Yup.string().required("Tên loại phí là bắt buộc"),
     GIA: Yup.string().required("Giá là bắt buộc"),
   });
 
   const defaultValues = useMemo(
     () => ({
-      LOAIKHACHHANG: "",
-      TENLOAIPHI: "",
-      GIA: "",
+      TENLOAI: currentCustomerType?.TENLOAI || "",
+      TENLOAIPHI: currentCustomerType?.TENLOAIPHI || "",
+      GIA: currentCustomerType?.GIA || "",
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [currentCustomerType]
   );
 
   const methods = useForm({
-    resolver: yupResolver(NewUserSchema),
+    resolver: yupResolver(CustomerTypeSchema),
     defaultValues,
   });
 
@@ -64,26 +65,36 @@ export default function TypeForm({ isEdit }: Props) {
   const values = watch();
 
   useEffect(() => {
-    if (isEdit) {
+    if (isEdit && currentCustomerType) {
       reset(defaultValues);
     }
     if (!isEdit) {
       reset(defaultValues);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEdit]);
+  }, [isEdit, currentCustomerType]);
 
   const onSubmit = async (account: any) => {
     try {
       console.log(account);
-      // await new Promise((resolve) => setTimeout(resolve, 500));
-      // reset();
-      // enqueueSnackbar(!isEdit ? 'Create success!' : 'Update success!');
+      if (isEdit) {
+        account = { ...account, IDLOAIKH: currentCustomerType?.IDLOAIKH };
+        await dispatch(updateCustomerType(account));
+      } else {
+        await dispatch(createCustomerType(account));
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
+  useEffect(() => {
+    if (createCustomerTypeSuccess || updateCustomerTypeSuccess) {
+      navigate(PATH_DASHBOARD.userType.list);
+    }
+    return () => {
+      dispatch(resetCustomerType());
+    };
+  }, [createCustomerTypeSuccess, updateCustomerTypeSuccess]);
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
@@ -100,16 +111,7 @@ export default function TypeForm({ isEdit }: Props) {
                 },
               }}
             >
-              <RHFSelect
-                name="LOAIKHACHHANG"
-                label="Loại khách hàng"
-                placeholder="Loại khách hàng"
-              >
-                <option value="" />
-                {["Hộ dân", "Doanh nghiệp"].map((option, index) => (
-                  <option value={option}>{option}</option>
-                ))}
-              </RHFSelect>
+              <RHFTextField name="TENLOAI" label="Tên loại" />
               <RHFTextField name="TENLOAIPHI" label="Tên loại phí" />
               <RHFTextField name="GIA" label="Giá" />
             </Box>

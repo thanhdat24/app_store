@@ -1,6 +1,8 @@
 import { DistrictModel } from "./../../interfaces/DistrictModel";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
+// utils
+import axios from "../../utils/axios";
+//
 import { AppDispatch } from "../store";
 
 interface DistrictState {
@@ -32,10 +34,7 @@ export const { getAllDistrictSuccess, postDistrictSuccess } =
 export const getAllDistrict = () => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response = await axios({
-        url: "https://localhost:44363/api/QUANHUYENs",
-        method: "GET",
-      });
+      const response = await axios.get("api/QUANHUYENs");
       const data: DistrictModel[] = await response.data.content;
       const action: PayloadAction<DistrictModel[]> =
         getAllDistrictSuccess(data);
@@ -49,11 +48,7 @@ export const getAllDistrict = () => {
 export const postDistrict = (dataDistrict: DistrictModel) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response = await axios({
-        url: "https://localhost:44363/api/QUANHUYENs",
-        method: "POST",
-        data: dataDistrict,
-      });
+      const response = await axios.post("api/QUANHUYENs", dataDistrict);
       const data: DistrictModel = await response.data.content;
       const action: PayloadAction<DistrictModel> = postDistrictSuccess(data);
       dispatch(action);

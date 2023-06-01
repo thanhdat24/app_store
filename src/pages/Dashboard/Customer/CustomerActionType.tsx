@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 // @mui
 import { Container } from "@mui/material";
@@ -8,15 +8,29 @@ import { PATH_DASHBOARD } from "../../../routes/paths";
 import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
 import TypeForm from "../../../sections/@dashboard/user/Form/TypeForm";
+import { getAllCustomerTypes } from "../../../redux/slices/customerTypeReducer";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
 
 type Props = {};
 
 export default function CustomerActionType({}: Props) {
+  const dispatch = useAppDispatch();
+
   const { pathname } = useLocation();
 
   const { id = "" } = useParams();
 
   const isEdit = pathname.includes("edit");
+  console.log("isEdit", isEdit);
+  const { customerTypeList } = useAppSelector((state) => state.customerType);
+
+  const currentCustomerType = customerTypeList?.find(
+    (customer) => customer.IDLOAIKH === Number(id)
+  );
+
+  useEffect(() => {
+    dispatch(getAllCustomerTypes());
+  }, [dispatch]);
 
   return (
     <Page title="CustomerType: Create a new customer type">
@@ -32,7 +46,7 @@ export default function CustomerActionType({}: Props) {
           ]}
         />
 
-        <TypeForm isEdit={isEdit} />
+        <TypeForm isEdit={isEdit} currentCustomerType={currentCustomerType} />
       </Container>
     </Page>
   );

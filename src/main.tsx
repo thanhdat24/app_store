@@ -1,5 +1,7 @@
 // scroll bar
 import "simplebar-react/dist/simplebar.min.css";
+//react-toastify
+import "react-toastify/dist/ReactToastify.css";
 
 import ReactDOM from "react-dom/client";
 import { Provider as ReduxProvider } from "react-redux";
