@@ -11,6 +11,8 @@ interface RHFSelectProps {
   label?: string;
   placeholder?: string;
   children: React.ReactNode;
+  sx?: any;
+  onChange?: (event: number) => void;
 }
 
 const RHFSelect: React.FC<RHFSelectProps> = ({
@@ -18,6 +20,8 @@ const RHFSelect: React.FC<RHFSelectProps> = ({
   label,
   placeholder,
   children,
+  sx,
+  onChange,
   ...other
 }) => {
   const { control } = useFormContext();
@@ -36,6 +40,13 @@ const RHFSelect: React.FC<RHFSelectProps> = ({
           SelectProps={{ native: true }}
           error={!!error}
           helperText={error?.message}
+          sx={sx}
+          onChange={(e) => {
+            field.onChange(e.target.value);
+            if (typeof onChange === "function") {
+              onChange(Number(e.target.value));
+            }
+          }}
           {...other}
         >
           {children}

@@ -25,40 +25,92 @@ import Label from "../../../../components/Label";
 import dayjs, { Dayjs } from "dayjs";
 import { FormProvider, RHFTextField } from "../../../../components/hook-form";
 import RHFSelect from "../../../../components/hook-form/RHFSelect";
+import {
+  RootState,
+  useAppDispatch,
+  useAppSelector,
+} from "../../../../redux/store";
+import { getAlRevenueStream } from "../../../../redux/slices/revenueStreamReducer";
+import { RevenueStreamModel } from "../../../../interfaces/RevenueStreamModel";
+import axios from "../../../../utils/axios";
+import { getAllCustomerTypes } from "../../../../redux/slices/customerTypeReducer";
+import {
+  createCustomer,
+  resetCustomer,
+} from "../../../../redux/slices/customerReducer";
+import { PATH_DASHBOARD } from "../../../../routes/paths";
 
 type Props = {
   isEdit: boolean;
 };
 
 export default function CustomerForm({ isEdit }: Props) {
+  const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    dispatch(getAllCustomerTypes());
+    dispatch(getAlRevenueStream());
+  }, [dispatch]);
+
+  const { revenueStreamList } = useAppSelector(
+    (state: RootState) => state.revenueStream
+  );
+  const { customerTypeList } = useAppSelector(
+    (state: RootState) => state.customerType
+  );
+  const { createCustomerSuccess } = useAppSelector(
+    (state: RootState) => state.customer
+  );
+
+  console.log("revenueStreamList", revenueStreamList);
+
+  const [data, setData] = useState({
+    setWard: "",
+    setDistrict: "",
+    setIDXAPHUONG: "",
+  });
+
+  const handleSelectRevenueStream = async (selectedValue: number) => {
+    console.log("selectedValue", selectedValue);
+    try {
+      const response = await axios.get(`api/TUYENTHUs/${selectedValue}`);
+      console.log("Route details:", response.data);
+      setData({
+        ...data,
+        setDistrict: response.data.XAPHUONG.QUANHUYEN.TENQUANHUYEN,
+        setWard: response.data.XAPHUONG.TENXAPHUONG,
+        setIDXAPHUONG: response.data.XAPHUONG.IDXAPHUONG,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log("data", data);
+
   const NewUserSchema = Yup.object().shape({
-    MANHANVIEN: Yup.string().required("Mã nhân viên là bắt buộc"),
+    MAKHACHHANG: Yup.string().required("Mã khách hàng là bắt buộc"),
     HOTEN: Yup.string().required("Họ tên là bắt buộc"),
-    SDT: Yup.string().required("Số điện thoại là bắt buộc"),
     DIACHI: Yup.string().required("Địa chỉ là bắt buộc"),
     NGAYCAP: Yup.string().required("Ngày cấp là bắt buộc"),
     CMT: Yup.string().required("Chứng minh thư là bắt buộc"),
-    TUYENTHU: Yup.string().required("Phiếu thu là bắt buộc"),
-    NGAYSINH: Yup.string().required("Ngày sinh là bắt buộc"),
-    QUANHUYEN: Yup.string().required("Quận huyện là bắt buộc"),
-    PHUONGXA: Yup.string().required("Phường xã là bắt buộc"),
-    LOAIKHACHHANG: Yup.string().required("Loại khách hàng là bắt buộc"),
+    IDTUYENTHU: Yup.string().required("Phiếu thu là bắt buộc"),
+    // QUANHUYEN: Yup.string().required("Quận huyện là bắt buộc"),
+    // PHUONGXA: Yup.string().required("Phường xã là bắt buộc"),
+    IDLOAIKH: Yup.string().required("Loại khách hàng là bắt buộc"),
   });
 
   const defaultValues = useMemo(
     () => ({
-      MANHANVIEN: "",
+      MAKHACHHANG: "",
       HOTEN: "",
-      photoURL: "",
-      SDT: "",
       DIACHI: "",
-      NGAYCAP: dayjs("2022-04-17"),
+      NGAYCAP: dayjs(new Date()),
       CMT: "",
-      TUYENTHU: "",
-      NGAYSINH: dayjs("2022-04-17"),
-      QUANHUYEN: "",
+      IDTUYENTHU: "",
+      // NGAYSINH: dayjs("2022-04-17"),
       PHUONGXA: "",
-      LOAIKHACHHANG: "",
+      IDLOAIKH: "",
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -92,14 +144,28 @@ export default function CustomerForm({ isEdit }: Props) {
 
   const onSubmit = async (account: any) => {
     try {
-      console.log(account);
-      // await new Promise((resolve) => setTimeout(resolve, 500));
-      // reset();
-      // enqueueSnackbar(!isEdit ? 'Create success!' : 'Update success!');
+      const convertedAccount = {
+        ...account,
+        IDTUYENTHU: Number(account.IDTUYENTHU),
+        IDXAPHUONG: Number(data.setIDXAPHUONG),
+        IDLOAIKH: Number(account.IDLOAIKH),
+        NGAYCAP: dayjs(account.NGAYCAP).format("DD-MM-YYYY"),
+      };
+      console.log(convertedAccount);
+      await dispatch(createCustomer(convertedAccount));
     } catch (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (createCustomerSuccess) {
+      navigate(PATH_DASHBOARD.user.list);
+    }
+    return () => {
+      dispatch(resetCustomer());
+    };
+  }, [createCustomerSuccess]);
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -117,15 +183,37 @@ export default function CustomerForm({ isEdit }: Props) {
                 },
               }}
             >
-              <RHFTextField name="MANHANVIEN" label="Mã nhân viên" />
+              <RHFTextField name="MAKHACHHANG" label="Mã nhân viên" />
               <RHFTextField name="HOTEN" label="Họ tên " />
+
+              <RHFSelect
+                name="IDTUYENTHU"
+                label="Tuyến thu"
+                placeholder="Tuyến thu"
+                onChange={handleSelectRevenueStream}
+              >
+                <option value="" />
+                {revenueStreamList?.map((option, index) => (
+                  <option key={option.IDTUYENTHU} value={option.IDTUYENTHU}>
+                    {option.TENTUYENTHU}
+                  </option>
+                ))}
+              </RHFSelect>
+
               <RHFTextField
-                name="DIACHI"
-                label="Địa chỉ"
-                sx={{ gridColumn: { sm: "1 / 3" } }}
+                name="QUANHUYEN"
+                label="Quận huyện"
+                value={data.setDistrict}
+                disabled
               />
-              <RHFTextField name="SDT" label="Số điện thoại" />
-              <Controller
+
+              <RHFTextField
+                name="PHUONGXA"
+                label="Phường xã"
+                value={data.setWard}
+                disabled
+              />
+              {/* <Controller
                 name="NGAYSINH"
                 control={control}
                 render={({ field }) => (
@@ -136,7 +224,7 @@ export default function CustomerForm({ isEdit }: Props) {
                     onChange={field.onChange}
                   />
                 )}
-              />
+              /> */}
             </Box>
           </Card>
         </Grid>
@@ -166,31 +254,24 @@ export default function CustomerForm({ isEdit }: Props) {
                   />
                 )}
               />
-              <RHFSelect
-                name="TUYENTHU"
-                label="Tuyến thu"
-                placeholder="Tuyến thu"
-              >
-                {/* <option value="" />
-                {["Nam", "Nữ"].map((option, index) => (
-                  <option value={option}>{option}</option>
-                ))} */}
-              </RHFSelect>
+              <RHFTextField
+                name="DIACHI"
+                label="Địa chỉ"
+                // sx={{ gridColumn: { sm: "1 / 3" } }}
+              />
 
               <RHFSelect
-                name="LOAIKHACHHANG"
+                name="IDLOAIKH"
                 label="Loại khách hàng"
                 placeholder="Loại khách hàng"
               >
                 <option value="" />
-                {["Hộ dân", "Doanh nghiệp"].map((option, index) => (
-                  <option value={option}>{option}</option>
+                {customerTypeList?.map((option, index) => (
+                  <option key={option.IDLOAIKH} value={option.IDLOAIKH}>
+                    {option.TENLOAI}
+                  </option>
                 ))}
               </RHFSelect>
-
-              <RHFTextField name="QUANHUYEN" label="Quận huyện" />
-
-              <RHFTextField name="PHUONGXA" label="Phường xã" />
             </Box>
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
               <LoadingButton

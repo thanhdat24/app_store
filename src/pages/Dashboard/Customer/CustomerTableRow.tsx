@@ -17,12 +17,19 @@ import {
 import { TableMoreMenu } from "../../../components/table";
 import Iconify from "../../../components/Iconify";
 import Label from "../../../components/Label";
+import { fDate } from "../../../utils/formatTime";
 
 type Props = {
   row: any;
+  onDeleteRow: () => void;
+  onEditRow: () => void;
 };
 
-export default function CustomerTableRow({ row }: Props) {
+export default function CustomerTableRow({
+  row,
+  onDeleteRow,
+  onEditRow,
+}: Props) {
   const [openMenu, setOpenMenuActions] = useState<null | HTMLElement>(null); // Add type annotation
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -50,7 +57,7 @@ export default function CustomerTableRow({ row }: Props) {
       <TableCell align="left">{MAKHACHHANG}</TableCell>
       <TableCell align="left">{HOTEN}</TableCell>
       <TableCell align="left">{CMT}</TableCell>
-      <TableCell align="left">{NGAYCAP}</TableCell>
+      <TableCell align="left">{fDate(NGAYCAP)}</TableCell>
       <TableCell align="left">{DIACHI}</TableCell>
       <TableCell align="left">
         <Label
@@ -74,18 +81,16 @@ export default function CustomerTableRow({ row }: Props) {
           actions={
             <>
               <MenuItem
-                // onClick={() => {
-                //   onDeleteRow();
-                //   handleCloseMenu();
-                // }}
+                onClick={() => {
+                  onDeleteRow();
+                  handleCloseMenu();
+                }}
                 sx={{ color: "error.main" }}
               >
                 <Iconify icon={"eva:trash-2-outline"} />
                 Xóa
               </MenuItem>
-              <MenuItem
-              //  onClick={handleOpen}
-              >
+              <MenuItem onClick={onEditRow}>
                 <Iconify icon={"eva:edit-fill"} />
                 Chỉnh sửa
               </MenuItem>
