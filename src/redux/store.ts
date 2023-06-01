@@ -3,12 +3,20 @@ import { configureStore } from "@reduxjs/toolkit";
 import districtReducer from "./slices/districtReducer";
 import customerReducer from "./slices/customerReducer";
 import customerTypeReducer from "./slices/customerTypeReducer";
+import wardReducer from "./slices/wardReducer";
+import permissionReducer from "./slices/permissionReducer";
+import revenueRoutesReducer from "./slices/revenueRoutesReducer";
+import staffReducer from "./slices/staffReducer";
 
 export const store = configureStore({
   reducer: {
-    district: districtReducer,
     customer: customerReducer,
     customerType: customerTypeReducer,
+    district: districtReducer,
+    ward: wardReducer,
+    permission: permissionReducer,
+    staff: staffReducer,
+    revenueRoutes: revenueRoutesReducer,
   },
 });
 

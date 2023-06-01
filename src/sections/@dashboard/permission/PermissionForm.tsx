@@ -6,29 +6,42 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { LoadingButton } from "@mui/lab";
-import { Box, Card, Grid } from "@mui/material";
+import { Box, Card, Grid, Stack } from "@mui/material";
 // components
 import { FormProvider, RHFTextField } from "../../../components/hook-form";
+import { PermissionModel } from "../../../interfaces/PermissionModel";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { useNavigate } from "react-router-dom";
+import { createPermission, resetPermission, updatePermission } from "../../../redux/slices/permissionReducer";
+import { PATH_DASHBOARD } from "../../../routes/paths";
 
 type Props = {
   isEdit: boolean;
+  currentPermission: PermissionModel | undefined;
 };
 
-export default function PermissionForm({ isEdit }: Props) {
-  const NewUserSchema = Yup.object().shape({
-    QUYEN: Yup.string().required("Quyền là bắt buộc"),
+export default function PermissionForm({ isEdit, currentPermission }: Props) {
+  ///
+  const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+
+  const { createPermissionSuccess, updatePermissionSuccess } =
+    useAppSelector((state) => state.permission);
+  ///
+  const PermissionSchema = Yup.object().shape({
+    TENQUYEN: Yup.string().required("Quyền là bắt buộc"),
   });
 
   const defaultValues = useMemo(
     () => ({
-      QUYEN: "",
+      TENQUYEN: currentPermission?.TENQUYEN || "",
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [currentPermission]
   );
 
   const methods = useForm({
-    resolver: yupResolver(NewUserSchema),
+    resolver: yupResolver(PermissionSchema),
     defaultValues,
   });
 
@@ -43,26 +56,40 @@ export default function PermissionForm({ isEdit }: Props) {
 
   const values = watch();
 
+  //
   useEffect(() => {
-    if (isEdit) {
+    if (isEdit && currentPermission) {
       reset(defaultValues);
     }
     if (!isEdit) {
       reset(defaultValues);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEdit]);
+  }, [isEdit, currentPermission]);
+  //
 
   const onSubmit = async (account: any) => {
     try {
       console.log(account);
-      // await new Promise((resolve) => setTimeout(resolve, 500));
-      // reset();
-      // enqueueSnackbar(!isEdit ? 'Create success!' : 'Update success!');
+      if (isEdit) {
+        account = { ...account, IDQUYEN: currentPermission?.IDQUYEN };
+        await dispatch(updatePermission(account));
+      } else {
+        await dispatch(createPermission(account));
+      }
     } catch (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (createPermissionSuccess || updatePermissionSuccess) {
+      navigate(PATH_DASHBOARD.permission.list);
+    }
+    return () => {
+      dispatch(resetPermission());
+    };
+  }, [createPermissionSuccess, updatePermissionSuccess]);
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -80,18 +107,17 @@ export default function PermissionForm({ isEdit }: Props) {
                 },
               }}
             >
-              <RHFTextField name="QUYEN" label="Tên quyền" />
+              <RHFTextField name="TENQUYEN" label="Tên quyền" />
             </Box>
-            <Box sx={{ display: "flex", justifyContent: "end" }}>
+            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
               <LoadingButton
-                sx={{ mt: 3 }}
                 type="submit"
                 variant="contained"
                 loading={isSubmitting}
               >
                 Lưu thay đổi
               </LoadingButton>
-            </Box>
+            </Stack>
           </Card>
         </Grid>
       </Grid>

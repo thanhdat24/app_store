@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 // @mui
 import { Container } from "@mui/material";
@@ -8,15 +8,32 @@ import { PATH_DASHBOARD } from "../../../routes/paths";
 import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
 import PermissionForm from "../../../sections/@dashboard/permission/PermissionForm";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { getAllPermissions } from "../../../redux/slices/permissionReducer";
 
 type Props = {};
 
 export default function PermissionAction({}: Props) {
+
+  ///
+
+  const dispatch = useAppDispatch();
+
   const { pathname } = useLocation();
 
   const { id = "" } = useParams();
 
   const isEdit = pathname.includes("edit");
+  console.log("isEdit", isEdit);
+  const { permissionList } = useAppSelector((state) => state.permission);
+
+  const currentPermission = permissionList?.find(
+    (permission) => permission.IDQUYEN === Number(id)
+  );
+
+  useEffect(() => {
+    dispatch(getAllPermissions());
+  }, [dispatch]);
 
   return (
     <Page title="Permission: Create a new permission">
@@ -30,7 +47,7 @@ export default function PermissionAction({}: Props) {
           ]}
         />
 
-        <PermissionForm isEdit={isEdit} />
+        <PermissionForm isEdit={isEdit} currentPermission={currentPermission}/>
       </Container>
     </Page>
   );

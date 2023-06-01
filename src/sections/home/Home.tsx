@@ -6,8 +6,6 @@ import { Box, Container, Typography, Pagination, Stack } from "@mui/material";
 import { useSelector } from "react-redux";
 // components
 import { RootState, useAppDispatch } from "../../redux/store";
-import { getAllDistrict } from "../../redux/slices/districtReducer";
-
 type Props = {};
 
 const RootStyle = styled("div")(({ theme }) => ({
@@ -19,10 +17,6 @@ const RootStyle = styled("div")(({ theme }) => ({
 
 export default function HomeSection({}: Props) {
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(getAllDistrict());
-  }, []);
   return (
     <RootStyle>
       <Container>

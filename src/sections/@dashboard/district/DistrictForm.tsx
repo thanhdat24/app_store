@@ -9,33 +9,46 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { LoadingButton } from "@mui/lab";
-import { Box, Card, Grid, Switch, Typography } from "@mui/material";
+import { Box, Card, Grid, Stack, Switch, Typography } from "@mui/material";
 // components
 import Label from "../../../components/Label";
 import dayjs, { Dayjs } from "dayjs";
 import { FormProvider, RHFTextField } from "../../../components/hook-form";
 import RHFSelect from "../../../components/hook-form/RHFSelect";
 import Iconify from "../../../components/Iconify";
+import { DistrictModel } from "../../../interfaces/DistrictModel";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { createDistrict, resetDistrict, updateDistrict } from "../../../redux/slices/districtReducer";
+import { PATH_DASHBOARD } from "../../../routes/paths";
 
 type Props = {
   isEdit: boolean;
+  currentDistrict: DistrictModel | undefined;
 };
 
-export default function DistrictForm({ isEdit }: Props) {
-  const NewUserSchema = Yup.object().shape({
-    QUANHUYEN: Yup.string().required("Quận huyện là bắt buộc"),
+export default function DistrictForm({ isEdit, currentDistrict }: Props) {
+
+  const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+
+  const { createDistrictSuccess, updateDistrictSuccess } =
+    useAppSelector((state) => state.district);
+    
+  const DistrictSchema = Yup.object().shape({
+    TENQUANHUYEN: Yup.string().required("Quận huyện là bắt buộc"),
   });
 
   const defaultValues = useMemo(
     () => ({
-      QUANHUYEN: "",
+      TENQUANHUYEN: currentDistrict?.TENQUANHUYEN || "",
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [currentDistrict]
   );
 
   const methods = useForm({
-    resolver: yupResolver(NewUserSchema),
+    resolver: yupResolver(DistrictSchema),
     defaultValues,
   });
 
@@ -51,25 +64,36 @@ export default function DistrictForm({ isEdit }: Props) {
   const values = watch();
 
   useEffect(() => {
-    if (isEdit) {
+    if (isEdit && currentDistrict) {
       reset(defaultValues);
     }
     if (!isEdit) {
       reset(defaultValues);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEdit]);
+  }, [isEdit, currentDistrict]);
 
   const onSubmit = async (account: any) => {
     try {
       console.log(account);
-      // await new Promise((resolve) => setTimeout(resolve, 500));
-      // reset();
-      // enqueueSnackbar(!isEdit ? 'Create success!' : 'Update success!');
+      if (isEdit) {
+        account = { ...account, IDQUANHUYEN: currentDistrict?.IDQUANHUYEN };
+        await dispatch(updateDistrict(account));
+      } else {
+        await dispatch(createDistrict(account));
+      }
     } catch (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (createDistrictSuccess || updateDistrictSuccess) {
+      navigate(PATH_DASHBOARD.district.list);
+    }
+    return () => {
+      dispatch(resetDistrict());
+    };
+  }, [createDistrictSuccess, updateDistrictSuccess]);
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -87,18 +111,17 @@ export default function DistrictForm({ isEdit }: Props) {
                 },
               }}
             >
-              <RHFTextField name="QUANHUYEN" label="Tên quận huyện" />
+              <RHFTextField name="TENQUANHUYEN" label="Tên quận huyện" />
             </Box>
-            <Box sx={{ display: "flex", justifyContent: "end" }}>
+            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
               <LoadingButton
-                sx={{ mt: 3 }}
                 type="submit"
                 variant="contained"
                 loading={isSubmitting}
               >
                 Lưu thay đổi
               </LoadingButton>
-            </Box>
+            </Stack>
           </Card>
         </Grid>
       </Grid>

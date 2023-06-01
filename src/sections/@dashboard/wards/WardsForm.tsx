@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import * as Yup from "yup";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // form
 import { useForm, Controller } from "react-hook-form";
@@ -9,35 +9,58 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { LoadingButton } from "@mui/lab";
-import { Box, Card, Grid, Switch, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  Grid,
+  MenuItem,
+  SelectChangeEvent,
+  Stack,
+  Switch,
+  Typography,
+} from "@mui/material";
 // components
 import Label from "../../../components/Label";
 import dayjs, { Dayjs } from "dayjs";
 import { FormProvider, RHFTextField } from "../../../components/hook-form";
 import RHFSelect from "../../../components/hook-form/RHFSelect";
 import Iconify from "../../../components/Iconify";
+import { WardModel } from "../../../interfaces/WardModel";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { createWard, getAllWard, updateWard } from "../../../redux/slices/wardReducer";
+import { getAllDistricts, resetDistrict } from "../../../redux/slices/districtReducer";
+import { PATH_DASHBOARD } from "../../../routes/paths";
+import { DistrictModel } from "../../../interfaces/DistrictModel";
 
 type Props = {
   isEdit: boolean;
+  currentWard: WardModel | undefined;
 };
 
-export default function WardsForm({ isEdit }: Props) {
-  const NewUserSchema = Yup.object().shape({
-    XAPHUONG: Yup.string().required("Xã phường là bắt buộc"),
-    QUANHUYEN: Yup.string().required("Quận huyện là bắt buộc"),
+export default function WardsForm({ isEdit, currentWard }: Props) {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const { createWardSuccess, updateWardSuccess } = useAppSelector(
+    (state) => state.ward
+  );
+
+  const WardSchema = Yup.object().shape({
+    TENXAPHUONG: Yup.string().required("Xã phường là bắt buộc"),
+    TENQUANHUYEN: Yup.string().required("Quận huyện là bắt buộc"),
   });
 
   const defaultValues = useMemo(
     () => ({
-      XAPHUONG: "",
-      QUANHUYEN: "",
+      TENXAPHUONG: currentWard?.TENXAPHUONG || "",
+      TENQUANHUYEN: currentWard?.QUANHUYEN || "",
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [currentWard]
   );
 
   const methods = useForm({
-    resolver: yupResolver(NewUserSchema),
+    resolver: yupResolver(WardSchema),
     defaultValues,
   });
 
@@ -53,25 +76,40 @@ export default function WardsForm({ isEdit }: Props) {
   const values = watch();
 
   useEffect(() => {
-    if (isEdit) {
+    if (isEdit && currentWard) {
       reset(defaultValues);
     }
     if (!isEdit) {
       reset(defaultValues);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEdit]);
+  }, [isEdit, currentWard]);
 
   const onSubmit = async (account: any) => {
     try {
       console.log(account);
-      // await new Promise((resolve) => setTimeout(resolve, 500));
-      // reset();
-      // enqueueSnackbar(!isEdit ? 'Create success!' : 'Update success!');
+      if (isEdit) {
+        account = { ...account, IDXAPHUONG: currentWard?.IDXAPHUONG };
+        await dispatch(updateWard(account));
+      } else {
+        await dispatch(createWard(account));
+      }
     } catch (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (createWardSuccess || updateWardSuccess) {
+      navigate(PATH_DASHBOARD.wards.list);
+    }
+    return () => {
+      dispatch(resetDistrict());
+    };
+  }, [createWardSuccess, updateWardSuccess]);
+
+  useEffect(() => {
+    dispatch(getAllDistricts());
+  }, [dispatch]);
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -89,23 +127,23 @@ export default function WardsForm({ isEdit }: Props) {
                 },
               }}
             >
-              <RHFTextField name="XAPHUONG" label="Tên xã phường" />
-              <RHFSelect name="QUANHUYEN" label="Quận huyện" placeholder="Quận huyện">
-                {
-                  
-                }
+              <RHFTextField name="TENXAPHUONG" label="Tên xã phường" />
+              <RHFSelect
+                name="TENQUANHUYEN"
+                label="Quận huyện"
+                placeholder="Quận huyện"
+              >
               </RHFSelect>
             </Box>
-            <Box sx={{ display: "flex", justifyContent: "end" }}>
+            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
               <LoadingButton
-                sx={{ mt: 3 }}
                 type="submit"
                 variant="contained"
                 loading={isSubmitting}
               >
                 Lưu thay đổi
               </LoadingButton>
-            </Box>
+            </Stack>
           </Card>
         </Grid>
       </Grid>

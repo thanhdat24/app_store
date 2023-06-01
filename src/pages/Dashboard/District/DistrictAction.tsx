@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 // @mui
 import { Container } from "@mui/material";
@@ -8,15 +8,30 @@ import { PATH_DASHBOARD } from "../../../routes/paths";
 import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
 import DistrictForm from "../../../sections/@dashboard/district/DistrictForm";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { getAllDistricts } from "../../../redux/slices/districtReducer";
 
 type Props = {};
 
 export default function DistrictAction({}: Props) {
+
+  const dispatch = useAppDispatch();
+
   const { pathname } = useLocation();
 
   const { id = "" } = useParams();
 
   const isEdit = pathname.includes("edit");
+  console.log("isEdit", isEdit);
+  const { districtList } = useAppSelector((state) => state.district);
+
+  const currentDistrict = districtList?.find(
+    (district) => district.IDQUANHUYEN === Number(id)
+  );
+
+  useEffect(() => {
+    dispatch(getAllDistricts());
+  }, [dispatch]);
 
   return (
     <Page title="District: Create a new district">
@@ -30,7 +45,7 @@ export default function DistrictAction({}: Props) {
           ]}
         />
 
-        <DistrictForm isEdit={isEdit} />
+        <DistrictForm isEdit={isEdit} currentDistrict={currentDistrict} />
       </Container>
     </Page>
   );
