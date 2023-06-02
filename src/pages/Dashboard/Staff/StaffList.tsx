@@ -15,6 +15,7 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
+  Stack,
 } from "@mui/material";
 import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
@@ -24,45 +25,61 @@ import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import useTable, { emptyRows, getComparator } from "../../../hooks/useTable";
 import { StaffModel } from "../../../interfaces/StaffModel";
 import useTabs from "../../../hooks/useTabs";
-import { TableEmptyRows, TableHeadCustom } from "../../../components/table";
+import {
+  TableEmptyRows,
+  TableHeadCustom,
+  TableSelectedActions,
+} from "../../../components/table";
 import StaffTableRow from "./StaffTableRow";
 import { deleteStaff, getAllStaff } from "../../../redux/slices/staffReducer";
+import StaffTableToolbar from "./StaffTableToolbar";
+import { getAllPermissions } from "../../../redux/slices/permissionReducer";
 
 type Props = {};
 
 ///---
 
-const STATUS_OPTIONS = ["Tất cả", "quản trị hệ thống", "nhân viên quản trị", "nhân viên thu ngân"];
+const ARRAY_ROLE = [
+  "Quản trị hệ thống",
+  "Nhân viên quản trị",
+  "Nhân viên thu ngân",
+];
+
+const STATUS_OPTIONS = [
+  "Tất cả",
+  "quản trị hệ thống",
+  "nhân viên quản trị",
+  "nhân viên thu ngân",
+];
 const TABLE_HEAD = [
+  { id: "" },
   { id: "id", label: "ID", align: "left" },
   { id: "MANHANVIEN", label: "Mã NV", align: "left" },
   { id: "HOTEN", label: "Họ tên", align: "left" },
+  { id: "SDT", label: "Số điện thoại", align: "left" },
   { id: "NGAYSINH", label: "Ngày sinh", align: "left" },
   { id: "DIACHI", label: "Địa chỉ", align: "left" },
-  { id: "USERNAME", label: "Tên đăng nhập", align: "left" },
-  { id: "PASSWORD", label: "Mật khẩu", align: "left" },
-  { id: "QUYEN", label: "Quyền", align: "left" },
+  { id: "QUYEN", label: "Quyền", align: "left", width: 250 },
   { id: "" },
 ];
 
 export default function StaffList({}: Props) {
-
   ////----
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getAllStaff());
+    dispatch(getAllPermissions());
   }, [dispatch]);
 
   const { staffList, deleteStaffSuccess } = useAppSelector(
     (state) => state.staff
   );
 
-  console.log("staffList", staffList);
+  const { permissionList } = useAppSelector((state) => state.permission);
 
   useEffect(() => {
     dispatch(getAllStaff());
   }, [dispatch, deleteStaffSuccess]);
-
 
   const {
     dense,
@@ -83,6 +100,10 @@ export default function StaffList({}: Props) {
   } = useTable({ defaultDense: false, defaultOrderBy: "name" });
 
   const navigate = useNavigate();
+
+  const [filterName, setFilterName] = useState("");
+
+  const [selectPermission, setSelectPermission] = useState<number[]>([]);
 
   const [tableData, setTableData] = useState<StaffModel[]>([]);
 
@@ -105,6 +126,10 @@ export default function StaffList({}: Props) {
     }
   }, [staffList ?? []]);
 
+  const handleFilterName = (filterName: string) => {
+    setFilterName(filterName);
+    setPage(0);
+  };
 
   const handleDeleteRow = (id: number) => {
     dispatch(deleteStaff(id));
@@ -113,7 +138,21 @@ export default function StaffList({}: Props) {
   const handleEditRow = (id: number) => {
     navigate(PATH_DASHBOARD.staff.edit(id));
   };
-  ////----
+
+  const handleDeleteRows = (selected: any) => {
+    console.log("selected", selected);
+  };
+  const handleSelectPermission = (IDQUYEN: number) => {
+    if (selectPermission.includes(IDQUYEN)) {
+      setSelectPermission((prevPermissions) =>
+        prevPermissions.filter((permission) => permission !== IDQUYEN)
+      );
+    } else {
+      setSelectPermission((prevPermissions) => [...prevPermissions, IDQUYEN]);
+    }
+  };
+
+  console.log("selectPermission", selectPermission);
   return (
     <Page title="StaffList: List">
       <Container maxWidth={"lg"}>
@@ -125,15 +164,33 @@ export default function StaffList({}: Props) {
             { name: "Danh sách" },
           ]}
           action={
-            <Button
-              sx={{ borderRadius: 2, textTransform: "none" }}
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.staff.new}
-              startIcon={<Iconify icon={"eva:plus-fill"} />}
-            >
-              Thêm nhân viên
-            </Button>
+            <Box sx={{ display: "flex" }}>
+              <Box
+                sx={{
+                  marginRight: "10px",
+                }}
+              >
+                <Button
+                  disabled={selectPermission.length === 0}
+                  color="success"
+                  sx={{ borderRadius: 2, textTransform: "none" }}
+                  variant="contained"
+                  startIcon={<Iconify icon={"eva:plus-fill"} />}
+                >
+                  Cập nhật quyền
+                </Button>
+              </Box>
+
+              <Button
+                sx={{ borderRadius: 2, textTransform: "none" }}
+                variant="contained"
+                component={RouterLink}
+                to={PATH_DASHBOARD.staff.new}
+                startIcon={<Iconify icon={"eva:plus-fill"} />}
+              >
+                Thêm nhân viên
+              </Button>
+            </Box>
           }
         />
         <Card>
@@ -150,8 +207,57 @@ export default function StaffList({}: Props) {
             ))}
           </Tabs>
           <Divider />
+          <StaffTableToolbar
+            filterName={filterName}
+            onFilterName={handleFilterName}
+          />
           {/* <Scrollbar> */}
           <TableContainer sx={{ minWidth: 800, position: "relative" }}>
+            {selected.length > 0 && (
+              <TableSelectedActions
+                dense={dense}
+                numSelected={selected.length}
+                rowCount={tableData.length}
+                onSelectAllRows={(checked) =>
+                  onSelectAllRows(
+                    checked,
+                    tableData.map((row) => row.IDNHANVIEN)
+                  )
+                }
+                actions={
+                  // <Tooltip title="Delete">
+                  //   <IconButton
+                  //     color="primary"
+                  //     onClick={() => handleDeleteRows(selected)}
+                  //   >
+                  //     <Iconify icon={"eva:trash-2-outline"} />
+                  //   </IconButton>
+                  // </Tooltip>
+                  permissionList?.map((permission, index) => (
+                    <Button
+                      key={index}
+                      variant="outlined"
+                      onClick={() => handleSelectPermission(permission.IDQUYEN)}
+                      color={
+                        permission.TENQUYEN === "Quản trị hệ thống"
+                          ? "error"
+                          : permission.TENQUYEN === "Nhân viên quản trị"
+                          ? "secondary"
+                          : "info"
+                      }
+                      sx={{
+                        borderRadius: 2,
+                        textTransform: "none",
+                        margin: 3,
+                      }}
+                      startIcon={<Iconify icon={"eva:plus-fill"} />}
+                    >
+                      {permission.TENQUYEN}
+                    </Button>
+                  ))
+                }
+              />
+            )}
             <Table size={dense ? "small" : "medium"}>
               <TableHeadCustom
                 order={order}
@@ -175,8 +281,8 @@ export default function StaffList({}: Props) {
                     <StaffTableRow
                       key={row.IDNHANVIEN}
                       row={row}
-                      // selected={selected.includes(row.id)}
-                      // onSelectRow={() => onSelectRow(row.id)}
+                      selected={selected.includes(row.IDNHANVIEN)}
+                      onSelectRow={() => onSelectRow(row.IDNHANVIEN)}
                       onDeleteRow={() => handleDeleteRow(row.IDNHANVIEN)}
                       onEditRow={() => handleEditRow(row.IDNHANVIEN)}
                     />
@@ -244,12 +350,6 @@ function applySortFilter({
       (item) => item.IDNHANVIEN.TENQUYEN === filterStatus
     );
   }
-
-  // if (filterName) {
-  //   tableData = tableData.filter(
-  //     (item) => item.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
-  //   );
-  // }
 
   return tableData;
 }

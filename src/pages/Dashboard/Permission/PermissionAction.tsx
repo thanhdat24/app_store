@@ -24,7 +24,7 @@ export default function PermissionAction({}: Props) {
   const { id = "" } = useParams();
 
   const isEdit = pathname.includes("edit");
-  console.log("isEdit", isEdit);
+  
   const { permissionList } = useAppSelector((state) => state.permission);
 
   const currentPermission = permissionList?.find(

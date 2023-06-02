@@ -59,7 +59,7 @@ const navConfig = [
         children: [
           { title: "Danh sách", path: PATH_DASHBOARD.user.list },
           { title: "Tạo", path: PATH_DASHBOARD.user.new },
-          { title: "Tài khoản", path: PATH_DASHBOARD.user.account },
+          // { title: "Tài khoản", path: PATH_DASHBOARD.user.account },
         ],
       },
       // Loại khách hàng
@@ -113,6 +113,7 @@ const navConfig = [
           { title: "Tạo", path: PATH_DASHBOARD.staff.new },
         ],
       },
+
       {
         title: "Quyền",
         path: PATH_DASHBOARD.permission.root,
@@ -142,7 +143,7 @@ const navConfig = [
       },
       {
         title: "Tuyến thu",
-        path: PATH_DASHBOARD.staff.root,
+        path: PATH_DASHBOARD.revenueRoutes.root,
         icon: ICONS.user,
         children: [
           { title: "Danh sách", path: PATH_DASHBOARD.revenueRoutes.list },

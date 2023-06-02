@@ -163,12 +163,12 @@ export default function CustomerList({}: Props) {
                 rowCount={tableData.length}
                 numSelected={selected.length}
                 onSort={onSort}
-                onSelectAllRows={(checked) =>
-                  onSelectAllRows(
-                    checked,
-                    tableData.map((row) => row.IDKHACHHANG)
-                  )
-                }
+                // onSelectAllRows={(checked) =>
+                //   onSelectAllRows(
+                //     checked,
+                //     tableData.map((row) => row.IDKHACHHANG)
+                //   )
+                // }
               />
 
               <TableBody>

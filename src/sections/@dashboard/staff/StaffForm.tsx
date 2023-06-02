@@ -24,6 +24,7 @@ import {
   MenuItem,
   Checkbox,
   ListItemText,
+  Autocomplete,
 } from "@mui/material";
 // components
 import dayjs, { Dayjs } from "dayjs";
@@ -34,7 +35,11 @@ import RHFSelectMultiple from "../../../components/hook-form/RHFSelectMultiple";
 import { StaffModel } from "../../../interfaces/StaffModel";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { PATH_DASHBOARD } from "../../../routes/paths";
-import { createStaff, resetStaff, updateStaff } from "../../../redux/slices/staffReducer";
+import {
+  createStaff,
+  resetStaff,
+  updateStaff,
+} from "../../../redux/slices/staffReducer";
 
 type Props = {
   isEdit: boolean;
@@ -43,39 +48,47 @@ type Props = {
 
 export default function StaffForm({ isEdit, currentStaff }: Props) {
   const [showPassword, setShowPassword] = useState(false);
-///---
+  ///---
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
-  const { createStaffSuccess, updateStaffSuccess } =
-    useAppSelector((state) => state.staff);
+  const { createStaffSuccess, updateStaffSuccess } = useAppSelector(
+    (state) => state.staff
+  );
 
   const StaffSchema = Yup.object().shape({
     MANHANVIEN: Yup.string().required("Mã nhân viên là bắt buộc"),
     HOTEN: Yup.string().required("Họ tên là bắt buộc"),
-    SDT: Yup.string().required("Số điện thoại là bắt buộc"),
     NGAYSINH: Yup.string().required("Ngày sinh là bắt buộc"),
+    SDT: Yup.string().required("Số điện thoại là bắt buộc"),
     DIACHI: Yup.string().required("Địa chỉ là bắt buộc"),
-    USERNAME: Yup.string().required("Tên đăng nhập là bắt buộc"),
-    PASSWORD: Yup.string().required("Mật khẩu là bắt buộc"),
-    QUYEN: Yup.string().required("Quyền là bắt buộc"),
+    ...(isEdit
+      ? {}
+      : {
+          USERNAME: Yup.string().required("Tên đăng nhập là bắt buộc"),
+          PASSWORD: Yup.string().required("Mật khẩu là bắt buộc"),
+        }),
   });
-
-  const defaultValues = useMemo(
-    () => ({
+  const defaultValues = useMemo(() => {
+    const baseValues = {
       MANHANVIEN: currentStaff?.MANHANVIEN || "",
       HOTEN: currentStaff?.HOTEN || "",
       SDT: currentStaff?.SDT || "",
       DIACHI: currentStaff?.DIACHI || "",
-      NGAYSINH: currentStaff?.NGAYSINH || "",
-      USERNAME: currentStaff?.USERNAME || "",
-      PASSWORD: currentStaff?.PASSWORD || "",
-      QUYEN: currentStaff?.CHITIETPHANQUYENs || "",
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentStaff]
-  );
+      NGAYSINH: dayjs(currentStaff?.NGAYSINH) || dayjs(new Date()),
+    };
+
+    if (!isEdit) {
+      return {
+        ...baseValues,
+        USERNAME: "",
+        PASSWORD: "",
+      };
+    }
+
+    return baseValues;
+  }, [currentStaff, isEdit]);
 
   const methods = useForm({
     resolver: yupResolver(StaffSchema),
@@ -105,7 +118,6 @@ export default function StaffForm({ isEdit, currentStaff }: Props) {
 
   const onSubmit = async (account: any) => {
     try {
-      console.log(account);
       if (isEdit) {
         account = { ...account, IDNHANVIEN: currentStaff?.IDNHANVIEN };
         await dispatch(updateStaff(account));
@@ -142,25 +154,16 @@ export default function StaffForm({ isEdit, currentStaff }: Props) {
                 },
               }}
             >
-              <RHFTextField name="MANHANVIEN" label="Mã nhân viên" />
+              <RHFTextField
+                disabled={isEdit}
+                name="MANHANVIEN"
+                label="Mã nhân viên"
+              />
               <RHFTextField name="HOTEN" label="Họ tên " />
               <RHFTextField
                 name="DIACHI"
                 label="Địa chỉ"
                 sx={{ gridColumn: { sm: "1 / 3" } }}
-              />
-              <RHFTextField name="SDT" label="Số điện thoại" />
-              <Controller
-                name="NGAYSINH"
-                control={control}
-                render={({ field }) => (
-                  <DatePicker
-                    label="Ngày sinh"
-                    defaultValue={dayjs("2022-04-17")}
-                    value={field.value}
-                    onChange={field.onChange}
-                  />
-                )}
               />
             </Box>
           </Card>
@@ -174,46 +177,53 @@ export default function StaffForm({ isEdit, currentStaff }: Props) {
                 rowGap: 3,
                 gridTemplateColumns: {
                   xs: "repeat(1, 1fr)",
+                  sm: "repeat(2, 1fr)",
                 },
               }}
             >
-              <RHFTextField name="USERNAME" label="Tên đăng nhập" />
+              {!isEdit && (
+                <>
+                  {" "}
+                  <RHFTextField name="USERNAME" label="Tên đăng nhập" />
+                  <RHFTextField
+                    name="PASSWORD"
+                    label="Mật khẩu"
+                    type={showPassword ? "text" : "password"}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() => setShowPassword(!showPassword)}
+                            edge="end"
+                          >
+                            <Iconify
+                              icon={
+                                showPassword
+                                  ? "eva:eye-fill"
+                                  : "eva:eye-off-fill"
+                              }
+                            />
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </>
+              )}
 
-              <RHFTextField
-                name="PASSWORD"
-                label="Mật khẩu"
-                type={showPassword ? "text" : "password"}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => setShowPassword(!showPassword)}
-                        edge="end"
-                      >
-                        <Iconify
-                          icon={
-                            showPassword ? "eva:eye-fill" : "eva:eye-off-fill"
-                          }
-                        />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
+              <Controller
+                name="NGAYSINH"
+                control={control}
+                render={({ field }) => (
+                  <DatePicker
+                    label="Ngày sinh"
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                )}
               />
-              <RHFSelectMultiple name="QUYEN" label="Quyền" placeholder="Quyền">
-                {/* <option value="" />
-                {["Nam", "Nữ"].map((option, index) => (
-                  <option value={option}>{option}</option>
-                ))} */}
-              </RHFSelectMultiple>
-              
-              {/* 
-              <RHFSelectMultiple name="QUYEN" label="Quyền" placeholder="Quyền">
-                <option value="" />
-                {["Nam", "Nữ"].map((option, index) => (
-                  <option value={option}>{option}</option>
-                ))}
-              </RHFSelectMultiple> */}
+
+              <RHFTextField name="SDT" label="Số điện thoại" />
             </Box>
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
               <LoadingButton

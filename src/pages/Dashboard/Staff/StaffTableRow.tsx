@@ -21,13 +21,17 @@ import { formatPriceInVND } from "../../../utils/formatNumber";
 
 type Props = {
   row: any;
+  selected: boolean;
   onDeleteRow: () => void;
+  onSelectRow: () => void;
   onEditRow: () => void;
 };
 
 export default function StaffTableRow({
   row,
+  selected,
   onDeleteRow,
+  onSelectRow,
   onEditRow,
 }: Props) {
   const [openMenu, setOpenMenuActions] = useState<null | HTMLElement>(null); // Add type annotation
@@ -41,17 +45,46 @@ export default function StaffTableRow({
     setOpenMenuActions(null);
   };
 
-  const { IDNHANVIEN, MANHANVIEN, HOTEN, NGAYSINH, DIACHI, USERNAME, PASSWORD, QUYEN } = row;
-  return ( 
-    <TableRow hover>
+  const {
+    IDNHANVIEN,
+    MANHANVIEN,
+    HOTEN,
+    SDT,
+    NGAYSINH,
+    DIACHI,
+    CHITIETPHANQUYENs,
+  } = row;
+  return (
+    <TableRow hover selected={selected}>
+      <TableCell padding="checkbox">
+        <Checkbox checked={selected} onClick={onSelectRow} />
+      </TableCell>
+      <TableCell align="left"></TableCell>
+
       <TableCell align="left">{IDNHANVIEN}</TableCell>
       <TableCell align="left">{MANHANVIEN}</TableCell>
       <TableCell align="left">{HOTEN}</TableCell>
+      <TableCell align="left">{SDT}</TableCell>
       <TableCell align="left">{NGAYSINH}</TableCell>
       <TableCell align="left">{DIACHI}</TableCell>
-      <TableCell align="left">{USERNAME}</TableCell>
-      <TableCell align="left">{PASSWORD}</TableCell>
-      <TableCell align="left">{QUYEN}</TableCell>
+      <TableCell align="left">
+        {CHITIETPHANQUYENs.map((item: any) => (
+          <Label
+            key={item.IDNHANVIEN}
+            variant={"ghost"}
+            color={
+              (item.QUYEN.TENQUYEN === "" && "info") ||
+              (item.QUYEN.TENQUYEN === "Doanh nghiệp" && "error") ||
+              "default"
+            }
+            sx={{ textTransform: "uppercase", mb: 1 }}
+          >
+            {item.QUYEN.TENQUYEN}
+          </Label>
+          // <span key={item.IDNHANVIEN}> {item.QUYEN.TENQUYEN}</span>
+        ))}
+      </TableCell>
+
       <TableCell align="right">
         <TableMoreMenu
           open={openMenu}

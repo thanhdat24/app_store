@@ -29,10 +29,7 @@ const districtReducer = createSlice({
     getAllDistrictSuccess(state, action: PayloadAction<DistrictModel[]>) {
       state.districtList = action.payload;
     },
-    getDetailDistrictSuccess(
-      state,
-      action: PayloadAction<DistrictModel>
-    ) {
+    getDetailDistrictSuccess(state, action: PayloadAction<DistrictModel>) {
       state.detailDistrictSuccess = action.payload;
     },
     createDistrictSuccess(state, action: PayloadAction<DistrictModel>) {
@@ -98,9 +95,9 @@ export const createDistrict = (district: DistrictModel) => {
   return async (dispatch: AppDispatch) => {
     try {
       const response = await axios.post("api/QUANHUYENs", district);
+      console.log("response", response);
       const data: DistrictModel = await response.data;
-      const action: PayloadAction<DistrictModel> =
-        createDistrictSuccess(data);
+      const action: PayloadAction<DistrictModel> = createDistrictSuccess(data);
       dispatch(action);
     } catch (error) {
       console.log(error);
@@ -116,8 +113,7 @@ export const updateDistrict = (district: DistrictModel) => {
         district
       );
       const data: Number = await response.status;
-      const action: PayloadAction<Number> =
-        updateDistrictSuccess(data);
+      const action: PayloadAction<Number> = updateDistrictSuccess(data);
       dispatch(action);
     } catch (error) {
       console.log(error);
@@ -130,8 +126,7 @@ export const deleteDistrict = (id: number) => {
     try {
       const response = await axios.delete(`api/QUANHUYENs/${id}`);
       const data: DistrictModel = await response.data.content;
-      const action: PayloadAction<DistrictModel> =
-        deleteDistrictSuccess(data);
+      const action: PayloadAction<DistrictModel> = deleteDistrictSuccess(data);
       dispatch(action);
     } catch (error) {
       console.log(error);

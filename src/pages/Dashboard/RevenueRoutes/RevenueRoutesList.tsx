@@ -108,7 +108,7 @@ export default function RevenueRoutesList({}: Props) {
               to={PATH_DASHBOARD.revenueRoutes.new}
               startIcon={<Iconify icon={"eva:plus-fill"} />}
             >
-              Thêm phiếu thu
+              Thêm tuyến thu
             </Button>
           }
         />

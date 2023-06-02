@@ -12,6 +12,7 @@ interface StaffState {
   createStaffSuccess?: StaffModel | null;
   updateStaffSuccess?: Number | null;
   deleteStaffSuccess?: StaffModel | null;
+  error: string | null;
 }
 
 const initialState: StaffState = {
@@ -20,12 +21,22 @@ const initialState: StaffState = {
   createStaffSuccess: null,
   updateStaffSuccess: null,
   deleteStaffSuccess: null,
+  error: null,
 };
 
 const staffReducer = createSlice({
   name: "staffReducer",
   initialState,
   reducers: {
+    hasError(state, action) {
+      state.error = action.payload;
+      const { manhanvien, username, sdt } = action.payload;
+      if (manhanvien?.length > 0)
+        toast.error(manhanvien[0], { autoClose: 2000 });
+      if (username?.length > 0) toast.error(username[0], { autoClose: 2000 });
+      if (sdt?.length > 0) toast.error(sdt[0], { autoClose: 2000 });
+    },
+
     getAllStaffSuccess(state, action: PayloadAction<StaffModel[]>) {
       state.staffList = action.payload;
     },
@@ -47,6 +58,7 @@ const staffReducer = createSlice({
       toast.success("Xóa thành công!", { autoClose: 2000 });
     },
     resetStaffSuccess(state) {
+      state.createStaffSuccess = null;
       state.updateStaffSuccess = null;
       state.deleteStaffSuccess = null;
     },
@@ -60,6 +72,7 @@ export const {
   updateStaffSuccess,
   deleteStaffSuccess,
   resetStaffSuccess,
+  hasError,
 } = staffReducer.actions;
 
 export const getAllStaff = () => {
@@ -95,8 +108,8 @@ export const createStaff = (staff: StaffModel) => {
       const data: StaffModel = await response.data;
       const action: PayloadAction<StaffModel> = createStaffSuccess(data);
       dispatch(action);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      dispatch(hasError(error.ModelState));
     }
   };
 };
@@ -104,15 +117,15 @@ export const createStaff = (staff: StaffModel) => {
 export const updateStaff = (staff: StaffModel) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response = await axios.put(
+      const response = await axios.patch(
         `api/NHANVIENs/${staff.IDNHANVIEN}`,
         staff
       );
       const data: Number = await response.status;
       const action: PayloadAction<Number> = updateStaffSuccess(data);
       dispatch(action);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      dispatch(hasError(error.ModelState));
     }
   };
 };

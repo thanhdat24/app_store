@@ -85,19 +85,7 @@ interface MenuPopoverProps {
   sx?: object;
   children?: React.ReactNode;
   disabledArrow?: boolean;
-  arrow?:
-    | "top-left"
-    | "top-center"
-    | "top-right"
-    | "bottom-left"
-    | "bottom-center"
-    | "bottom-right"
-    | "left-top"
-    | "left-center"
-    | "left-bottom"
-    | "right-top"
-    | "right-center"
-    | "right-bottom";
+
   open: boolean;
   anchorEl: Element | null;
   onClose: () => void;
@@ -107,7 +95,6 @@ interface MenuPopoverProps {
 
 export default function MenuPopover({
   children,
-  arrow = "top-right",
   disabledArrow,
   sx,
   open,
@@ -134,8 +121,6 @@ export default function MenuPopover({
       }}
       {...other}
     >
-      {!disabledArrow && <ArrowStyle arrow={arrow} />}
-
       {children}
     </Popover>
   );

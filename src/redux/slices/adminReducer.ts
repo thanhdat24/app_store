@@ -23,6 +23,7 @@ const adminReducer = createSlice({
   reducers: {
     loginSuccess(state, action: PayloadAction<UserLoginModel>) {
       state.userLogin = action.payload;
+      state.isAuthenticated = true;
       toast.success("Đăng nhập thành công", { autoClose: 2000 });
     },
     hasError(state, action) {

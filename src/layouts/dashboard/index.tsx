@@ -8,6 +8,7 @@ import { Box } from "@mui/material";
 import { HEADER, NAVBAR } from "../../utils/config";
 //
 import NavbarVertical from "./navbar/NavbarVertical";
+import DashboardHeader from "./header";
 
 // ----------------------------------------------------------------------
 
@@ -41,6 +42,8 @@ export default function DashboardLayout({}: Props) {
         minHeight: { lg: 1 },
       }}
     >
+      <DashboardHeader />
+
       <NavbarVertical
         isOpenSidebar={open}
         onCloseSidebar={() => setOpen(false)}
