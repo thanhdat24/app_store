@@ -41,6 +41,7 @@ const permissionReducer = createSlice({
         state.updatePermissionSuccess = action.payload;
         toast.success("Cập nhật thành công!", { autoClose: 2000 });
       }
+      console.log("S", action.payload);
     },
     deletePermissionSuccess(state, action: PayloadAction<PermissionModel>) {
       state.deletePermissionSuccess = action.payload;
@@ -94,10 +95,14 @@ export const createPermission = (permission: PermissionModel) => {
 export const updatePermission = (permission: PermissionModel) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response = await axios.put(`api/QUYENs/${permission.IDQUYEN}`);
-      const data: Number = await response.data;
+      const response = await axios.put(
+        `api/QUYENs/${permission.IDQUYEN}`,
+        permission
+      );
+      const data: Number = await response.status;
       const action: PayloadAction<Number> = updatePermissionSuccess(data);
       dispatch(action);
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
