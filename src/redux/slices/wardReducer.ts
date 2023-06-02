@@ -41,13 +41,13 @@ const wardReducer = createSlice({
         state.updateWardSuccess = action.payload;
         toast.success("Cập nhật thành công!", { autoClose: 2000 });
       }
-      toast.success("Cập nhật thành công!", { autoClose: 2000 });
     },
     deleteWardSuccess(state, action: PayloadAction<WardModel>) {
       state.deleteWardSuccess = action.payload;
       toast.success("Xóa thành công!", { autoClose: 2000 });
     },
     resetWardSuccess(state) {
+      state.createWardSuccess = null;
       state.updateWardSuccess = null;
       state.deleteWardSuccess = null;
     },

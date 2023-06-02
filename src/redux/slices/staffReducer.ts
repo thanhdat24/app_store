@@ -41,7 +41,6 @@ const staffReducer = createSlice({
         state.updateStaffSuccess = action.payload;
         toast.success("Cập nhật thành công!", { autoClose: 2000 });
       }
-      toast.success("Cập nhật thành công!", { autoClose: 2000 });
     },
     deleteStaffSuccess(state, action: PayloadAction<StaffModel>) {
       state.deleteStaffSuccess = action.payload;
