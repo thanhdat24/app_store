@@ -44,13 +44,13 @@ const districtReducer = createSlice({
         state.updateDistrictSuccess = action.payload;
         toast.success("Cập nhật thành công!", { autoClose: 2000 });
       }
-      toast.success("Cập nhật thành công!", { autoClose: 2000 });
     },
     deleteDistrictSuccess(state, action: PayloadAction<DistrictModel>) {
       state.deleteDistrictSuccess = action.payload;
       toast.success("Xóa thành công!", { autoClose: 2000 });
     },
     resetDistrictSuccess(state) {
+      state.createDistrictSuccess = null;
       state.updateDistrictSuccess = null;
       state.deleteDistrictSuccess = null;
     },

@@ -26,11 +26,24 @@ import { FormProvider, RHFTextField } from "../../../components/hook-form";
 import RHFSelect from "../../../components/hook-form/RHFSelect";
 import Iconify from "../../../components/Iconify";
 import { WardModel } from "../../../interfaces/WardModel";
-import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { createWard, getAllWard, updateWard } from "../../../redux/slices/wardReducer";
-import { getAllDistricts, resetDistrict } from "../../../redux/slices/districtReducer";
+import {
+  RootState,
+  useAppDispatch,
+  useAppSelector,
+} from "../../../redux/store";
+import {
+  createWard,
+  getAllWard,
+  resetWard,
+  updateWard,
+} from "../../../redux/slices/wardReducer";
+import {
+  getAllDistricts,
+  resetDistrict,
+} from "../../../redux/slices/districtReducer";
 import { PATH_DASHBOARD } from "../../../routes/paths";
 import { DistrictModel } from "../../../interfaces/DistrictModel";
+import axios from "axios";
 
 type Props = {
   isEdit: boolean;
@@ -40,6 +53,11 @@ type Props = {
 export default function WardsForm({ isEdit, currentWard }: Props) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  useEffect(() => {
+    dispatch(getAllDistricts());
+  }, [dispatch]); 
+
+  const { districtList } = useAppSelector((state: RootState) => state.district);
 
   const { createWardSuccess, updateWardSuccess } = useAppSelector(
     (state) => state.ward
@@ -47,13 +65,13 @@ export default function WardsForm({ isEdit, currentWard }: Props) {
 
   const WardSchema = Yup.object().shape({
     TENXAPHUONG: Yup.string().required("Xã phường là bắt buộc"),
-    TENQUANHUYEN: Yup.string().required("Quận huyện là bắt buộc"),
+    IDQUANHUYEN: Yup.string().required("Quận huyện là bắt buộc"),
   });
 
   const defaultValues = useMemo(
     () => ({
       TENXAPHUONG: currentWard?.TENXAPHUONG || "",
-      TENQUANHUYEN: currentWard?.QUANHUYEN || "",
+      IDQUANHUYEN: currentWard?.IDQUANHUYEN || "",
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentWard]
@@ -103,13 +121,9 @@ export default function WardsForm({ isEdit, currentWard }: Props) {
       navigate(PATH_DASHBOARD.wards.list);
     }
     return () => {
-      dispatch(resetDistrict());
+      dispatch(resetWard());
     };
   }, [createWardSuccess, updateWardSuccess]);
-
-  useEffect(() => {
-    dispatch(getAllDistricts());
-  }, [dispatch]);
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -128,11 +142,18 @@ export default function WardsForm({ isEdit, currentWard }: Props) {
               }}
             >
               <RHFTextField name="TENXAPHUONG" label="Tên xã phường" />
+
               <RHFSelect
-                name="TENQUANHUYEN"
+                name="IDQUANHUYEN"
                 label="Quận huyện"
                 placeholder="Quận huyện"
               >
+                <option value="" />
+                {districtList?.map((option, index) => (
+                  <option key={option.IDQUANHUYEN} value={option.IDQUANHUYEN}>
+                    {option.TENQUANHUYEN}
+                  </option>
+                ))}
               </RHFSelect>
             </Box>
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>

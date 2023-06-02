@@ -27,14 +27,8 @@ export default function WardsAction({}: Props) {
 
   console.log("isEdit", isEdit);
   const { wardList } = useAppSelector((state) => state.ward);
-  const { districtList } = useAppSelector((state) => state.district);
-
-
   const currentWard = wardList?.find(
     (ward) => ward.IDXAPHUONG === Number(id)
-  );
-  const currentDistrict = districtList?.find(
-    (district) => district.IDQUANHUYEN === Number(id)
   );
 
   useEffect(() => {
@@ -55,7 +49,7 @@ export default function WardsAction({}: Props) {
           ]}
         />
 
-        <WardsForm isEdit={isEdit} currentWard={currentWard} currentDistrict={currentDistrict} />
+        <WardsForm isEdit={isEdit} currentWard={currentWard}/>
       </Container>
     </Page>
   );

@@ -46,13 +46,13 @@ const revenueRoutesReducer = createSlice({
         state.updateRevenueRoutesSuccess = action.payload;
         toast.success("Cập nhật thành công!", { autoClose: 2000 });
       }
-      toast.success("Cập nhật thành công!", { autoClose: 2000 });
     },
     deleteRevenueRoutesSuccess(state, action: PayloadAction<RevenueRoutesModel>) {
       state.deleteRevenueRoutesSuccess = action.payload;
       toast.success("Xóa thành công!", { autoClose: 2000 });
     },
     resetRevenueRoutesSuccess(state) {
+      state.createRevenueRoutesSuccess = null;
       state.updateRevenueRoutesSuccess = null;
       state.deleteRevenueRoutesSuccess = null;
     },
