@@ -58,9 +58,6 @@ export default function WardsForm({ isEdit, currentWard }: Props) {
   }, [dispatch]); 
 
   const { districtList } = useAppSelector((state: RootState) => state.district);
-  const [data, setData] = useState({
-    setDistrict: "",
-  });
 
   const { createWardSuccess, updateWardSuccess } = useAppSelector(
     (state) => state.ward
@@ -127,10 +124,6 @@ export default function WardsForm({ isEdit, currentWard }: Props) {
       dispatch(resetWard());
     };
   }, [createWardSuccess, updateWardSuccess]);
-
-  useEffect(() => {
-    dispatch(getAllDistricts());
-  }, [dispatch]);
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
