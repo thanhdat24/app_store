@@ -5,6 +5,12 @@ import { AppDispatch } from "../store";
 import { toast } from "react-toastify";
 import { setSession, setUser } from "../../utils/jwt";
 
+const getUserLocoalStorage = () => {
+  const user = localStorage.getItem("user");
+  if (user) return JSON.parse(user);
+  return null;
+};
+
 interface userLoginState {
   userLogin: UserLoginModel | null;
   errorLogin?: string | null;
@@ -12,7 +18,7 @@ interface userLoginState {
 }
 
 const initialState: userLoginState = {
-  userLogin: null,
+  userLogin: getUserLocoalStorage() as UserLoginModel | null,
   errorLogin: null,
   isAuthenticated: false,
 };
@@ -46,7 +52,17 @@ export const login = (userLogin: UserLoginModel) => {
       const action: PayloadAction<UserLoginModel> = loginSuccess(data);
       dispatch(action);
     } catch (error: any) {
-      console.log("error123", error);
+      dispatch(hasError(error.ModelState));
+    }
+  };
+};
+
+export const logout = () => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      setSession(null);
+      setUser(null);
+    } catch (error: any) {
       dispatch(hasError(error.ModelState));
     }
   };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 // @mui
 import {
@@ -34,16 +34,17 @@ import StaffTableRow from "./StaffTableRow";
 import { deleteStaff, getAllStaff } from "../../../redux/slices/staffReducer";
 import StaffTableToolbar from "./StaffTableToolbar";
 import { getAllPermissions } from "../../../redux/slices/permissionReducer";
+import {
+  deleteDetailPermission,
+  employeePermission,
+  resetEmployeePermission,
+} from "../../../redux/slices/detailPermissionReducer";
 
 type Props = {};
 
 ///---
 
-const ARRAY_ROLE = [
-  "Quản trị hệ thống",
-  "Nhân viên quản trị",
-  "Nhân viên thu ngân",
-];
+const OPTIONS_INFO = ["Thông tin khách hàng", "Mã nhân viên"];
 
 const STATUS_OPTIONS = [
   "Tất cả",
@@ -60,7 +61,7 @@ const TABLE_HEAD = [
   { id: "NGAYSINH", label: "Ngày sinh", align: "left" },
   { id: "DIACHI", label: "Địa chỉ", align: "left" },
   { id: "QUYEN", label: "Quyền", align: "left", width: 250 },
-  { id: "" },
+  { id: "THAOTAC", label: "Thao tác" },
 ];
 
 export default function StaffList({}: Props) {
@@ -77,9 +78,20 @@ export default function StaffList({}: Props) {
 
   const { permissionList } = useAppSelector((state) => state.permission);
 
+  const { createDetailPermissionSuccess, deleteDetailPermissionSuccess } =
+    useAppSelector((state) => state.detailPermission);
+
   useEffect(() => {
     dispatch(getAllStaff());
-  }, [dispatch, deleteStaffSuccess]);
+    return () => {
+      dispatch(resetEmployeePermission());
+    };
+  }, [
+    dispatch,
+    deleteStaffSuccess,
+    createDetailPermissionSuccess,
+    deleteDetailPermissionSuccess,
+  ]);
 
   const {
     dense,
@@ -102,7 +114,6 @@ export default function StaffList({}: Props) {
   const navigate = useNavigate();
 
   const [filterName, setFilterName] = useState("");
-
   const [selectPermission, setSelectPermission] = useState<number[]>([]);
 
   const [tableData, setTableData] = useState<StaffModel[]>([]);
@@ -110,14 +121,24 @@ export default function StaffList({}: Props) {
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } =
     useTabs("Tất cả");
 
-  console.log("filterStatus", filterStatus);
+  const [filterUser, setFilterUser] = useState("Thông tin khách hàng");
 
   const denseHeight = dense ? 60 : 80;
+
+  // type ApplySortFilterProps = {
+  //   tableData: StaffModel[];
+  //   comparator: (a: any, b: any) => number;
+  //   filterStatus: string;
+  //   filterUser: string;
+  //   filterName: string; // Add filterName property
+  // };
 
   const dataFiltered = applySortFilter({
     tableData,
     comparator: getComparator(order, orderBy),
     filterStatus,
+    filterName,
+    filterUser,
   });
 
   useEffect(() => {
@@ -139,8 +160,10 @@ export default function StaffList({}: Props) {
     navigate(PATH_DASHBOARD.staff.edit(id));
   };
 
-  const handleDeleteRows = (selected: any) => {
-    console.log("selected", selected);
+  const handleFilterUser = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFilterUser(event.target.value);
   };
   const handleSelectPermission = (IDQUYEN: number) => {
     if (selectPermission.includes(IDQUYEN)) {
@@ -152,7 +175,42 @@ export default function StaffList({}: Props) {
     }
   };
 
-  console.log("selectPermission", selectPermission);
+  const handleUpdatePermission = async () => {
+    const result: any[] = [];
+    for (let i = 0; i < selected.length; i++) {
+      for (let j = 0; j < selectPermission.length; j++) {
+        const item = {
+          IDNHANVIEN: selected[i],
+          IDQUYEN: selectPermission[j],
+        };
+        result.push(item);
+      }
+    }
+    if (result.length > 0) {
+      await dispatch(employeePermission(result));
+      setSelected([]);
+      setSelectPermission([]);
+    }
+  };
+
+  const handleDeletePermission = async () => {
+    const result: any[] = [];
+    for (let i = 0; i < selected.length; i++) {
+      for (let j = 0; j < selectPermission.length; j++) {
+        const item = {
+          IDNHANVIEN: selected[i],
+          IDQUYEN: selectPermission[j],
+        };
+        result.push(item);
+      }
+    }
+    if (result.length > 0) {
+      await dispatch(deleteDetailPermission(result));
+      setSelected([]);
+      setSelectPermission([]);
+    }
+  };
+
   return (
     <Page title="StaffList: List">
       <Container maxWidth={"lg"}>
@@ -164,23 +222,38 @@ export default function StaffList({}: Props) {
             { name: "Danh sách" },
           ]}
           action={
-            <Box sx={{ display: "flex" }}>
-              <Box
-                sx={{
-                  marginRight: "10px",
-                }}
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr);",
+                gap: "10px",
+              }}
+            >
+              <Button
+                disabled={
+                  selectPermission.length === 0 || selected.length === 0
+                }
+                color="success"
+                sx={{ borderRadius: 2, textTransform: "none" }}
+                variant="contained"
+                startIcon={<Iconify icon={"eva:settings-2-outline"} />}
+                onClick={handleUpdatePermission}
               >
-                <Button
-                  disabled={selectPermission.length === 0}
-                  color="success"
-                  sx={{ borderRadius: 2, textTransform: "none" }}
-                  variant="contained"
-                  startIcon={<Iconify icon={"eva:plus-fill"} />}
-                >
-                  Cập nhật quyền
-                </Button>
-              </Box>
+                Cập nhật quyền
+              </Button>
 
+              <Button
+                disabled={
+                  selectPermission.length === 0 || selected.length === 0
+                }
+                color="error"
+                sx={{ borderRadius: 2, textTransform: "none" }}
+                variant="contained"
+                startIcon={<Iconify icon={"eva:trash-2-outline"} />}
+                onClick={handleDeletePermission}
+              >
+                Xóa quyền
+              </Button>
               <Button
                 sx={{ borderRadius: 2, textTransform: "none" }}
                 variant="contained"
@@ -210,6 +283,11 @@ export default function StaffList({}: Props) {
           <StaffTableToolbar
             filterName={filterName}
             onFilterName={handleFilterName}
+            filterUser={filterUser}
+            onFilterUser={(
+              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => handleFilterUser(event)}
+            optionsInfo={OPTIONS_INFO}
           />
           {/* <Scrollbar> */}
           <TableContainer sx={{ minWidth: 800, position: "relative" }}>
@@ -224,38 +302,34 @@ export default function StaffList({}: Props) {
                     tableData.map((row) => row.IDNHANVIEN)
                   )
                 }
-                actions={
-                  // <Tooltip title="Delete">
-                  //   <IconButton
-                  //     color="primary"
-                  //     onClick={() => handleDeleteRows(selected)}
-                  //   >
-                  //     <Iconify icon={"eva:trash-2-outline"} />
-                  //   </IconButton>
-                  // </Tooltip>
-                  permissionList?.map((permission, index) => (
-                    <Button
-                      key={index}
-                      variant="outlined"
-                      onClick={() => handleSelectPermission(permission.IDQUYEN)}
-                      color={
-                        permission.TENQUYEN === "Quản trị hệ thống"
-                          ? "error"
-                          : permission.TENQUYEN === "Nhân viên quản trị"
-                          ? "secondary"
-                          : "info"
-                      }
-                      sx={{
-                        borderRadius: 2,
-                        textTransform: "none",
-                        margin: 3,
-                      }}
-                      startIcon={<Iconify icon={"eva:plus-fill"} />}
-                    >
-                      {permission.TENQUYEN}
-                    </Button>
-                  ))
-                }
+                actions={permissionList?.map((permission, index) => (
+                  <Button
+                    key={index}
+                    variant={
+                      selectPermission.includes(permission.IDQUYEN)
+                        ? "contained"
+                        : "outlined"
+                    }
+                    onClick={() => handleSelectPermission(permission.IDQUYEN)}
+                    color={
+                      permission.TENQUYEN === "Quản trị hệ thống"
+                        ? "error"
+                        : permission.TENQUYEN === "Nhân viên quản trị"
+                        ? "secondary"
+                        : "info"
+                    }
+                    sx={{
+                      borderRadius: 2,
+                      textTransform: "none",
+                      margin: 3,
+                    }}
+                    startIcon={
+                      <Iconify icon={"eva:checkmark-circle-outline"} />
+                    }
+                  >
+                    {permission.TENQUYEN}
+                  </Button>
+                ))}
               />
             )}
             <Table size={dense ? "small" : "medium"}>
@@ -277,9 +351,9 @@ export default function StaffList({}: Props) {
               <TableBody>
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row: any) => (
+                  .map((row: any, index: number) => (
                     <StaffTableRow
-                      key={row.IDNHANVIEN}
+                      key={index}
                       row={row}
                       selected={selected.includes(row.IDNHANVIEN)}
                       onSelectRow={() => onSelectRow(row.IDNHANVIEN)}
@@ -320,21 +394,24 @@ interface ApplySortFilterProps {
   tableData: any[];
   comparator: (a: any, b: any) => number;
   filterStatus?: string;
+  filterName?: string;
+  filterUser?: string;
 }
 
 function applySortFilter({
   tableData,
   comparator,
   filterStatus,
+  filterName,
+  filterUser,
 }: ApplySortFilterProps) {
   if (filterStatus === "quản trị hệ thống") {
-    filterStatus = "Quản Trị Hệ Thống";
+    filterStatus = "Quản trị hệ thống";
   } else if (filterStatus === "nhân viên quản trị") {
-    filterStatus = "Nhân Viên Quản Trị";
+    filterStatus = "Nhân viên quản trị";
   } else if (filterStatus === "nhân viên thu ngân") {
-    filterStatus = "Nhân Viên Thu Ngân";
+    filterStatus = "Nhân viên thu ngân";
   }
-
   const stabilizedThis = tableData.map((el, index) => [el, index]);
 
   stabilizedThis.sort((a, b) => {
@@ -344,11 +421,32 @@ function applySortFilter({
   });
 
   tableData = stabilizedThis.map((el) => el[0]);
-
   if (filterStatus !== "Tất cả") {
-    tableData = tableData.filter(
-      (item) => item.IDNHANVIEN.TENQUYEN === filterStatus
+    tableData = tableData.filter((item) =>
+      item.CHITIETPHANQUYENs.some(
+        (detail: any) => detail.QUYEN.TENQUYEN === filterStatus
+      )
     );
+  }
+
+  if (filterUser === "Mã nhân viên") {
+    if (filterName) {
+      const searchTerm = filterName.toLowerCase();
+      tableData = tableData.filter((item) =>
+        item.MANHANVIEN.toLowerCase().includes(searchTerm)
+      );
+    }
+  }
+
+  if (filterUser === "Thông tin khách hàng") {
+    if (filterName) {
+      const searchTerm = filterName.toLowerCase();
+      tableData = tableData.filter(
+        (item) =>
+          item.HOTEN.toLowerCase().includes(searchTerm) ||
+          item.SDT.toString().includes(filterName)
+      );
+    }
   }
 
   return tableData;
