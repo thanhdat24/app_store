@@ -1,6 +1,6 @@
 import React, { MouseEvent, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { PATH_DASHBOARD } from "../../../routes/paths";
+import { PATH_AUTH, PATH_DASHBOARD } from "../../../routes/paths";
 // @mui
 import { alpha } from "@mui/material/styles";
 import {
@@ -12,6 +12,9 @@ import {
   MenuItem,
 } from "@mui/material";
 import MenuPopover from "../../../components/MenuPopover";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { logout } from "../../../redux/slices/adminReducer";
+import useIsMountedRef from "../../../hooks/useIsMountedRef";
 type Props = {};
 
 const MENU_OPTIONS_ADMIN = [
@@ -28,15 +31,29 @@ const MENU_OPTIONS_ADMIN = [
 export default function AccountPopover({}: Props) {
   const [open, setOpen] = useState<HTMLElement | null>(null);
 
+  const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+
+  const isMountedRef = useIsMountedRef();
+
   const handleOpen = (event: MouseEvent<HTMLElement>) => {
     setOpen(event.currentTarget);
   };
+  const { userLogin } = useAppSelector((state) => state.admin);
 
   const handleClose = () => {
     setOpen(null);
   };
 
-  const handleLogout = async () => {};
+  const handleLogout = async () => {
+    await dispatch(logout());
+    navigate(PATH_AUTH.login, { replace: true });
+    window.location.reload();
+    if (isMountedRef.current) {
+      handleClose();
+    }
+  };
   return (
     <>
       <div
