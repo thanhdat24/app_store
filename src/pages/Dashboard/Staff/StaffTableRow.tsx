@@ -70,12 +70,12 @@ export default function StaffTableRow({
       <TableCell align="left">
         {CHITIETPHANQUYENs.map((item: any) => (
           <Label
-            key={item.IDNHANVIEN}
+            key={item.IDCHITIETPHANQUYEN}
             variant={"ghost"}
             color={
-              (item.QUYEN.TENQUYEN === "" && "info") ||
-              (item.QUYEN.TENQUYEN === "Doanh nghiệp" && "error") ||
-              "default"
+              (item.QUYEN.TENQUYEN === "Quản trị hệ thống" && "error") ||
+              (item.QUYEN.TENQUYEN === "Nhân viên quản trị" && "secondary") ||
+              "info"
             }
             sx={{ textTransform: "uppercase", mb: 1 }}
           >

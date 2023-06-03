@@ -58,7 +58,6 @@ const navConfig = [
         icon: ICONS.user,
         children: [
           { title: "Danh sách", path: PATH_DASHBOARD.user.list },
-          { title: "Tạo", path: PATH_DASHBOARD.user.new },
           // { title: "Tài khoản", path: PATH_DASHBOARD.user.account },
         ],
       },
@@ -67,38 +66,31 @@ const navConfig = [
         title: "Loại Khách hàng",
         path: PATH_DASHBOARD.userType.root,
         icon: ICONS.user,
-        children: [
-          { title: "Danh sách", path: PATH_DASHBOARD.userType.list },
-          { title: "Tạo", path: PATH_DASHBOARD.userType.new },
-        ],
+        children: [{ title: "Danh sách", path: PATH_DASHBOARD.userType.list }],
       },
     ],
   },
 
-  // {
-  //   subheader: "Quản lý thông tin sử dụng",
-  //   items: [
-  //     // RECEIPT
-  //     {
-  //       title: "Kỳ thu",
-  //       path: PATH_DASHBOARD.billingPeriod.root,
-  //       icon: ICONS.billing,
-  //       children: [
-  //         { title: "Danh sách", path: PATH_DASHBOARD.billingPeriod.list },
-  //         { title: "Tạo", path: PATH_DASHBOARD.billingPeriod.new },
-  //       ],
-  //     },
-  //     {
-  //       title: "Phiếu thu",
-  //       path: PATH_DASHBOARD.receipt.root,
-  //       icon: ICONS.receipt,
-  //       children: [
-  //         { title: "Danh sách", path: PATH_DASHBOARD.receipt.list },
-  //         { title: "Tạo", path: PATH_DASHBOARD.receipt.new },
-  //       ],
-  //     },
-  //   ],
-  // },
+  {
+    subheader: "Quản lý thông tin sử dụng",
+    items: [
+      // RECEIPT
+      {
+        title: "Kỳ thu",
+        path: PATH_DASHBOARD.billingPeriod.root,
+        icon: ICONS.billing,
+        children: [
+          { title: "Danh sách", path: PATH_DASHBOARD.billingPeriod.list },
+        ],
+      },
+      {
+        title: "Phiếu thu",
+        path: PATH_DASHBOARD.receipt.root,
+        icon: ICONS.receipt,
+        children: [{ title: "Danh sách", path: PATH_DASHBOARD.receipt.list }],
+      },
+    ],
+  },
 
   {
     subheader: "Quản lý danh mục hệ thống",
@@ -108,10 +100,7 @@ const navConfig = [
         title: "Nhân viên",
         path: PATH_DASHBOARD.staff.root,
         icon: ICONS.user,
-        children: [
-          { title: "Danh sách", path: PATH_DASHBOARD.staff.list },
-          { title: "Tạo", path: PATH_DASHBOARD.staff.new },
-        ],
+        children: [{ title: "Danh sách", path: PATH_DASHBOARD.staff.list }],
       },
 
       {
@@ -120,26 +109,19 @@ const navConfig = [
         icon: ICONS.permission,
         children: [
           { title: "Danh sách", path: PATH_DASHBOARD.permission.list },
-          { title: "Tạo", path: PATH_DASHBOARD.permission.new },
         ],
       },
       {
         title: "Quận Huyện",
         path: PATH_DASHBOARD.district.root,
         icon: ICONS.district,
-        children: [
-          { title: "Danh sách", path: PATH_DASHBOARD.district.list },
-          { title: "Tạo", path: PATH_DASHBOARD.district.new },
-        ],
+        children: [{ title: "Danh sách", path: PATH_DASHBOARD.district.list }],
       },
       {
         title: "Xã phường",
         path: PATH_DASHBOARD.wards.root,
         icon: ICONS.wards,
-        children: [
-          { title: "Danh sách", path: PATH_DASHBOARD.wards.list },
-          { title: "Tạo", path: PATH_DASHBOARD.wards.new },
-        ],
+        children: [{ title: "Danh sách", path: PATH_DASHBOARD.wards.list }],
       },
       {
         title: "Tuyến thu",
@@ -147,7 +129,6 @@ const navConfig = [
         icon: ICONS.user,
         children: [
           { title: "Danh sách", path: PATH_DASHBOARD.revenueRoutes.list },
-          { title: "Tạo", path: PATH_DASHBOARD.revenueRoutes.new },
         ],
       },
     ],

@@ -38,10 +38,13 @@ import {
 } from "../../../components/table";
 import { CustomerModel } from "../../../interfaces/CustomerModel";
 import CustomerTableRow from "./CustomerTableRow";
+import CustomerTableToolbar from "./CustomerTableToolbar";
 
 type Props = {};
 
 // ----------------------------------------------------------------------
+
+const OPTIONS_INFO = ["Thông tin khách hàng", "Mã khách hàng"];
 
 const STATUS_OPTIONS = ["Tất cả", "doanh nghiệp", "hộ dân"];
 
@@ -54,7 +57,7 @@ const TABLE_HEAD = [
   { id: "DIACHI", label: "Địa chỉ", align: "left" },
   { id: "LOAIKH", label: "Loại", align: "left" },
   { id: "TENTUYENTHU", label: "Tuyến thu", align: "left" },
-  { id: "" },
+  { id: "THAOTAC", label: "Thao tác" },
 ];
 
 export default function CustomerList({}: Props) {
@@ -88,12 +91,14 @@ export default function CustomerList({}: Props) {
 
   const navigate = useNavigate();
 
+  const [filterName, setFilterName] = useState("");
+
+  const [filterUser, setFilterUser] = useState("Thông tin khách hàng");
+
   const [tableData, setTableData] = useState<CustomerModel[]>([]);
 
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } =
     useTabs("Tất cả");
-
-  console.log("filterStatus", filterStatus);
 
   const denseHeight = dense ? 60 : 80;
 
@@ -101,6 +106,8 @@ export default function CustomerList({}: Props) {
     tableData,
     comparator: getComparator(order, orderBy),
     filterStatus,
+    filterName,
+    filterUser,
   });
 
   useEffect(() => {
@@ -115,6 +122,17 @@ export default function CustomerList({}: Props) {
 
   const handleEditRow = (id: number) => {
     // navigate(PATH_DASHBOARD.user.edit(id));
+  };
+
+  const handleFilterName = (filterName: string) => {
+    setFilterName(filterName);
+    setPage(0);
+  };
+
+  const handleFilterUser = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFilterUser(event.target.value);
   };
 
   return (
@@ -153,6 +171,15 @@ export default function CustomerList({}: Props) {
             ))}
           </Tabs>
           <Divider />
+          <CustomerTableToolbar
+            filterName={filterName}
+            onFilterName={handleFilterName}
+            filterUser={filterUser}
+            onFilterUser={(
+              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => handleFilterUser(event)}
+            optionsInfo={OPTIONS_INFO}
+          />
           {/* <Scrollbar> */}
           <TableContainer sx={{ minWidth: 800, position: "relative" }}>
             <Table size={dense ? "small" : "medium"}>
@@ -218,12 +245,16 @@ interface ApplySortFilterProps {
   tableData: any[];
   comparator: (a: any, b: any) => number;
   filterStatus?: string;
+  filterName?: string;
+  filterUser?: string;
 }
 
 function applySortFilter({
   tableData,
   comparator,
   filterStatus,
+  filterName,
+  filterUser,
 }: ApplySortFilterProps) {
   if (filterStatus === "hộ dân") {
     filterStatus = "Hộ dân";
@@ -246,12 +277,25 @@ function applySortFilter({
       (item) => item.LOAIKH.TENLOAI === filterStatus
     );
   }
+  if (filterUser === "Mã khách hàng") {
+    if (filterName) {
+      const searchTerm = filterName.toLowerCase();
+      tableData = tableData.filter((item) =>
+        item.MAKHACHHANG.toLowerCase().includes(searchTerm)
+      );
+    }
+  }
 
-  // if (filterName) {
-  //   tableData = tableData.filter(
-  //     (item) => item.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
-  //   );
-  // }
+  if (filterUser === "Thông tin khách hàng") {
+    if (filterName) {
+      const searchTerm = filterName.toLowerCase();
+      tableData = tableData.filter(
+        (item) =>
+          item.HOTEN.toLowerCase().includes(searchTerm) ||
+          item.CMT.toString().includes(filterName)
+      );
+    }
+  }
 
   return tableData;
 }

@@ -1,13 +1,14 @@
 import PropTypes from "prop-types";
 import { Stack, InputAdornment, TextField, MenuItem } from "@mui/material";
 import Iconify from "../../../components/Iconify";
+
 // components
 
 // ----------------------------------------------------------------------
 
 const INPUT_WIDTH = 250;
 
-interface StaffTableToolbarProps {
+interface CustomerTableToolbarProps {
   filterName: string;
   onFilterName: (value: string) => void;
   filterUser: string;
@@ -17,13 +18,13 @@ interface StaffTableToolbarProps {
   optionsInfo: string[];
 }
 
-export default function StaffTableToolbar({
+export default function CustomerTableToolbar({
   filterName,
   filterUser,
   onFilterName,
   onFilterUser,
   optionsInfo,
-}: StaffTableToolbarProps) {
+}: CustomerTableToolbarProps) {
   return (
     <Stack
       spacing={2}
@@ -69,9 +70,9 @@ export default function StaffTableToolbar({
         onChange={(event) => onFilterName(event.target.value)}
         placeholder={
           filterUser === "Thông tin khách hàng"
-            ? "Tìm kiếm theo tên hoặc số điện thoại"
-            : filterUser === "Mã nhân viên"
-            ? "Tìm kiếm theo mã nhân viên"
+            ? "Tìm kiếm theo tên hoặc CMT"
+            : filterUser === "Mã khách hàng"
+            ? "Tìm kiếm theo mã khách hàng"
             : undefined
         }
         InputProps={{
