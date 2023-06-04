@@ -26,13 +26,16 @@ import { DistrictModel } from "../../../interfaces/DistrictModel";
 import useTable, { emptyRows } from "../../../hooks/useTable";
 import { TableEmptyRows, TableHeadCustom } from "../../../components/table";
 import DistrictTableRow from "./DistrictTableRow";
+import PermissionTableToolbar from "../Permission/PermissionTableToolbar";
 
 type Props = {};
+
+const OPTIONS_INFO = ["Tên quận huyện"];
 
 const TABLE_HEAD = [
   { id: "id", label: "ID", align: "left" },
   { id: "TENQUANHUYEN", label: "Tên quận huyện", align: "left" },
-  { id: "" },
+  { id: "THAOTAC", label: "Thao tác", align: "right"  },
 ];
 
 export default function districtList({}: Props) {
@@ -67,9 +70,19 @@ export default function districtList({}: Props) {
 
   const navigate = useNavigate();
 
+  const [filterName, setFilterName] = useState("");
+
+  const [filterUser, setFilterUser] = useState("Tên quận huyện");
+
   const [tableData, setTableData] = useState<DistrictModel[]>([]);
 
   const denseHeight = dense ? 60 : 80;
+
+  const dataFiltered = applySortFilter({
+    tableData,
+    filterName,
+    filterUser,
+  });
 
   useEffect(() => {
     if (districtList && districtList.length) {
@@ -83,6 +96,18 @@ export default function districtList({}: Props) {
 
   const handleEditRow = (id: number) => {
     navigate(PATH_DASHBOARD.district.edit(id));
+    
+  };
+
+  const handleFilterName = (filterName: string) => {
+    setFilterName(filterName);
+    setPage(0);
+  };
+
+  const handleFilterUser = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFilterUser(event.target.value);
   };
   ///
 
@@ -108,8 +133,17 @@ export default function districtList({}: Props) {
             </Button>
           }
         />
-        <Card>
+        <Card sx={{ maxWidth: 900}}>
           <Divider />
+          <PermissionTableToolbar
+            filterName={filterName}
+            onFilterName={handleFilterName}
+            filterUser={filterUser}
+            onFilterUser={(
+              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => handleFilterUser(event)}
+            optionsInfo={OPTIONS_INFO}
+          />
           {/* <Scrollbar> */}
           <TableContainer sx={{ minWidth: 800, position: "relative" }}>
             <Table size={dense ? "small" : "medium"}>
@@ -123,7 +157,7 @@ export default function districtList({}: Props) {
               />
 
               <TableBody>
-                {tableData
+                {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row: any) => (
                     <DistrictTableRow
@@ -161,4 +195,28 @@ export default function districtList({}: Props) {
       </Container>
     </Page>
   );
+}
+
+interface ApplySortFilterProps {
+  tableData: any[];
+  filterStatus?: string;
+  filterName?: string;
+  filterUser?: string;
+}
+
+function applySortFilter({
+  tableData,
+  filterName,
+  filterUser,
+}: ApplySortFilterProps) {
+
+  if (filterUser === "Tên quận huyện") {
+    if (filterName) {
+      const searchTerm = filterName.toLowerCase();
+      tableData = tableData.filter((item) =>
+        item.TENQUANHUYEN.toLowerCase().includes(searchTerm)
+      );
+    }
+  }
+  return tableData;
 }

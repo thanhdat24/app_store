@@ -41,7 +41,7 @@ export default function WardsTableRow({
     setOpenMenuActions(null);
   };
 
-  const { IDXAPHUONG, TENXAPHUONG, QUANHUYEN} = row;
+  const { IDXAPHUONG, TENXAPHUONG, QUANHUYEN, THAOTAC} = row;
   return (
     <TableRow hover>
       <TableCell align="left">{IDXAPHUONG}</TableCell>

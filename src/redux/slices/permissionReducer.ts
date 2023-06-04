@@ -12,6 +12,7 @@ interface PermissionState {
   createPermissionSuccess?: PermissionModel | null;
   updatePermissionSuccess?: Number | null;
   deletePermissionSuccess?: PermissionModel | null;
+  error?: string | null;
 }
 
 const initialState: PermissionState = {
@@ -20,12 +21,21 @@ const initialState: PermissionState = {
   createPermissionSuccess: null,
   updatePermissionSuccess: null,
   deletePermissionSuccess: null,
+  error: null,
 };
 
 const permissionReducer = createSlice({
   name: "permissionReducer",
   initialState,
   reducers: {
+
+    hasError(state, action) {
+      state.error = action.payload;
+      const { TENQUYEN } = action.payload;
+      if (TENQUYEN?.length > 0)
+        toast.error(TENQUYEN[0], { autoClose: 2000 });
+      },
+
     getAllPermissionsSuccess(state, action: PayloadAction<PermissionModel[]>) {
       state.permissionList = action.payload;
     },
@@ -61,6 +71,7 @@ export const {
   updatePermissionSuccess,
   deletePermissionSuccess,
   resetPermissionSuccess,
+  hasError,
 } = permissionReducer.actions;
 
 export const getAllPermissions = () => {
@@ -85,8 +96,8 @@ export const createPermission = (permission: PermissionModel) => {
       const action: PayloadAction<PermissionModel> =
         createPermissionSuccess(data);
       dispatch(action);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      dispatch(hasError(error.ModelState));
     }
   };
 };
@@ -94,12 +105,16 @@ export const createPermission = (permission: PermissionModel) => {
 export const updatePermission = (permission: PermissionModel) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response = await axios.put(`api/QUYENs/${permission.IDQUYEN}`);
-      const data: Number = await response.data;
+      const response = await axios.put(
+        `api/QUYENs/${permission.IDQUYEN}`,
+        permission
+      );
+      const data: Number = await response.status;
       const action: PayloadAction<Number> = updatePermissionSuccess(data);
       dispatch(action);
-    } catch (error) {
-      console.log(error);
+      console.log(response);
+    } catch (error: any) {
+      dispatch(hasError(error.ModelState));
     }
   };
 };

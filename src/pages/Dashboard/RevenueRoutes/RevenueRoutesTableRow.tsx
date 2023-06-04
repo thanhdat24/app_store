@@ -41,13 +41,14 @@ export default function RevenueRoutesTableRow({
     setOpenMenuActions(null);
   };
 
-  const { IDTUYENTHU,MATUYENTHU, TENTUYENTHU, XAPHUONG } = row;
+  const { IDTUYENTHU, MATUYENTHU, TENTUYENTHU, XAPHUONG } = row;
   return (
     <TableRow hover>
       <TableCell align="left">{IDTUYENTHU}</TableCell>
       <TableCell align="left">{MATUYENTHU}</TableCell>
       <TableCell align="left">{TENTUYENTHU}</TableCell>
-      <TableCell align="left">{XAPHUONG.IDQUANHUYEN}</TableCell>
+      <TableCell align="left">{XAPHUONG.QUANHUYEN.TENQUANHUYEN}</TableCell>
+      <TableCell align="left">{XAPHUONG.TENXAPHUONG}</TableCell>
       <TableCell align="right">
         <TableMoreMenu
           open={openMenu}

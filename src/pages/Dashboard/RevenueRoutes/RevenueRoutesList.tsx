@@ -29,15 +29,20 @@ import useTable, { emptyRows } from "../../../hooks/useTable";
 import { RevenueRoutesModel } from "../../../interfaces/RevenueRoutesModel";
 import { TableEmptyRows, TableHeadCustom } from "../../../components/table";
 import RevenueRoutesTableRow from "./RevenueRoutesTableRow";
+import RevenueRoutesTableToolbar from "./RevenueRoutesTableToolbar";
 
 type Props = {};
+
+const OPTIONS_INFO = ["Thông tin tuyến thu", "Mã tuyến thu"];
 
 const TABLE_HEAD = [
   { id: "id", label: "ID", align: "left" },
   { id: "MATUYENTHU", label: "Mã tuyến thu", align: "left" },
   { id: "TENTUYENTHU", label: "Tên tuyến thu", align: "left" },
   { id: "TENQUANHUYEN", label: "Tên quận huyện", align: "left" },
-  { id: "" },
+  { id: "TENXAPHUONG", label: "Tên xã phường", align: "left" },
+  { id: "THAOTAC", label: "Thao tác", align: "right"  },
+  
 ];
 
 export default function RevenueRoutesList({}: Props) {
@@ -71,9 +76,20 @@ export default function RevenueRoutesList({}: Props) {
 
   const navigate = useNavigate();
 
+  const [filterName, setFilterName] = useState("");
+
+  const [filterUser, setFilterUser] = useState("Thông tin tuyến thu");
+
+
   const [tableData, setTableData] = useState<RevenueRoutesModel[]>([]);
 
   const denseHeight = dense ? 60 : 80;
+
+  const dataFiltered = applySortFilter({
+    tableData,
+    filterName,
+    filterUser,
+  });
 
   useEffect(() => {
     if (revenueRoutesList && revenueRoutesList.length) {
@@ -89,6 +105,17 @@ export default function RevenueRoutesList({}: Props) {
     navigate(PATH_DASHBOARD.revenueRoutes.edit(id));
   };
   ///
+
+  const handleFilterName = (filterName: string) => {
+    setFilterName(filterName);
+    setPage(0);
+  };
+
+  const handleFilterUser = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFilterUser(event.target.value);
+  };
 
   return (
     <Page title="RevenueRoutes: List">
@@ -114,6 +141,15 @@ export default function RevenueRoutesList({}: Props) {
         />
         <Card>
           <Divider />
+          <RevenueRoutesTableToolbar
+            filterName={filterName}
+            onFilterName={handleFilterName}
+            filterUser={filterUser}
+            onFilterUser={(
+              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => handleFilterUser(event)}
+            optionsInfo={OPTIONS_INFO}
+          />
           {/* <Scrollbar> */}
           <TableContainer sx={{ minWidth: 800, position: "relative" }}>
             <Table size={dense ? "small" : "medium"}>
@@ -127,7 +163,7 @@ export default function RevenueRoutesList({}: Props) {
               />
 
               <TableBody>
-                {tableData
+                {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row: any) => (
                     <RevenueRoutesTableRow
@@ -165,4 +201,42 @@ export default function RevenueRoutesList({}: Props) {
       </Container>
     </Page>
   );
+}
+
+//////-----
+
+interface ApplySortFilterProps {
+  tableData: any[];
+  filterName?: string;
+  filterUser?: string;
+}
+
+function applySortFilter({
+  tableData,
+  filterName,
+  filterUser,
+}: ApplySortFilterProps) {
+
+  if (filterUser === "Mã tuyến thu") {
+    if (filterName) {
+      const searchTerm = filterName.toLowerCase();
+      tableData = tableData.filter((item) =>
+        item.MATUYENTHU.toLowerCase().includes(searchTerm)
+      );
+    }
+  }
+
+  if (filterUser === "Thông tin tuyến thu") {
+    if (filterName) {
+      const searchTerm = filterName.toLowerCase();
+      tableData = tableData.filter(
+        (item) =>
+          item.TENTUYENTHU.toLowerCase().includes(searchTerm) ||
+          item.XAPHUONG.TENXAPHUONG.toLowerCase().includes(searchTerm) ||
+          item.XAPHUONG.QUANHUYEN.TENQUANHUYEN.toLowerCase().includes(searchTerm)
+      );
+    }
+  }
+
+  return tableData;
 }
