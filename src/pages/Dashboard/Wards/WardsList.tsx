@@ -26,14 +26,19 @@ import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { deleteWard, getAllWard } from "../../../redux/slices/wardReducer";
 import { TableEmptyRows, TableHeadCustom } from "../../../components/table";
 import WardsTableRow from "./WardsTableRow";
+import WardsTableToolbar from "./WardsTableToolbar";
 
 type Props = {};
+
+const OPTIONS_INFO = ["Tên xã phường", "Tên quận huyện"];
+
 const TABLE_HEAD = [
   { id: "id", label: "ID", align: "left" },
   { id: "TENXAPHUONG", label: "Tên xã phường", align: "left" },
   { id: "IDQUANHUYEN", label: "Tên quận huyện", align: "left" },
-  { id: "" },
-];
+  { id: "THAOTAC", label: "Thao tác", align: "right" },
+  
+];  
 
 export default function WardsList({}: Props) {
 
@@ -68,9 +73,21 @@ export default function WardsList({}: Props) {
 
   const navigate = useNavigate();
 
+  const [filterName, setFilterName] = useState("");
+
+  const [filterUser, setFilterUser] = useState("Tên xã phường");
+
+
   const [tableData, setTableData] = useState<WardModel[]>([]);
 
   const denseHeight = dense ? 60 : 80;
+
+  const dataFiltered = applySortFilter({
+    tableData,
+    filterName,
+    filterUser,
+  });
+  
 
   useEffect(() => {
     if (wardList && wardList.length) {
@@ -85,6 +102,18 @@ export default function WardsList({}: Props) {
   const handleEditRow = (id: number) => {
     navigate(PATH_DASHBOARD.wards.edit(id));
   };
+
+  const handleFilterName = (filterName: string) => {
+    setFilterName(filterName);
+    setPage(0);
+  };
+
+  const handleFilterUser = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFilterUser(event.target.value);
+  };
+
 
   return (
     <Page title="Wards: List">
@@ -110,6 +139,17 @@ export default function WardsList({}: Props) {
         />
         <Card>
           <Divider />
+
+          <WardsTableToolbar
+            filterName={filterName}
+            onFilterName={handleFilterName}
+            filterUser={filterUser}
+            onFilterUser={(
+              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => handleFilterUser(event)}
+            optionsInfo={OPTIONS_INFO}
+          />
+
           {/* <Scrollbar> */}
           <TableContainer sx={{ minWidth: 800, position: "relative" }}>
             <Table size={dense ? "small" : "medium"}>
@@ -123,7 +163,7 @@ export default function WardsList({}: Props) {
               />
 
               <TableBody>
-                {tableData
+                {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row: any) => (
                     <WardsTableRow
@@ -161,4 +201,38 @@ export default function WardsList({}: Props) {
       </Container>
     </Page>
   );
+}
+
+interface ApplySortFilterProps {
+  tableData: any[];
+  filterStatus?: string;
+  filterName?: string;
+  filterUser?: string;
+}
+
+function applySortFilter({
+  tableData,
+  filterName,
+  filterUser,
+}: ApplySortFilterProps) {
+
+  if (filterUser === "Tên xã phường") {
+    if (filterName) {
+      const searchTerm = filterName.toLowerCase();
+      tableData = tableData.filter((item) =>
+        item.TENXAPHUONG.toLowerCase().includes(searchTerm)
+      );
+    }
+  }
+  if (filterUser === "Tên quận huyện") {
+    if (filterName) {
+      const searchTerm = filterName.toLowerCase();
+      tableData = tableData.filter((item) =>
+        item.QUANHUYEN.TENQUANHUYEN.toLowerCase().includes(searchTerm)
+      );
+    }
+  }
+
+
+  return tableData;
 }

@@ -22,8 +22,15 @@ import {
   resetRevenueRoutes,
   updateRevenueRoutes,
 } from "../../../redux/slices/revenueRoutesReducer";
-import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import {
+  RootState,
+  useAppDispatch,
+  useAppSelector,
+} from "../../../redux/store";
 import { PATH_DASHBOARD } from "../../../routes/paths";
+import { getAllDistricts } from "../../../redux/slices/districtReducer";
+import axios from "axios";
+import { getAllWard } from "../../../redux/slices/wardReducer";
 
 type Props = {
   isEdit: boolean;
@@ -35,8 +42,14 @@ export default function RevenueRoutesForm({
   currentRevenueRoutes,
 }: Props) {
   const dispatch = useAppDispatch();
-
   const navigate = useNavigate();
+  useEffect(() => {
+    dispatch(getAllDistricts());
+    dispatch(getAllWard());
+  }, [dispatch]);
+
+  const { districtList } = useAppSelector((state: RootState) => state.district);
+  const { wardList } = useAppSelector((state: RootState) => state.ward);
 
   const { createRevenueRoutesSuccess, updateRevenueRoutesSuccess } =
     useAppSelector((state) => state.revenueRoutes);
@@ -44,17 +57,19 @@ export default function RevenueRoutesForm({
   const RevenueRoutesSchema = Yup.object().shape({
     MATUYENTHU: Yup.string().required("Mã tuyến thu là bắt buộc"),
     TENTUYENTHU: Yup.string().required("Tên tuyến thu là bắt buộc"),
-    TENQUANHUYEN: Yup.string().required("Quận huyện là bắt buộc"),
+    IDQUANHUYEN: Yup.string().required("Quận huyện là bắt buộc"),
+    IDXAPHUONG: Yup.string().required("Xã phường là bắt buộc"),
   });
 
   const defaultValues = useMemo(
     () => ({
       MATUYENTHU: currentRevenueRoutes?.MATUYENTHU || "",
       TENTUYENTHU: currentRevenueRoutes?.TENTUYENTHU || "",
-      TENQUANHUYEN: currentRevenueRoutes?.XAPHUONG || "",
+      IDXAPHUONG: currentRevenueRoutes?.XAPHUONG.IDXAPHUONG ||"",
+      IDQUANHUYEN: currentRevenueRoutes?.XAPHUONG.IDQUANHUYEN ||"",
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentRevenueRoutes]
+    [currentRevenueRoutes]  
   );
 
   const methods = useForm({
@@ -87,7 +102,10 @@ export default function RevenueRoutesForm({
     try {
       console.log(account);
       if (isEdit) {
-        account = { ...account, IDTUYENTHU: currentRevenueRoutes?.IDTUYENTHU };
+        account = {
+          ...account,
+          IDTUYENTHU: Number(currentRevenueRoutes?.IDTUYENTHU),
+        };
         await dispatch(updateRevenueRoutes(account));
       } else {
         await dispatch(createRevenueRoutes(account));
@@ -99,7 +117,7 @@ export default function RevenueRoutesForm({
 
   useEffect(() => {
     if (createRevenueRoutesSuccess || updateRevenueRoutesSuccess) {
-      navigate(PATH_DASHBOARD.district.list);
+      navigate(PATH_DASHBOARD.revenueRoutes.list);
     }
     return () => {
       dispatch(resetRevenueRoutes());
@@ -114,7 +132,7 @@ export default function RevenueRoutesForm({
             <Box
               sx={{
                 display: "grid",
-                columnGap: 2,
+                columnGap: 1,
                 rowGap: 3,
                 gridTemplateColumns: {
                   xs: "repeat(1, 1fr)",
@@ -124,13 +142,32 @@ export default function RevenueRoutesForm({
             >
               <RHFTextField name="MATUYENTHU" label="Mã tuyến thu" />
               <RHFTextField name="TENTUYENTHU" label="Tên tuyến thu" />
-            </Box>
-            <RHFSelect sx={{ mt: 3 }}
-              name="TENQUANHUYEN"
+              <RHFSelect
+              name="IDXAPHUONG"
+              label="Xã phường"
+              placeholder="Xã phường"
+            >
+              <option value="" />
+              {wardList?.map((option, index) => (
+                <option key={option.IDXAPHUONG} value={option.IDXAPHUONG}>
+                  {option.TENXAPHUONG}
+                </option>
+              ))}
+            </RHFSelect>
+            <RHFSelect
+              name="IDQUANHUYEN"
               label="Quận huyện"
               placeholder="Quận huyện"
             >
+              <option value="" />
+              {districtList?.map((option, index) => (
+                <option key={option.IDQUANHUYEN} value={option.IDQUANHUYEN}>
+                  {option.TENQUANHUYEN}
+                </option>
+              ))}
             </RHFSelect>
+            </Box>
+            
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
               <LoadingButton
                 type="submit"

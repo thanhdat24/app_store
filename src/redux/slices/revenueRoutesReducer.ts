@@ -13,6 +13,7 @@ interface RevenueRoutesState {
   createRevenueRoutesSuccess?: RevenueRoutesModel | null;
   updateRevenueRoutesSuccess?: Number | null;
   deleteRevenueRoutesSuccess?: RevenueRoutesModel | null;
+  error?: string | null;
 }
 
 const initialState: RevenueRoutesState = {
@@ -21,13 +22,20 @@ const initialState: RevenueRoutesState = {
   createRevenueRoutesSuccess: null,
   updateRevenueRoutesSuccess: null,
   deleteRevenueRoutesSuccess: null,
+  error: null,
 };
 
-// Tạo slice và reducers
 const revenueRoutesReducer = createSlice({
   name: "revenueRoutesReducer",
   initialState,
   reducers: {
+    hasError(state, action) {
+      state.error = action.payload;
+      const { MATUYENTHU } = action.payload;
+      if (MATUYENTHU?.length > 0)
+        toast.error(MATUYENTHU[0], { autoClose: 2000 });
+      },
+
     getAllRevenueRoutesSuccess(state, action: PayloadAction<RevenueRoutesModel[]>) {
       state.revenueRoutesList = action.payload;
     },
@@ -59,7 +67,6 @@ const revenueRoutesReducer = createSlice({
   },
 });
 
-// Export các reducers và actions
 export const {
   getAllRevenueRoutesSuccess,
   getDetailRevenueRoutesSuccess,
@@ -67,9 +74,9 @@ export const {
   updateRevenueRoutesSuccess,
   deleteRevenueRoutesSuccess,
   resetRevenueRoutesSuccess,
+  hasError,
 } = revenueRoutesReducer.actions;
 
-// Hàm async để gọi API và dispatch các action tương ứng
 export const getAllRevenueRoutes = () => {
   return async (dispatch: AppDispatch) => {
     try {
@@ -106,8 +113,8 @@ export const createRevenueRoutes = (revenueRoute: RevenueRoutesModel) => {
       const action: PayloadAction<RevenueRoutesModel> =
         createRevenueRoutesSuccess(data);
       dispatch(action);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      dispatch(hasError(error.ModelState));
     }
   };
 };
@@ -123,8 +130,8 @@ export const updateRevenueRoutes = (revenueRoute: RevenueRoutesModel) => {
       const action: PayloadAction<Number> =
         updateRevenueRoutesSuccess(data);
       dispatch(action);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      dispatch(hasError(error.ModelState));
     }
   };
 };

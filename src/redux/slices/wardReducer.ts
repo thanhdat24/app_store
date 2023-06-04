@@ -12,6 +12,7 @@ interface WardState {
   createWardSuccess?: WardModel | null;
   updateWardSuccess?: Number | null;
   deleteWardSuccess?: WardModel | null;
+  error?: string | null;
 }
 
 const initialState: WardState = {
@@ -20,12 +21,21 @@ const initialState: WardState = {
   createWardSuccess: null,
   updateWardSuccess: null,
   deleteWardSuccess: null,
+  error: null,
 };
 
 const wardReducer = createSlice({
   name: "wardReducer",
   initialState,
   reducers: {
+    hasError(state, action) {
+      state.error = action.payload;
+      const { TENXAPHUONG } = action.payload;
+      if (TENXAPHUONG ?.length > 0)
+        toast.error(TENXAPHUONG[0], { autoClose: 2000 });
+      },
+
+
     getAllWardSuccess(state, action: PayloadAction<WardModel[]>) {
       state.wardList = action.payload;
     },
@@ -61,6 +71,7 @@ export const {
   updateWardSuccess,
   deleteWardSuccess,
   resetWardSuccess,
+  hasError,
 } = wardReducer.actions;
 
 export const getAllWard = () => {
@@ -96,8 +107,8 @@ export const createWard = (ward: WardModel) => {
       const data: WardModel = await response.data;
       const action: PayloadAction<WardModel> = createWardSuccess(data);
       dispatch(action);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      dispatch(hasError(error.ModelState));
     }
   };
 };
@@ -112,8 +123,8 @@ export const updateWard = (ward: WardModel) => {
       const data: Number = await response.status;
       const action: PayloadAction<Number> = updateWardSuccess(data);
       dispatch(action);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      dispatch(hasError(error.ModelState));
     }
   };
 };

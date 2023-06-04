@@ -26,13 +26,16 @@ import useTable, { emptyRows } from "../../../hooks/useTable";
 import { PermissionModel } from "../../../interfaces/PermissionModel";
 import { TableEmptyRows, TableHeadCustom } from "../../../components/table";
 import PermissionTableRow from "./PermissionTableRow";
+import PermissionTableToolbar from "./PermissionTableToolbar";
 
 type Props = {};
+const OPTIONS_INFO = ["Tên quyền"];
+
 
 const TABLE_HEAD = [
   { id: "id", label: "ID", align: "left" },
   { id: "TENQUYEN", label: "Tên quyền", align: "left" },
-  { id: "" },
+  { id: "THAOTAC", label: "Thao tác", align: "right"  },
 ];
 
 export default function PermissionList({}: Props) {
@@ -67,9 +70,19 @@ export default function PermissionList({}: Props) {
 
   const navigate = useNavigate();
 
+  const [filterName, setFilterName] = useState("");
+
+  const [filterUser, setFilterUser] = useState("Tên quyền");
+
   const [tableData, setTableData] = useState<PermissionModel[]>([]);
 
   const denseHeight = dense ? 60 : 80;
+
+  const dataFiltered = applySortFilter({
+    tableData,
+    filterName,
+    filterUser,
+  });
 
   useEffect(() => {
     if (permissionList && permissionList.length) {
@@ -83,6 +96,17 @@ export default function PermissionList({}: Props) {
 
   const handleEditRow = (id: number) => {
     navigate(PATH_DASHBOARD.permission.edit(id));
+  };
+
+  const handleFilterName = (filterName: string) => {
+    setFilterName(filterName);
+    setPage(0);
+  };
+
+  const handleFilterUser = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFilterUser(event.target.value);
   };
   ////----
   return (
@@ -107,8 +131,17 @@ export default function PermissionList({}: Props) {
             </Button>
           }
         />
-        <Card>
+        <Card sx={{ maxWidth: 900}}>
           <Divider />
+          <PermissionTableToolbar
+            filterName={filterName}
+            onFilterName={handleFilterName}
+            filterUser={filterUser}
+            onFilterUser={(
+              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => handleFilterUser(event)}
+            optionsInfo={OPTIONS_INFO}
+          />
           {/* <Scrollbar> */}
           <TableContainer sx={{ minWidth: 800, position: "relative" }}>
             <Table size={dense ? "small" : "medium"}>
@@ -122,7 +155,7 @@ export default function PermissionList({}: Props) {
               />
 
               <TableBody>
-                {tableData
+                {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row: any) => (
                     <PermissionTableRow
@@ -160,4 +193,30 @@ export default function PermissionList({}: Props) {
       </Container>
     </Page>
   );
+}
+
+////--------------
+
+interface ApplySortFilterProps {
+  tableData: any[];
+  filterStatus?: string;
+  filterName?: string;
+  filterUser?: string;
+}
+
+function applySortFilter({
+  tableData,
+  filterName,
+  filterUser,
+}: ApplySortFilterProps) {
+
+  if (filterUser === "Tên quyền") {
+    if (filterName) {
+      const searchTerm = filterName.toLowerCase();
+      tableData = tableData.filter((item) =>
+        item.TENQUYEN.toLowerCase().includes(searchTerm)
+      );
+    }
+  }
+  return tableData;
 }

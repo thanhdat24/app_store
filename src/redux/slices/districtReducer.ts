@@ -12,6 +12,7 @@ interface DistrictState {
   createDistrictSuccess?: DistrictModel | null;
   updateDistrictSuccess?: Number | null;
   deleteDistrictSuccess?: DistrictModel | null;
+  error?: string | null;
 }
 
 const initialState: DistrictState = {
@@ -20,12 +21,20 @@ const initialState: DistrictState = {
   createDistrictSuccess: null,
   updateDistrictSuccess: null,
   deleteDistrictSuccess: null,
+  error: null,
 };
 
 const districtReducer = createSlice({
   name: "districtReducer",
   initialState,
   reducers: {
+    hasError(state, action) {
+      state.error = action.payload;
+      const { TENQUANHUYEN } = action.payload;
+      if (TENQUANHUYEN?.length > 0)
+        toast.error(TENQUANHUYEN[0], { autoClose: 2000 });
+      },
+
     getAllDistrictSuccess(state, action: PayloadAction<DistrictModel[]>) {
       state.districtList = action.payload;
     },
@@ -61,6 +70,7 @@ export const {
   updateDistrictSuccess,
   deleteDistrictSuccess,
   resetDistrictSuccess,
+  hasError,
 } = districtReducer.actions;
 
 export const getAllDistricts = () => {
@@ -99,8 +109,8 @@ export const createDistrict = (district: DistrictModel) => {
       const data: DistrictModel = await response.data;
       const action: PayloadAction<DistrictModel> = createDistrictSuccess(data);
       dispatch(action);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      dispatch(hasError(error.ModelState));
     }
   };
 };
@@ -115,8 +125,8 @@ export const updateDistrict = (district: DistrictModel) => {
       const data: Number = await response.status;
       const action: PayloadAction<Number> = updateDistrictSuccess(data);
       dispatch(action);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      dispatch(hasError(error.ModelState));
     }
   };
 };
