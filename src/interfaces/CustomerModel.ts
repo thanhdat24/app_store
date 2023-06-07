@@ -24,19 +24,26 @@ export interface Loaikh {
   KHACHHANGs: null;
 }
 
-export interface Quanhuyen {
-  IDQUANHUYEN: number;
-  TENQUANHUYEN: string;
-  TUYENTHUs: Tuyenthu[];
-  XAPHUONGs: any[];
-}
-
 export interface Tuyenthu {
   IDTUYENTHU: number;
-  IDQUANHUYEN: number;
+  IDXAPHUONG: number;
   MATUYENTHU: string;
   TENTUYENTHU: string;
   KHACHHANGs: null;
   PHANQUYENTUYENTHUs: any[];
-  QUANHUYEN?: Quanhuyen;
+  XAPHUONG: Xaphuong;
+}
+
+export interface Xaphuong {
+  IDXAPHUONG: number;
+  IDQUANHUYEN: number;
+  TENXAPHUONG: string;
+  QUANHUYEN: Quanhuyen;
+  TUYENTHUs: any[];
+}
+
+export interface Quanhuyen {
+  IDQUANHUYEN: number;
+  TENQUANHUYEN: string;
+  XAPHUONGs: null;
 }

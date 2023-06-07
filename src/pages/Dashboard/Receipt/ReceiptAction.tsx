@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 // @mui
 import { Container } from "@mui/material";
@@ -9,15 +9,36 @@ import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
 import CustomerForm from "../../../sections/@dashboard/user/Form/CustomerForm";
 import ReceiptForm from "../../../sections/@dashboard/receipt/ReceiptForm";
+import {
+  getAllCustomer,
+  getDetailCustomer,
+} from "../../../redux/slices/customerReducer";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { getAllBillingPeriod } from "../../../redux/slices/billingPeriodReducer";
 
 type Props = {};
 
 export default function ReceiptAction({}: Props) {
+  const dispatch = useAppDispatch();
+
   const { pathname } = useLocation();
 
   const { id = "" } = useParams();
 
   const isEdit = pathname.includes("edit");
+
+  const { customerList } = useAppSelector((state) => state.customer);
+
+  const currentCustomer = customerList?.find(
+    (customer) => customer.IDKHACHHANG === Number(id)
+  );
+
+  console.log("currentCustomer", currentCustomer);
+
+  useEffect(() => {
+    dispatch(getAllCustomer());
+    dispatch(getAllBillingPeriod());
+  }, [dispatch]);
 
   return (
     <Page title="Receipt: Create a new receipt">
@@ -31,7 +52,7 @@ export default function ReceiptAction({}: Props) {
           ]}
         />
 
-        <ReceiptForm isEdit={isEdit} />
+        <ReceiptForm isEdit={isEdit} currentCustomer={currentCustomer} />
       </Container>
     </Page>
   );

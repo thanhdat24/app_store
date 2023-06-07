@@ -21,14 +21,18 @@ import { fDate } from "../../../utils/formatTime";
 
 type Props = {
   row: any;
+  selected: boolean;
   onDeleteRow: () => void;
   onEditRow: () => void;
+  onSelectRow: () => void;
 };
 
 export default function CustomerTableRow({
   row,
+  selected,
   onDeleteRow,
   onEditRow,
+  onSelectRow,
 }: Props) {
   const [openMenu, setOpenMenuActions] = useState<null | HTMLElement>(null); // Add type annotation
 
@@ -52,7 +56,10 @@ export default function CustomerTableRow({
     TUYENTHU,
   } = row;
   return (
-    <TableRow hover>
+    <TableRow hover selected={selected}>
+      <TableCell padding="checkbox">
+        <Checkbox checked={selected} onClick={onSelectRow} />
+      </TableCell>
       <TableCell align="left">{IDKHACHHANG}</TableCell>
       <TableCell align="left">{MAKHACHHANG}</TableCell>
       <TableCell align="left">{HOTEN}</TableCell>
@@ -63,8 +70,8 @@ export default function CustomerTableRow({
         <Label
           variant={"ghost"}
           color={
-            (LOAIKH.TENLOAI === "Hộ dân" && "info") ||
-            (LOAIKH.TENLOAI === "Doanh nghiệp" && "error") ||
+            (LOAIKH.TENLOAI === "Hộ Dân" && "info") ||
+            (LOAIKH.TENLOAI === "Doanh Nghiệp" && "error") ||
             "default"
           }
           sx={{ textTransform: "uppercase", mb: 1 }}

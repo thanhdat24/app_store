@@ -9,6 +9,8 @@ import revenueRoutesReducer from "./slices/revenueRoutesReducer";
 import staffReducer from "./slices/staffReducer";
 import adminReducer from "./slices/adminReducer";
 import detailPermissionReducer from "./slices/detailPermissionReducer";
+import billingPeriodReducer from "./slices/billingPeriodReducer";
+import receiptReducer from "./slices/receiptReducer";
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +23,8 @@ export const store = configureStore({
     revenueRoutes: revenueRoutesReducer,
     admin: adminReducer,
     detailPermission: detailPermissionReducer,
+    billingPeriod : billingPeriodReducer,
+    receipt: receiptReducer,
   },
 });
 

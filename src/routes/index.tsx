@@ -106,7 +106,7 @@ export default function Router({}: Props) {
               index: true,
             },
             { path: "list", element: <ReceiptList /> },
-            { path: "new", element: <ReceiptAction /> },
+            { path: "user/:id/new", element: <ReceiptAction /> },
           ],
         },
         {
@@ -167,7 +167,6 @@ export default function Router({}: Props) {
             { path: "list", element: <RevenueRoutesList /> },
             { path: "new", element: <RevenueRoutesAction /> },
             { path: ":id/edit", element: <RevenueRoutesAction /> },
-
           ],
         },
       ],
