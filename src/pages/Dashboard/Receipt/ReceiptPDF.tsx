@@ -16,10 +16,11 @@ interface ReceiptPDFProps {
 }
 export default function ReceiptPDF({ receipt }: ReceiptPDFProps) {
   console.log("receipt", receipt);
-  const { MAUSOPHIEU, KHACHHANG, CHITIETPHIEUTHUs, NHANVIEN } = receipt;
+  const { MAUSOPHIEU, KHACHHANG, CHITIETPHIEUTHUs, NHANVIEN, TRANGTHAIPHIEU } =
+    receipt;
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
+      <Page size="A5" style={styles.page}>
         <View style={[styles.gridContainer, styles.mb25]}>
           <View style={{ alignItems: "flex-start", flexDirection: "column" }}>
             <Text style={[styles.h3]}>VNPT CẦN THƠ</Text>
@@ -47,7 +48,7 @@ export default function ReceiptPDF({ receipt }: ReceiptPDFProps) {
             >
               <Text style={styles.h3}>Mẫu số 01 - TT</Text>
               <Text style={styles.fontItalic}>
-                (Ban hành theo Thông tư số: 200/2014/TT-BTC
+                (Ban hành theo Thông tư số: 200/2014/TT
               </Text>
               <Text style={styles.fontItalic}>Ngày 22/12/2014 của BTC)</Text>
             </View>
@@ -93,35 +94,48 @@ export default function ReceiptPDF({ receipt }: ReceiptPDFProps) {
             </View>
           </View>
         </View>
-        <View style={{ flexDirection: "column", marginTop: 5 }}>
-          <Text>
-            Họ và tên người nộp tiền: &ensp;
-            <Text style={[styles.fontBold]}>{KHACHHANG.HOTEN}</Text>
-          </Text>
-          <Text>
-            Loại người nộp tiền: &ensp;
-            <Text style={[styles.fontBold]}>{KHACHHANG.LOAIKH.TENLOAI}</Text>
-          </Text>
-          <Text>
-            Địa chỉ: &ensp;{" "}
-            <Text style={[styles.fontBold]}>{KHACHHANG.DIACHI}</Text>
-          </Text>
-          <Text>
-            Lý do nộp: &ensp;{" "}
-            <Text style={[styles.fontBold]}>{CHITIETPHIEUTHUs[0].NOIDUNG}</Text>
-          </Text>
-          <Text>
-            Số tiền: &ensp;{" "}
-            <Text style={[styles.fontBold]}>
-              {formatPriceInVND(CHITIETPHIEUTHUs[0].SOTIEN)}
+        <View style={[styles.gridContainer, styles.mt15]}>
+          <View style={{ flexDirection: "column" }}>
+            <Text>
+              Họ và tên người nộp tiền: &ensp;
+              <Text style={[styles.fontBold]}>{KHACHHANG.HOTEN}</Text>
             </Text>
-            &ensp; (Viết bằng chữ): &ensp;
-            <Text style={[styles.fontBold]}>
+            <Text>
+              Loại người nộp tiền: &ensp;
+              <Text style={[styles.fontBold]}>{KHACHHANG.LOAIKH.TENLOAI}</Text>
+            </Text>
+            <Text>
+              Địa chỉ: &ensp;{" "}
+              <Text style={[styles.fontBold]}>{KHACHHANG.DIACHI}</Text>
+            </Text>
+            <Text>
+              Lý do nộp: &ensp;{" "}
+              <Text style={[styles.fontBold]}>
+                {CHITIETPHIEUTHUs[0].NOIDUNG}
+              </Text>
+            </Text>
+            <Text>
+              Số tiền: &ensp;{" "}
+              <Text style={[styles.fontBold]}>
+                {formatPriceInVND(CHITIETPHIEUTHUs[0].SOTIEN)}
+              </Text>
+              &ensp; (Viết bằng chữ): &ensp;
+              <Text style={[styles.fontBold]}>
+                {" "}
+                {VNnum2words(CHITIETPHIEUTHUs[0].SOTIEN)}
+              </Text>
+            </Text>
+            <Text>Kièm theo: {Array(40).fill(".").join("")} Chứng từ gốc</Text>
+          </View>
+          {TRANGTHAIPHIEU && (
+            <View style={[styles.gridColumn]}>
               {" "}
-              {VNnum2words(CHITIETPHIEUTHUs[0].SOTIEN)}
-            </Text>
-          </Text>
-          <Text>Kièm theo: {Array(40).fill(".").join("")} Chứng từ gốc</Text>
+              <Image
+                source="/logo/logo_confirm_receipt.png"
+                style={{ height: 100 }}
+              />
+            </View>
+          )}
         </View>
         <View style={[styles.gridEvenly, styles.mt15]}>
           <View style={[styles.gridItem]}>
@@ -150,6 +164,9 @@ export default function ReceiptPDF({ receipt }: ReceiptPDFProps) {
           </View>
         </View>
       </Page>
+      <View style={[styles.footer]}>
+        <Image source="/logo/logo_congty.png" style={[styles.col6]} />
+      </View>
     </Document>
   );
 }

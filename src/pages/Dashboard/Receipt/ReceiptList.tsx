@@ -37,6 +37,8 @@ import ReceiptTableToolbar from "./ReceiptTableToolbar";
 import useToggle from "../../../hooks/useToggle";
 import { PDFViewer } from "@react-pdf/renderer";
 import ReceiptPDF from "./ReceiptPDF";
+import AlertDialog from "../../../components/Dialog";
+import { resetCasher, updateReceiptStatus } from "../../../redux/slices/cashierReducer";
 
 type Props = {};
 
@@ -65,13 +67,21 @@ export default function ReceiptList({}: Props) {
 
   const { toggle: open, onOpen, onClose } = useToggle(false);
 
+  const [openConfirm, setOpenConfirm] = useState(false);
+
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
   const { receiptList, deleteReceiptSuccess } = useAppSelector(
     (state) => state.receipt
+  );
+
+  const { updateReceiptStatusSuccess } = useAppSelector(
+    (state) => state.cashier
   );
   console.log("receiptList", receiptList);
   useEffect(() => {
     dispatch(getAllReceipt());
-  }, [dispatch, deleteReceiptSuccess]);
+  }, [dispatch, deleteReceiptSuccess, updateReceiptStatusSuccess]);
 
   const {
     dense,
@@ -132,6 +142,16 @@ export default function ReceiptList({}: Props) {
     onOpen();
   };
 
+  const handleOpenDialog = (id: number) => {
+    setSelectedId(id);
+    setOpenConfirm(true);
+  };
+
+  const handleConfirmRow = async (id: number) => {
+    await dispatch(updateReceiptStatus(id));
+    setOpenConfirm(false);
+  };
+
   const handleFilterName = (filterName: string) => {
     setFilterName(filterName);
     setPage(0);
@@ -154,6 +174,12 @@ export default function ReceiptList({}: Props) {
     "Loại khách hàng": row.KHACHHANG.LOAIKH.TENLOAI,
     "Giá trị": row.CHITIETPHIEUTHUs[0]?.SOTIEN,
   }));
+
+  useEffect(() => {
+    if (updateReceiptStatusSuccess) {
+      dispatch(resetCasher());
+    }
+  }, [updateReceiptStatusSuccess]);
 
   return (
     <Page title="Receipt: List">
@@ -212,6 +238,7 @@ export default function ReceiptList({}: Props) {
                       onDeleteRow={() => handleDeleteRow(row.IDPHIEU)}
                       onEditRow={() => handleEditRow(row.IDPHIEU)}
                       onViewRow={() => handleViewRow(row)}
+                      onConfirmRow={() => handleOpenDialog(row.IDPHIEU)}
                     />
                   ))}
 
@@ -261,6 +288,18 @@ export default function ReceiptList({}: Props) {
           </Box>
         </Box>
       </Dialog>
+      <AlertDialog
+        open={openConfirm}
+        title={"Xác nhận thu phiếu này?"}
+        onConfirm={() => {
+          if (selectedId !== null) {
+            handleConfirmRow(selectedId);
+          }
+        }}
+        onClose={() => setOpenConfirm(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      />
     </Page>
   );
 }

@@ -103,7 +103,7 @@ export const createReceipt = (receipt: ReceiptModel) => {
 export const updateReceipt = (receipt: ReceiptModel) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response = await axios.put(
+      const response = await axios.patch(
         `api/PHIEUTHUs/${receipt.IDPHIEU}`,
         receipt
       );

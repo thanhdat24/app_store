@@ -25,6 +25,7 @@ type Props = {
   onDeleteRow: () => void;
   onEditRow: () => void;
   onViewRow: () => void;
+  onConfirmRow : () => void;
 };
 
 export default function ReceiptTableRow({
@@ -32,6 +33,7 @@ export default function ReceiptTableRow({
   onDeleteRow,
   onEditRow,
   onViewRow,
+  onConfirmRow,
 }: Props) {
   const [openMenu, setOpenMenuActions] = useState<null | HTMLElement>(null); // Add type annotation
 
@@ -91,6 +93,7 @@ export default function ReceiptTableRow({
         {!TRANGTHAIPHIEU && (
           <Button
             color="secondary"
+            onClick={onConfirmRow}
             sx={{
               borderRadius: 2,
               textTransform: "none",

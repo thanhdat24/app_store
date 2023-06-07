@@ -39,6 +39,7 @@ import {
 import { CustomerModel } from "../../../interfaces/CustomerModel";
 import CustomerTableRow from "./CustomerTableRow";
 import CustomerTableToolbar from "./CustomerTableToolbar";
+import { toast } from "react-toastify";
 
 type Props = {};
 
@@ -173,8 +174,19 @@ export default function CustomerList({}: Props) {
                 sx={{ borderRadius: 2, textTransform: "none" }}
                 variant="contained"
                 component={RouterLink}
-                to={PATH_DASHBOARD.receipt.new(selected[0])}
-                disabled={selected.length === 0 || selected.length > 1}
+                to={
+                  selected.length > 0
+                    ? PATH_DASHBOARD.receipt.new(selected[0])
+                    : ""
+                }
+                onClick={() =>
+                  selected.length === 0 &&
+                  toast.warning("Chọn ít nhất 1 khách hàng để tạo!", {
+                    autoClose: 2000,
+                    position: "top-center",
+                  })
+                }
+                // disabled={selected.length === 0 || selected.length > 1}
                 startIcon={<Iconify icon={"eva:plus-fill"} />}
               >
                 Tạo phiếu thu
