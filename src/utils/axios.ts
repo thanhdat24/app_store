@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { HOST_API } from './config';
+import axios from "axios";
+import { HOST_API } from "./config";
 
 // config
 
@@ -11,7 +11,10 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
+  (error) =>
+    Promise.reject(
+      (error.response && error.response.data) || "Something went wrong"
+    )
 );
 
 export default axiosInstance;
