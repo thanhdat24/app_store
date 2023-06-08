@@ -1,19 +1,37 @@
-import PropTypes from "prop-types";
-import { Navigate } from "react-router-dom";
+import { FC, ReactNode, useState } from "react";
+import { Navigate, useLocation } from "react-router-dom";
+// hooks
 import { useAppSelector } from "../redux/store";
-// routes
-import { PATH_DASHBOARD, PATH_PAGE } from "../routes/paths";
-
-// ----------------------------------------------------------------------
+// sections
+import { Login } from "../sections/auth";
 
 interface AuthGuardProps {
-  children: PropTypes.ReactNodeLike;
+  children: ReactNode;
 }
 
-export default function AuthGuard({ children }: AuthGuardProps) {
-  // const { isAuthenticated, userLogin } = useAppSelector((state) => state.admin);
-  // if (isAuthenticated && userLogins?.role === "quản trị") {
-  //   return <Navigate to={PATH_DASHBOARD.general.dashboard} />;
-  // }
+const AuthGuard: FC<AuthGuardProps> = ({ children }) => {
+  // const { isAuthenticated, isInitialized } = useAuth();
+  const { isAuthenticated, userLogin } = useAppSelector((state) => state.admin);
+  const { pathname } = useLocation();
+  const [requestedLocation, setRequestedLocation] = useState<string | null>(
+    null
+  );
+  console.log("requestedLocation", requestedLocation);
+  console.log("pathname", pathname);
+
+  if (!isAuthenticated && !userLogin) {
+    if (pathname !== requestedLocation) {
+      setRequestedLocation(pathname);
+    }
+    return <Login />;
+  }
+
+  if (requestedLocation && pathname !== requestedLocation) {
+    setRequestedLocation(null);
+    return <Navigate to={requestedLocation} />;
+  }
+
   return <>{children}</>;
-}
+};
+
+export default AuthGuard;
