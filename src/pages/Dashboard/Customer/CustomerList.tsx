@@ -53,7 +53,7 @@ const TABLE_HEAD = [
   { id: "" },
   { id: "id", label: "Id", align: "left" },
   { id: "MAKHACHHANG", label: "Mã", align: "left" },
-  { id: "IDKHACHHANG", label: "Họ tên", align: "left" },
+  { id: "HOTEN", label: "Họ tên", align: "left" },
   { id: "CMT", label: "CMT", align: "left" },
   { id: "NGAYCAP", label: "Ngày cấp", align: "left" },
   { id: "DIACHI", label: "Địa chỉ", align: "left" },
@@ -65,12 +65,14 @@ const TABLE_HEAD = [
 export default function CustomerList({}: Props) {
   const dispatch = useAppDispatch();
 
-  const { deleteCustomerSuccess } = useAppSelector((state) => state.customer);
+  const { customerList, deleteCustomerSuccess } = useAppSelector(
+    (state) => state.customer
+  );
+
   useEffect(() => {
     dispatch(getAllCustomer());
   }, [dispatch, deleteCustomerSuccess]);
 
-  const { customerList } = useAppSelector((state) => state.customer);
   console.log("customerList", customerList);
 
   const {
@@ -123,7 +125,7 @@ export default function CustomerList({}: Props) {
   };
 
   const handleEditRow = (id: number) => {
-    // navigate(PATH_DASHBOARD.user.edit(id));
+    navigate(PATH_DASHBOARD.user.edit(id));
   };
 
   const handleFilterName = (filterName: string) => {

@@ -38,7 +38,7 @@ export default function RevenueRoutesAction({}: Props) {
     <Page title="RevenueRoutes: Create a new Revenue Routes">
       <Container maxWidth={"lg"}>
         <HeaderBreadcrumbs
-          heading={!isEdit ? "Tạo tuyến thu" : "Chỉnh tuyến thu"}
+          heading={!isEdit ? "Tạo tuyến thu" : "Chỉnh sửa tuyến thu"}
           links={[
             { name: "Trang chủ", href: PATH_DASHBOARD.root },
             { name: "Tuyến thu", href: PATH_DASHBOARD.revenueRoutes.list },

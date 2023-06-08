@@ -9,33 +9,47 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { LoadingButton } from "@mui/lab";
-import { Box, Card, Grid, Switch, Typography } from "@mui/material";
+import { Box, Card, Grid, Stack, Switch, Typography } from "@mui/material";
 // components
 import Label from "../../../components/Label";
 import dayjs, { Dayjs } from "dayjs";
 import { FormProvider, RHFTextField } from "../../../components/hook-form";
 import RHFSelect from "../../../components/hook-form/RHFSelect";
 import Iconify from "../../../components/Iconify";
+import { BillingPeriodModel } from "../../../interfaces/BillingPeriodModel";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { createBillingPeriod, resetBillingPeriod, updateBillingPeriod } from "../../../redux/slices/billingPeriodReducer";
+import { PATH_DASHBOARD } from "../../../routes/paths";
 
 type Props = {
   isEdit: boolean;
+  currentBillingPeriod: BillingPeriodModel | undefined;
 };
 
-export default function BillingPeriodForm({ isEdit }: Props) {
-  const NewUserSchema = Yup.object().shape({
+export default function BillingPeriodForm({
+  isEdit,
+  currentBillingPeriod,
+}: Props) {
+  const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+
+  const { createBillingPeriodSuccess, updateBillingPeriodSuccess } =
+    useAppSelector((state) => state.billingPeriod);
+
+  const BillingPeriodSchema = Yup.object().shape({
     TENKYTHU: Yup.string().required("Mẫu số phiếu là bắt buộc"),
   });
 
   const defaultValues = useMemo(
     () => ({
-      TENKYTHU: dayjs(new Date()),
+      TENKYTHU: currentBillingPeriod?.TENKYTHU || "",
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [currentBillingPeriod]
   );
 
   const methods = useForm({
-    resolver: yupResolver(NewUserSchema),
+    resolver: yupResolver(BillingPeriodSchema),
     defaultValues,
   });
 
@@ -51,21 +65,36 @@ export default function BillingPeriodForm({ isEdit }: Props) {
   const values = watch();
 
   useEffect(() => {
-    if (isEdit) {
+    if (isEdit && currentBillingPeriod) {
       reset(defaultValues);
     }
     if (!isEdit) {
       reset(defaultValues);
     }
-  }, [isEdit]);
+  }, [isEdit, currentBillingPeriod]);
 
   const onSubmit = async (account: any) => {
     try {
       console.log(account);
+      if (isEdit) {
+        account = { ...account, IDKYTHU: currentBillingPeriod?.IDKYTHU };
+        await dispatch(updateBillingPeriod(account));
+      } else {
+        await dispatch(createBillingPeriod(account));
+      }
     } catch (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (createBillingPeriodSuccess || updateBillingPeriodSuccess) {
+      navigate(PATH_DASHBOARD.billingPeriod.list);
+    }
+    return () => {
+      dispatch(resetBillingPeriod());
+    };
+  }, [createBillingPeriodSuccess, updateBillingPeriodSuccess]);
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -95,16 +124,15 @@ export default function BillingPeriodForm({ isEdit }: Props) {
                 )}
               />
             </Box>
-            <Box sx={{ display: "flex", justifyContent: "end" }}>
+            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
               <LoadingButton
-                sx={{ mt: 3 }}
                 type="submit"
                 variant="contained"
                 loading={isSubmitting}
               >
                 Lưu thay đổi
               </LoadingButton>
-            </Box>
+            </Stack>
           </Card>
         </Grid>
       </Grid>
