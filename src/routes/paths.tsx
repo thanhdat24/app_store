@@ -32,7 +32,7 @@ export const PATH_DASHBOARD = {
     new: path(ROOTS_DASHBOARD, "/user/new"),
     list: path(ROOTS_DASHBOARD, "/user/list"),
     account: path(ROOTS_DASHBOARD, "/user/account"),
-    edit: (name: string) => path(ROOTS_DASHBOARD, `/user/${name}/edit`),
+    edit: (id: number) => path(ROOTS_DASHBOARD, `/user/${id}/edit`),
   },
   userType: {
     root: path(ROOTS_DASHBOARD, "/user-type"),
@@ -63,6 +63,7 @@ export const PATH_DASHBOARD = {
     root: path(ROOTS_DASHBOARD, "/billing-period"),
     list: path(ROOTS_DASHBOARD, "/billing-period/list"),
     new: path(ROOTS_DASHBOARD, "/billing-period/new"),
+    edit: (id: number) => path(ROOTS_DASHBOARD, `/billing-period/${id}/edit`),
   },
   permission: {
     root: path(ROOTS_DASHBOARD, "/permission"),

@@ -35,18 +35,27 @@ import { getAllCustomerTypes } from "../../../../redux/slices/customerTypeReduce
 import {
   createCustomer,
   resetCustomer,
+  updateCustomer,
 } from "../../../../redux/slices/customerReducer";
 import { PATH_DASHBOARD } from "../../../../routes/paths";
 import { getAllRevenueRoutes } from "../../../../redux/slices/revenueRoutesReducer";
+import { CustomerModel } from "../../../../interfaces/CustomerModel";
 
 type Props = {
   isEdit: boolean;
+  currentCustomer: CustomerModel | undefined;
 };
 
-export default function CustomerForm({ isEdit }: Props) {
+export default function CustomerForm({ isEdit, currentCustomer }: Props) {
+  
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
+
+  const { createCustomerSuccess, updateCustomerSuccess } = useAppSelector(
+    (state) => state.customer
+  );
+
   useEffect(() => {
     dispatch(getAllCustomerTypes());
     dispatch(getAllRevenueRoutes());
@@ -58,16 +67,13 @@ export default function CustomerForm({ isEdit }: Props) {
   const { customerTypeList } = useAppSelector(
     (state: RootState) => state.customerType
   );
-  const { createCustomerSuccess } = useAppSelector(
-    (state: RootState) => state.customer
-  );
 
   console.log("revenueRoutesList", revenueRoutesList);
 
   const [data, setData] = useState({
-    setWard: "",
-    setDistrict: "",
-    setIDXAPHUONG: "",
+    setWard: currentCustomer?.TUYENTHU.XAPHUONG.TENXAPHUONG || "",
+    setDistrict: currentCustomer?.TUYENTHU.XAPHUONG.QUANHUYEN.TENQUANHUYEN || "",
+    setIDXAPHUONG: currentCustomer?.TUYENTHU.XAPHUONG.IDXAPHUONG || "",
   });
 
   const handleSelectrevenueRoutes = async (selectedValue: number) => {
@@ -94,25 +100,26 @@ export default function CustomerForm({ isEdit }: Props) {
     NGAYCAP: Yup.string().required("Ngày cấp là bắt buộc"),
     CMT: Yup.string().required("Chứng minh thư là bắt buộc"),
     IDTUYENTHU: Yup.string().required("Phiếu thu là bắt buộc"),
-    // QUANHUYEN: Yup.string().required("Quận huyện là bắt buộc"),
-    // PHUONGXA: Yup.string().required("Phường xã là bắt buộc"),
     IDLOAIKH: Yup.string().required("Loại khách hàng là bắt buộc"),
   });
 
   const defaultValues = useMemo(
     () => ({
-      MAKHACHHANG: "",
-      HOTEN: "",
-      DIACHI: "",
-      NGAYCAP: dayjs(new Date()),
-      CMT: "",
-      IDTUYENTHU: "",
-      // NGAYSINH: dayjs("2022-04-17"),
-      PHUONGXA: "",
-      IDLOAIKH: "",
+      MAKHACHHANG: currentCustomer?.MAKHACHHANG || "",
+      HOTEN: currentCustomer?.HOTEN || "",
+      DIACHI: currentCustomer?.DIACHI || "",
+      NGAYCAP: dayjs(currentCustomer?.NGAYCAP) || dayjs(new Date()),
+      CMT: currentCustomer?.CMT || "",
+      IDTUYENTHU: currentCustomer?.TUYENTHU?.IDTUYENTHU || "",
+      TENXAPHUONG: currentCustomer?.TUYENTHU.XAPHUONG.IDXAPHUONG || "",
+      IDLOAIKH: currentCustomer?.IDLOAIKH || "",  
+      // NGAYTAO: dayjs(new Date()),
+      // NGAYCHINHSUA: dayjs(new Date()),
+      // TRANGTHAI: "",
+      TENQUANHUYEN: currentCustomer?.TUYENTHU.XAPHUONG.QUANHUYEN.IDQUANHUYEN|| "",
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [currentCustomer]
   );
 
   const methods = useForm({
@@ -132,39 +139,42 @@ export default function CustomerForm({ isEdit }: Props) {
   const values = watch();
 
   useEffect(() => {
-    if (isEdit) {
+    if (isEdit && currentCustomer) {
       reset(defaultValues);
     }
     if (!isEdit) {
       reset(defaultValues);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEdit]);
+  }, [isEdit, currentCustomer]);
 
   const onSubmit = async (account: any) => {
     try {
-      const convertedAccount = {
-        ...account,
-        IDTUYENTHU: Number(account.IDTUYENTHU),
-        IDXAPHUONG: Number(data.setIDXAPHUONG),
-        IDLOAIKH: Number(account.IDLOAIKH),
-        NGAYCAP: dayjs(account.NGAYCAP).format("DD-MM-YYYY"),
-      };
-      console.log(convertedAccount);
-      await dispatch(createCustomer(convertedAccount));
+      console.log(account);
+      if (isEdit) {
+        account = {
+          ...account,
+          IDKHACHHANG: currentCustomer?.IDKHACHHANG,
+          };
+        await dispatch(updateCustomer(account));
+      } else {
+        await dispatch(createCustomer(account));
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
+
+
   useEffect(() => {
-    if (createCustomerSuccess) {
+    if (createCustomerSuccess || updateCustomerSuccess) {
       navigate(PATH_DASHBOARD.user.list);
     }
     return () => {
       dispatch(resetCustomer());
     };
-  }, [createCustomerSuccess]);
+  }, [createCustomerSuccess, updateCustomerSuccess]);
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -182,7 +192,11 @@ export default function CustomerForm({ isEdit }: Props) {
                 },
               }}
             >
-              <RHFTextField name="MAKHACHHANG" label="Mã nhân viên" />
+              <RHFTextField
+                // disabled={isEdit}
+                name="MAKHACHHANG"
+                label="Mã khách hàng"
+              />
               <RHFTextField name="HOTEN" label="Họ tên " />
 
               <RHFSelect
@@ -200,17 +214,17 @@ export default function CustomerForm({ isEdit }: Props) {
               </RHFSelect>
 
               <RHFTextField
-                name="QUANHUYEN"
+                name="TENQUANHUYEN"
                 label="Quận huyện"
                 value={data.setDistrict}
-                disabled
+                // disabled
               />
 
               <RHFTextField
-                name="PHUONGXA"
-                label="Phường xã"
+                name="TENXAPHUONG"
+                label="Xã phường"
                 value={data.setWard}
-                disabled
+                // disabled
               />
               {/* <Controller
                 name="NGAYSINH"

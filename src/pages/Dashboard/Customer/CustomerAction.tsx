@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 // @mui
 import { Container } from "@mui/material";
@@ -8,16 +8,30 @@ import { PATH_DASHBOARD } from "../../../routes/paths";
 import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
 import CustomerForm from "../../../sections/@dashboard/user/Form/CustomerForm";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { getAllCustomer } from "../../../redux/slices/customerReducer";
 
 type Props = {};
 
 export default function CustomerAction({}: Props) {
+
+  const dispatch = useAppDispatch();
+
   const { pathname } = useLocation();
 
   const { id = "" } = useParams();
 
   const isEdit = pathname.includes("edit");
+  
+  const { customerList } = useAppSelector((state) => state.customer);
 
+  const currentCustomer = customerList?.find(
+    (customer) => customer.IDKHACHHANG === Number(id)
+  );
+
+  useEffect(() => {
+    dispatch(getAllCustomer());
+  }, [dispatch]);
   return (
     <Page title="Customer: Create a new customer">
       <Container maxWidth={"lg"}>
@@ -30,7 +44,7 @@ export default function CustomerAction({}: Props) {
           ]}
         />
 
-        <CustomerForm isEdit={isEdit} />
+        <CustomerForm isEdit={isEdit} currentCustomer={currentCustomer}/>
       </Container>
     </Page>
   );

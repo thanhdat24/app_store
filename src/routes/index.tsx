@@ -12,12 +12,11 @@ import { PATH_AFTER_LOGIN } from "../utils/config";
 import GeneralApp from "../pages/Dashboard/GeneralApp";
 import CustomerList from "../pages/Dashboard/Customer/CustomerList";
 import Account from "../pages/Dashboard/Customer/Account";
-import CustomerActions from "../pages/Dashboard/Customer/CustomerAction";
+import CustomerAction from "../pages/Dashboard/Customer/CustomerAction";
 import CustomerTypeList from "../pages/Dashboard/Customer/CustomerTypeList";
 import CustomerActionType from "../pages/Dashboard/Customer/CustomerActionType";
 import ReceiptList from "../pages/Dashboard/Receipt/ReceiptList";
 import ReceiptAction from "../pages/Dashboard/Receipt/ReceiptAction";
-import BillingPeriodNew from "../pages/Dashboard/BillingPeriod/BillingPeriodNew";
 import BillingPeriodList from "../pages/Dashboard/BillingPeriod/BillingPeriodList";
 import StaffList from "../pages/Dashboard/Staff/StaffList";
 import StaffAction from "../pages/Dashboard/Staff/StaffAction";
@@ -29,6 +28,7 @@ import WardsAction from "../pages/Dashboard/Wards/WardsAction";
 import WardsList from "../pages/Dashboard/Wards/WardsList";
 import RevenueRoutesList from "../pages/Dashboard/RevenueRoutes/RevenueRoutesList";
 import RevenueRoutesAction from "../pages/Dashboard/RevenueRoutes/RevenueRoutesAction";
+import BillingPeriodAction from "../pages/Dashboard/BillingPeriod/BillingPeriodAction";
 
 type Props = {};
 
@@ -70,8 +70,9 @@ export default function Router({}: Props) {
             },
 
             { path: "list", element: <CustomerList /> },
-            { path: "new", element: <CustomerActions /> },
+            { path: "new", element: <CustomerAction /> },
             { path: "account", element: <Account /> },
+            { path: ":id/edit", element: <CustomerAction /> },
           ],
         },
         {
@@ -95,7 +96,8 @@ export default function Router({}: Props) {
               index: true,
             },
             { path: "list", element: <BillingPeriodList /> },
-            { path: "new", element: <BillingPeriodNew /> },
+            { path: "new", element: <BillingPeriodAction /> },
+            { path: ":id/edit", element: <BillingPeriodAction /> },
           ],
         },
         {
