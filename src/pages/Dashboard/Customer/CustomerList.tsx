@@ -59,6 +59,7 @@ const TABLE_HEAD = [
   { id: "DIACHI", label: "Địa chỉ", align: "left" },
   { id: "LOAIKH", label: "Loại", align: "left" },
   { id: "TENTUYENTHU", label: "Tuyến thu", align: "left" },
+  { id: "TRANGTHAI", label: "Trạng thái", align: "left" },
   { id: "THAOTAC", label: "Thao tác" },
 ];
 
@@ -161,7 +162,7 @@ export default function CustomerList({}: Props) {
           heading="Danh sách khách hàng"
           links={[
             { name: "Trang chủ", href: PATH_DASHBOARD.root },
-            { name: "Khách hàng", href: PATH_DASHBOARD.user.root },
+            { name: "Khách hàng", href: PATH_DASHBOARD.user.list },
             { name: "Danh sách" },
           ]}
           action={
@@ -177,13 +178,13 @@ export default function CustomerList({}: Props) {
                 variant="contained"
                 component={RouterLink}
                 to={
-                  selected.length > 0
+                  selected.length < 2 && selected.length === 1
                     ? PATH_DASHBOARD.receipt.new(selected[0])
                     : ""
                 }
                 onClick={() =>
-                  selected.length === 0 &&
-                  toast.warning("Chọn ít nhất 1 khách hàng để tạo!", {
+                  (selected.length === 0 || selected.length > 1) &&
+                  toast.warning("Vui lòng chọn duy nhất 1 khách hàng để tạo!", {
                     autoClose: 2000,
                     position: "top-center",
                   })

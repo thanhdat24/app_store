@@ -6,6 +6,7 @@ import { Box, Link, Typography } from "@mui/material";
 // hooks
 // routes
 import { PATH_DASHBOARD } from "../../../routes/paths";
+import { useAppSelector } from "../../../redux/store";
 // components
 
 //
@@ -26,6 +27,7 @@ const RootStyle = styled("div")(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 const NavbarAccount: React.FC = () => {
+  const { userLogin } = useAppSelector((state) => state.admin);
   return (
     <Link underline="none" color="inherit" component={RouterLink} to="/">
       <RootStyle>
@@ -41,7 +43,7 @@ const NavbarAccount: React.FC = () => {
           }}
         >
           <Typography variant="subtitle2" noWrap sx={{ color: "#fff" }}>
-            Lê Thành Đạt
+         {userLogin?.HOTEN}
           </Typography>
           <Typography
             variant="body2"

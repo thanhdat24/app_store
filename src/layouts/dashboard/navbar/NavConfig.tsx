@@ -35,16 +35,16 @@ const ICONS = {
 const navConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
-  // {
-  //   subheader: "Tổng quan",
-  //   items: [
-  //     {
-  //       title: "Thống kê",
-  //       path: PATH_DASHBOARD.general.dashboard,
-  //       icon: ICONS.analytics,
-  //     },
-  //   ],
-  // },
+  {
+    subheader: "Tổng quan",
+    items: [
+      {
+        title: "Thống kê",
+        path: PATH_DASHBOARD.general.dashboard,
+        icon: ICONS.analytics,
+      },
+    ],
+  },
 
   // MANAGEMENT
   // ----------------------------------------------------------------------

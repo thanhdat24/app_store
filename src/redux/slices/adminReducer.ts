@@ -33,8 +33,16 @@ const adminReducer = createSlice({
       toast.success("Đăng nhập thành công", { autoClose: 2000 });
     },
     hasError(state, action) {
-      if (action.payload.LoginFail.length > 0)
-        state.errorLogin = action.payload.LoginFail[0];
+      
+      switch (true) {
+        case "LoginFail" in action.payload:
+          state.errorLogin = action.payload.LoginFail[0];
+          break;
+        // Xử lý các trường hợp khác nếu cần thiết
+        default:
+          // Xử lý trường hợp mặc định nếu cần thiết
+          break;
+      }
     },
   },
 });

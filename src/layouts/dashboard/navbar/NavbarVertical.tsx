@@ -81,7 +81,6 @@ const NavbarVertical: React.FC<NavbarVerticalProps> = ({
           )} */}
         </Stack>
 
-        <NavbarAccount />
       </Stack>
 
       <NavSectionVertical navConfig={navConfig} />

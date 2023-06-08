@@ -80,7 +80,7 @@ export default function ReceiptTableToolbar({
         onChange={(event) => onFilterName(event.target.value)}
         placeholder={
           filterUser === "Thông tin khách hàng"
-            ? "Tìm kiếm theo tên"
+            ? "Tìm kiếm theo tên, mã hoặc CMT"
             : filterUser === "Mã số phiếu"
             ? "Tìm kiếm theo mã số phiếu"
             : undefined

@@ -39,6 +39,7 @@ import {
   employeePermission,
   resetEmployeePermission,
 } from "../../../redux/slices/detailPermissionReducer";
+import { toast } from "react-toastify";
 
 type Props = {};
 
@@ -125,14 +126,6 @@ export default function StaffList({}: Props) {
 
   const denseHeight = dense ? 60 : 80;
 
-  // type ApplySortFilterProps = {
-  //   tableData: StaffModel[];
-  //   comparator: (a: any, b: any) => number;
-  //   filterStatus: string;
-  //   filterUser: string;
-  //   filterName: string; // Add filterName property
-  // };
-
   const dataFiltered = applySortFilter({
     tableData,
     comparator: getComparator(order, orderBy),
@@ -176,6 +169,16 @@ export default function StaffList({}: Props) {
   };
 
   const handleUpdatePermission = async () => {
+    if (selected.length === 0)
+      return toast.warning("Vui lòng chọn ít nhất 1 Nhân Viên", {
+        autoClose: 2000,
+        position: "top-center",
+      });
+    if (selected.length > 0 && selectPermission.length === 0)
+      return toast.warning(`Vui lòng chọn ít nhất 1 Quyền`, {
+        autoClose: 2000,
+        position: "top-center",
+      });
     const result: any[] = [];
     for (let i = 0; i < selected.length; i++) {
       for (let j = 0; j < selectPermission.length; j++) {
@@ -194,6 +197,16 @@ export default function StaffList({}: Props) {
   };
 
   const handleDeletePermission = async () => {
+    if (selected.length === 0)
+      return toast.warning("Vui lòng chọn ít nhất 1 Nhân Viên", {
+        autoClose: 2000,
+        position: "top-center",
+      });
+    if (selected.length > 0 && selectPermission.length === 0)
+      return toast.warning(`Vui lòng chọn ít nhất 1 Quyền`, {
+        autoClose: 2000,
+        position: "top-center",
+      });
     const result: any[] = [];
     for (let i = 0; i < selected.length; i++) {
       for (let j = 0; j < selectPermission.length; j++) {
@@ -210,6 +223,18 @@ export default function StaffList({}: Props) {
       setSelectPermission([]);
     }
   };
+  console.log("dataFiltered", dataFiltered);
+  const dataCSV = dataFiltered.map((row, index) => ({
+    STT: index + 1,
+    "Mã nhân viên": row.MANHANVIEN,
+    "Tên nhân viên": row.HOTEN,
+    "Số điện thoại": row.SDT,
+    "Địa chỉ": row.DIACHI,
+    "Ngày sinh": row.NGAYSINH,
+    Quyền: row.CHITIETPHANQUYENs.map((item: any) => item.QUYEN.TENQUYEN).join(
+      ", "
+    ),
+  }));
 
   return (
     <Page title="StaffList: List">
@@ -230,9 +255,9 @@ export default function StaffList({}: Props) {
               }}
             >
               <Button
-                disabled={
-                  selectPermission.length === 0 || selected.length === 0
-                }
+                // disabled={
+                //   selectPermission.length === 0 || selected.length === 0
+                // }
                 color="success"
                 sx={{ borderRadius: 2, textTransform: "none" }}
                 variant="contained"
@@ -243,9 +268,9 @@ export default function StaffList({}: Props) {
               </Button>
 
               <Button
-                disabled={
-                  selectPermission.length === 0 || selected.length === 0
-                }
+                // disabled={
+                //   selectPermission.length === 0 || selected.length === 0
+                // }
                 color="error"
                 sx={{ borderRadius: 2, textTransform: "none" }}
                 variant="contained"
@@ -281,6 +306,7 @@ export default function StaffList({}: Props) {
           </Tabs>
           <Divider />
           <StaffTableToolbar
+            dataTable={dataCSV}
             filterName={filterName}
             onFilterName={handleFilterName}
             filterUser={filterUser}

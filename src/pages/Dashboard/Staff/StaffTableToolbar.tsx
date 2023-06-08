@@ -1,6 +1,15 @@
 import PropTypes from "prop-types";
-import { Stack, InputAdornment, TextField, MenuItem } from "@mui/material";
+import {
+  Stack,
+  InputAdornment,
+  TextField,
+  MenuItem,
+  Box,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
 import Iconify from "../../../components/Iconify";
+import { CSVLink } from "react-csv";
 // components
 
 // ----------------------------------------------------------------------
@@ -15,6 +24,7 @@ interface StaffTableToolbarProps {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   optionsInfo: string[];
+  dataTable: any[];
 }
 
 export default function StaffTableToolbar({
@@ -23,6 +33,7 @@ export default function StaffTableToolbar({
   onFilterName,
   onFilterUser,
   optionsInfo,
+  dataTable,
 }: StaffTableToolbarProps) {
   return (
     <Stack
@@ -85,6 +96,16 @@ export default function StaffTableToolbar({
           ),
         }}
       />
+
+      <Box className="flex items-center justi">
+        <CSVLink data={dataTable}>
+          <Tooltip title="CSV Export">
+            <IconButton>
+              <Iconify icon={"eva:save-outline"} sx={{ color: "#1976d2" }} />
+            </IconButton>
+          </Tooltip>
+        </CSVLink>
+      </Box>
     </Stack>
   );
 }

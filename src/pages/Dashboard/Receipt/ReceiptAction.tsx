@@ -14,7 +14,7 @@ import {
   getDetailCustomer,
 } from "../../../redux/slices/customerReducer";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { getAllBillingPeriod } from "../../../redux/slices/billingPeriodReducer";
+import { getAllBillingPeriods } from "../../../redux/slices/billingPeriodReducer";
 
 type Props = {};
 
@@ -37,7 +37,7 @@ export default function ReceiptAction({}: Props) {
 
   useEffect(() => {
     dispatch(getAllCustomer());
-    dispatch(getAllBillingPeriod());
+    dispatch(getAllBillingPeriods());
   }, [dispatch]);
 
   return (

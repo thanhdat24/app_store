@@ -16,7 +16,6 @@ import { useAppDispatch, useAppSelector } from "../../../redux/store";
 type Props = {};
 
 export default function BillingPeriodAction({}: Props) {
-
   const dispatch = useAppDispatch();
 
   const { pathname } = useLocation();
@@ -24,8 +23,8 @@ export default function BillingPeriodAction({}: Props) {
   const { id = "" } = useParams();
 
   const isEdit = pathname.includes("edit");
-  console.log("isEdit", isEdit);
   const { billingPeriodList } = useAppSelector((state) => state.billingPeriod);
+  console.log("billingPeriodList", billingPeriodList);
 
   const currentBillingPeriod = billingPeriodList?.find(
     (billingPeriod) => billingPeriod.IDKYTHU === Number(id)
@@ -34,8 +33,6 @@ export default function BillingPeriodAction({}: Props) {
   useEffect(() => {
     dispatch(getAllBillingPeriods());
   }, [dispatch]);
-
-
 
   return (
     <Page title="Receipt: Create a new receipt">
@@ -49,7 +46,10 @@ export default function BillingPeriodAction({}: Props) {
           ]}
         />
 
-        <BillingPeriodForm isEdit={isEdit} currentBillingPeriod={currentBillingPeriod} />
+        <BillingPeriodForm
+          isEdit={isEdit}
+          currentBillingPeriod={currentBillingPeriod}
+        />
       </Container>
     </Page>
   );
