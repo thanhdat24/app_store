@@ -18,8 +18,13 @@ import RHFSelect from "../../../components/hook-form/RHFSelect";
 import Iconify from "../../../components/Iconify";
 import { BillingPeriodModel } from "../../../interfaces/BillingPeriodModel";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { createBillingPeriod, resetBillingPeriod, updateBillingPeriod } from "../../../redux/slices/billingPeriodReducer";
+import {
+  createBillingPeriod,
+  resetBillingPeriod,
+  updateBillingPeriod,
+} from "../../../redux/slices/billingPeriodReducer";
 import { PATH_DASHBOARD } from "../../../routes/paths";
+import RHFDatePickerField from "../../../components/hook-form/RHFDatePickerField";
 
 type Props = {
   isEdit: boolean;
@@ -34,11 +39,14 @@ export default function BillingPeriodForm({
 
   const navigate = useNavigate();
 
-  const { createBillingPeriodSuccess, updateBillingPeriodSuccess } =
-    useAppSelector((state) => state.billingPeriod);
+  const {
+    createBillingPeriodSuccess,
+    updateBillingPeriodSuccess,
+    billingPeriodList,
+  } = useAppSelector((state) => state.billingPeriod);
 
   const BillingPeriodSchema = Yup.object().shape({
-    TENKYTHU: Yup.string().required("Mẫu số phiếu là bắt buộc"),
+    TENKYTHU: Yup.string().required("Kỳ thu là bắt buộc"),
   });
 
   const defaultValues = useMemo(
@@ -96,6 +104,18 @@ export default function BillingPeriodForm({
     };
   }, [createBillingPeriodSuccess, updateBillingPeriodSuccess]);
 
+  const shouldDisableDate = (date: Dayjs) => {
+    const selectedMonth = date.month();
+    const selectedYear = date.year();
+
+    return billingPeriodList?.some((item) => {
+      const itemMonth = dayjs(item.TENKYTHU, "MMMM YYYY").month();
+      const itemYear = dayjs(item.TENKYTHU, "MMMM YYYY").year();
+
+      return itemMonth === selectedMonth && itemYear === selectedYear;
+    });
+  };
+
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
@@ -109,19 +129,13 @@ export default function BillingPeriodForm({
                 rowGap: 3,
               }}
             >
-              <Controller
+              <RHFDatePickerField
+                disablePast
+                shouldDisableMonth={shouldDisableDate}
                 name="TENKYTHU"
-                control={control}
-                render={({ field }) => (
-                  <DatePicker
-                    views={["month", "year"]}
-                    label="Tên kỳ thu"
-                    value={dayjs(field.value)}
-                    onChange={(date) =>
-                      field.onChange(dayjs(date).format("MM/YYYY"))
-                    }
-                  />
-                )}
+                label="Kỳ thu"
+                views={["month", "year"]}
+                format="MMMM YYYY"
               />
             </Box>
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
