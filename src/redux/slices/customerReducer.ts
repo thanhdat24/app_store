@@ -11,6 +11,7 @@ interface CustomerState {
   createCustomerSuccess?: CustomerModel | null;
   updateCustomerSuccess?: Number | null;
   deleteCustomerSuccess?: CustomerModel | null;
+  detailCustomerSuccess?: CustomerModel | null;
   isLoading?: boolean;
   error?: string | null;
 }
@@ -20,6 +21,7 @@ const initialState: CustomerState = {
   createCustomerSuccess: null,
   updateCustomerSuccess: null,
   deleteCustomerSuccess: null,
+  detailCustomerSuccess: null,
   isLoading: false,
   error: null,
 };
@@ -63,6 +65,9 @@ const customerReducer = createSlice({
       state.updateCustomerSuccess = null;
       state.deleteCustomerSuccess = null;
     },
+    detailCustomerSuccess(state, action: PayloadAction<CustomerModel>) {
+      state.detailCustomerSuccess = action.payload;
+    },
   },
 });
 
@@ -72,6 +77,7 @@ export const {
   updateCustomerSuccess,
   resetCustomerSuccess,
   deleteCustomerSuccess,
+  detailCustomerSuccess,
   hasError,
 } = customerReducer.actions;
 
@@ -125,6 +131,21 @@ export const deleteCustomer = (id: Number) => {
       const response = await axios.delete(`api/KHACHHANGs/${id}`);
       const data: CustomerModel = await response.data.content;
       const action: PayloadAction<CustomerModel> = deleteCustomerSuccess(data);
+      dispatch(action);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const getDetailCustomer = (id: number) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      const response = await axios.get(`api/KHACHHANGs/${id}`);
+
+      const data: CustomerModel = await response.data;
+      const action: PayloadAction<CustomerModel> =
+        detailCustomerSuccess(data);
       dispatch(action);
     } catch (error) {
       console.log(error);

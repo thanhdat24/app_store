@@ -1,3 +1,4 @@
+
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // utils
 import axios from "../../utils/axios";
@@ -33,7 +34,6 @@ const billingPeriodReducer = createSlice({
       const { TENKYTHU } = action.payload;
       if (TENKYTHU?.length > 0) toast.error(TENKYTHU[0], { autoClose: 2000 });
     },
-
     getAllBillingPeriodsSuccess(
       state,
       action: PayloadAction<BillingPeriodModel[]>

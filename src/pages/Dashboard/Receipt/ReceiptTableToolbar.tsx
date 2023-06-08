@@ -9,14 +9,14 @@ import {
   IconButton,
 } from "@mui/material";
 import Iconify from "../../../components/Iconify";
-import { CSVLink } from 'react-csv';
+import { CSVLink, CSVDownload } from "react-csv";
 // components
 
 // ----------------------------------------------------------------------
 
 const INPUT_WIDTH = 250;
 
-interface CustomerTableToolbarProps {
+interface ReceiptTableToolbarProps {
   filterName: string;
   onFilterName: (value: string) => void;
   filterUser: string;
@@ -27,14 +27,14 @@ interface CustomerTableToolbarProps {
   dataTable: any[];
 }
 
-export default function CustomerTableToolbar({
+export default function ReceiptTableToolbar({
   filterName,
   filterUser,
   onFilterName,
   onFilterUser,
   optionsInfo,
   dataTable,
-}: CustomerTableToolbarProps) {
+}: ReceiptTableToolbarProps) {
   return (
     <Stack
       spacing={2}
@@ -80,9 +80,9 @@ export default function CustomerTableToolbar({
         onChange={(event) => onFilterName(event.target.value)}
         placeholder={
           filterUser === "Thông tin khách hàng"
-            ? "Tìm kiếm theo tên hoặc CMT"
-            : filterUser === "Mã khách hàng"
-            ? "Tìm kiếm theo mã khách hàng"
+            ? "Tìm kiếm theo tên"
+            : filterUser === "Mã số phiếu"
+            ? "Tìm kiếm theo mã số phiếu"
             : undefined
         }
         InputProps={{
@@ -99,11 +99,11 @@ export default function CustomerTableToolbar({
 
       <Box className="flex items-center justi">
         <CSVLink data={dataTable}>
-        <Tooltip title="CSV Export">
-          <IconButton>
-            <Iconify icon={"eva:save-outline"} sx={{ color: "#1976d2" }} />
-          </IconButton>
-        </Tooltip>
+          <Tooltip title="CSV Export">
+            <IconButton>
+              <Iconify icon={"eva:save-outline"} sx={{ color: "#1976d2" }} />
+            </IconButton>
+          </Tooltip>
         </CSVLink>
       </Box>
     </Stack>

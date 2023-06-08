@@ -94,15 +94,29 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
   console.log("data", data);
 
   const NewUserSchema = Yup.object().shape({
-    MAKHACHHANG: Yup.string().required("Mã khách hàng là bắt buộc"),
-    HOTEN: Yup.string().required("Họ tên là bắt buộc"),
+    MAKHACHHANG: Yup.string()
+      .required("Mã khách hàng là bắt buộc")
+      .matches(/^\S+$/, "Không được chứa khoảng trống")
+      .min(5, "Phải có ít nhất 5 ký tự"),
+    HOTEN: Yup.string()
+      .required("Họ tên là bắt buộc")
+      .matches(/^[a-zA-Z\sÀ-ỹ]+$/, "Họ tên chỉ chứa chữ cái"),
     DIACHI: Yup.string().required("Địa chỉ là bắt buộc"),
-    NGAYCAP: Yup.string().required("Ngày cấp là bắt buộc"),
-    CMT: Yup.string().required("Chứng minh thư là bắt buộc"),
+    NGAYCAP: Yup.date()
+      .required("Ngày cấp là bắt buộc")
+      .test("checkAge", "Ngày cấp phải nhỏ hơn ngày hiện tại", (value) => {
+        var today = new Date();
+        return value < today;
+      }),
+    CMT: Yup.string()
+      .required("Chứng minh thư là bắt buộc")
+      .matches(/^\S+$/, "Không được chứa khoảng trống")
+      .matches(/^\d+$/, "Chứng minh thư chỉ chứa số")
+      .matches(/^[0-9]{12}$/, "Chứng minh thư gồm 12 số"),
     IDTUYENTHU: Yup.string().required("Phiếu thu là bắt buộc"),
     IDLOAIKH: Yup.string().required("Loại khách hàng là bắt buộc"),
   });
-
+  
   const defaultValues = useMemo(
     () => ({
       MAKHACHHANG: currentCustomer?.MAKHACHHANG || "",

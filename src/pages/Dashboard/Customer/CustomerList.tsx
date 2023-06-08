@@ -39,6 +39,7 @@ import {
 import { CustomerModel } from "../../../interfaces/CustomerModel";
 import CustomerTableRow from "./CustomerTableRow";
 import CustomerTableToolbar from "./CustomerTableToolbar";
+import { toast } from "react-toastify";
 
 type Props = {};
 
@@ -49,6 +50,7 @@ const OPTIONS_INFO = ["Thông tin khách hàng", "Mã khách hàng"];
 const STATUS_OPTIONS = ["Tất cả", "doanh nghiệp", "hộ dân"];
 
 const TABLE_HEAD = [
+  { id: "" },
   { id: "id", label: "Id", align: "left" },
   { id: "MAKHACHHANG", label: "Mã", align: "left" },
   { id: "HOTEN", label: "Họ tên", align: "left" },
@@ -137,6 +139,21 @@ export default function CustomerList({}: Props) {
     setFilterUser(event.target.value);
   };
 
+  const dataCSV = dataFiltered.map((row, index) => ({
+    id: index,
+    IDKHACHHANG: row.IDKHACHHANG,
+    MAKHACHHANG: row.MAKHACHHANG,
+    HOTEN: row.HOTEN,
+    CMT: row.CMT,
+    DIACHI: row.DIACHI,
+    NGAYCAP: row.NGAYCAP,
+    LOAIKH: row.LOAIKH.TENLOAI,
+    TENTUYENTHU: row.TUYENTHU.TENTUYENTHU,
+    QUANHUYEN: row.TUYENTHU.XAPHUONG.QUANHUYEN.TENQUANHUYEN,
+    XAPHUONG: row.TUYENTHU.XAPHUONG.TENXAPHUONG,
+    TRANGTHAI: row.TRANGTHAI,
+  }));
+
   return (
     <Page title="Customer: List">
       <Container maxWidth={"lg"}>
@@ -148,15 +165,44 @@ export default function CustomerList({}: Props) {
             { name: "Danh sách" },
           ]}
           action={
-            <Button
-              sx={{ borderRadius: 2, textTransform: "none" }}
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.user.new}
-              startIcon={<Iconify icon={"eva:plus-fill"} />}
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2, 1fr);",
+                gap: "10px",
+              }}
             >
-              Thêm khách hàng
-            </Button>
+              <Button
+                sx={{ borderRadius: 2, textTransform: "none" }}
+                variant="contained"
+                component={RouterLink}
+                to={
+                  selected.length > 0
+                    ? PATH_DASHBOARD.receipt.new(selected[0])
+                    : ""
+                }
+                onClick={() =>
+                  selected.length === 0 &&
+                  toast.warning("Chọn ít nhất 1 khách hàng để tạo!", {
+                    autoClose: 2000,
+                    position: "top-center",
+                  })
+                }
+                // disabled={selected.length === 0 || selected.length > 1}
+                startIcon={<Iconify icon={"eva:plus-fill"} />}
+              >
+                Tạo phiếu thu
+              </Button>
+              <Button
+                sx={{ borderRadius: 2, textTransform: "none" }}
+                variant="contained"
+                component={RouterLink}
+                to={PATH_DASHBOARD.user.new}
+                startIcon={<Iconify icon={"eva:plus-fill"} />}
+              >
+                Thêm khách hàng
+              </Button>
+            </Box>
           }
         />
         <Card>
@@ -174,6 +220,7 @@ export default function CustomerList({}: Props) {
           </Tabs>
           <Divider />
           <CustomerTableToolbar
+            dataTable={dataCSV}
             filterName={filterName}
             onFilterName={handleFilterName}
             filterUser={filterUser}
@@ -184,6 +231,19 @@ export default function CustomerList({}: Props) {
           />
           {/* <Scrollbar> */}
           <TableContainer sx={{ minWidth: 800, position: "relative" }}>
+            {selected.length > 0 && (
+              <TableSelectedActions
+                dense={dense}
+                numSelected={selected.length}
+                rowCount={tableData.length}
+                onSelectAllRows={(checked) =>
+                  onSelectAllRows(
+                    checked,
+                    tableData.map((row) => row.IDKHACHHANG)
+                  )
+                }
+              />
+            )}
             <Table size={dense ? "small" : "medium"}>
               <TableHeadCustom
                 order={order}
@@ -207,8 +267,8 @@ export default function CustomerList({}: Props) {
                     <CustomerTableRow
                       key={row.IDKHACHHANG}
                       row={row}
-                      // selected={selected.includes(row.id)}
-                      // onSelectRow={() => onSelectRow(row.id)}
+                      selected={selected.includes(row.IDKHACHHANG)}
+                      onSelectRow={() => onSelectRow(row.IDKHACHHANG)}
                       onDeleteRow={() => handleDeleteRow(row.IDKHACHHANG)}
                       onEditRow={() => handleEditRow(row.IDKHACHHANG)}
                     />
@@ -259,9 +319,9 @@ function applySortFilter({
   filterUser,
 }: ApplySortFilterProps) {
   if (filterStatus === "hộ dân") {
-    filterStatus = "Hộ dân";
+    filterStatus = "Hộ Dân";
   } else if (filterStatus === "doanh nghiệp") {
-    filterStatus = "Doanh nghiệp";
+    filterStatus = "Doanh Nghiệp";
   }
 
   const stabilizedThis = tableData.map((el, index) => [el, index]);
