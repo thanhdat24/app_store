@@ -40,7 +40,7 @@ import {
 } from "../../../redux/slices/receiptReducer";
 import { ReceiptModel } from "../../../interfaces/ReceiptModel";
 import { DateField } from "@mui/x-date-pickers";
-import { fDateTime } from "../../../utils/formatTime";
+import { fDateTime, fMonthYear } from "../../../utils/formatTime";
 type Props = {
   isEdit: boolean;
   currentCustomer: CustomerModel | undefined;
@@ -70,10 +70,15 @@ export default function ReceiptForm({
 
   console.log("12345", dayjs(new Date()).format());
   const NewUserSchema = Yup.object().shape({
-    MAUSOPHIEU: Yup.string().required("Mẫu số phiếu là bắt buộc"),
+    MAUSOPHIEU: Yup.string()
+      .required("Mẫu số phiếu là bắt buộc")
+      .matches(/^\S+$/, "Không được chứa khoảng trống")
+      .min(5, "Phải có ít nhất 3 ký tự"),
     IDKYTHU: Yup.string().required("Kỳ thu là bắt buộc"),
     KYHIEU: Yup.string().required("Ký hiệu là bắt buộc"),
-    NOIDUNG: Yup.string().required("Nội dung là bắt buộc"),
+    NOIDUNG: Yup.string()
+      .required("Nội dung là bắt buộc")
+      .min(10, "Phải có ít nhất 10 ký tự"),
   });
   const defaultValues = useMemo(
     () => ({
@@ -292,7 +297,7 @@ export default function ReceiptForm({
               <RHFSelect name="IDKYTHU" label="Kỳ thu" placeholder="Kỳ thu">
                 {billingPeriodList?.map((option, index) => (
                   <option key={index} value={option.IDKYTHU}>
-                    {option.TENKYTHU}
+                    {fMonthYear(option.TENKYTHU)}
                   </option>
                 ))}
               </RHFSelect>

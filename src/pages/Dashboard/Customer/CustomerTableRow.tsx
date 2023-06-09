@@ -54,6 +54,7 @@ export default function CustomerTableRow({
     NGAYCAP,
     MAKHACHHANG,
     TUYENTHU,
+    TRANGTHAI,
   } = row;
   return (
     <TableRow hover selected={selected}>
@@ -80,6 +81,15 @@ export default function CustomerTableRow({
         </Label>
       </TableCell>
       <TableCell align="left">{TUYENTHU.TENTUYENTHU}</TableCell>
+      <TableCell align="left">
+        <Label
+          variant={"ghost"}
+          color={TRANGTHAI ? "success" : "error"}
+          sx={{ textTransform: "uppercase", mb: 1 }}
+        >
+          {TRANGTHAI ? "Hoạt động" : "Khoá"}
+        </Label>
+      </TableCell>
       <TableCell align="right">
         <TableMoreMenu
           open={openMenu}

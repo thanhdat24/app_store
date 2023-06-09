@@ -123,7 +123,7 @@ export default function CustomerTypeList({}: Props) {
           heading="Danh sách loại khách hàng"
           links={[
             { name: "Trang chủ", href: PATH_DASHBOARD.root },
-            { name: "Khách hàng", href: PATH_DASHBOARD.userType.root },
+            { name: "Loại khách hàng", href: PATH_DASHBOARD.userType.root },
             { name: "Danh sách loại" },
           ]}
           action={

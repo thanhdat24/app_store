@@ -18,6 +18,7 @@ import { TableMoreMenu } from "../../../components/table";
 import Iconify from "../../../components/Iconify";
 import Label from "../../../components/Label";
 import { formatPriceInVND } from "../../../utils/formatNumber";
+import { fMonthYear } from "../../../utils/formatTime";
 
 type Props = {
   row: any;
@@ -45,7 +46,8 @@ export default function BillingPeriodTableRow({
   return (
     <TableRow hover>
       <TableCell align="left">{IDKYTHU}</TableCell>
-      <TableCell align="left">{TENKYTHU}</TableCell>
+      {/* <TableCell align="left">{TENKYTHU}</TableCell> */}
+      <TableCell align="left">{fMonthYear(TENKYTHU)}</TableCell>
       <TableCell align="left">{TRANGTHAIKYTHU}</TableCell>
       <TableCell align="right">
         <TableMoreMenu

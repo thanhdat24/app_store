@@ -17,6 +17,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { getAllBillingPeriods } from "../../../redux/slices/billingPeriodReducer";
 import { getAllReceipt } from "../../../redux/slices/receiptReducer";
 
+
 type Props = {};
 
 export default function ReceiptAction({}: Props) {

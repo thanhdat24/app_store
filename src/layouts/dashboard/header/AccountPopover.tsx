@@ -67,12 +67,12 @@ export default function AccountPopover({}: Props) {
         <div className="relative flex-shrink-0 flex items-center ml-1">
           <img
             className="h-6 w-6 md:h-8 md:w-8 select-none bg-white rounded-full object-cover flex-shrink-0 "
-            src="https://teeappapi.azurewebsites.net/default/default-male.svg"
+            src="/src/assets/images/default-male.svg"
             alt="Avatar"
           />
         </div>
         <span className="px-2 font-semibold truncate w-full text-black">
-          UserName
+          {userLogin?.USERNAME}
         </span>
       </div>
 
@@ -96,9 +96,11 @@ export default function AccountPopover({}: Props) {
           <Typography variant="subtitle2" noWrap>
             Admin
           </Typography>
-          <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            Quản trị hệ thống
-          </Typography>
+          {userLogin?.CHITIETPHANQUYENs.map((item) => (
+            <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
+              {item.QUYEN.TENQUYEN}
+            </Typography>
+          ))}
         </Box>
         <Divider sx={{ borderStyle: "dashed" }} />
         {MENU_OPTIONS_ADMIN.map((option) => (

@@ -25,7 +25,7 @@ type Props = {
   onDeleteRow: () => void;
   onEditRow: () => void;
   onViewRow: () => void;
-  onConfirmRow : () => void;
+  onConfirmRow: () => void;
 };
 
 export default function ReceiptTableRow({
@@ -114,13 +114,20 @@ export default function ReceiptTableRow({
           actions={
             <>
               {TRANGTHAIPHIEU ? (
-                <MenuItem onClick={onViewRow} sx={{ color: "success.main" }}>
+                <MenuItem onClick={onViewRow}>
                   <Iconify icon={"eva:eye-fill"} />
                   Chi tiết
                 </MenuItem>
               ) : (
                 <>
-                  {" "}
+                  <MenuItem onClick={onViewRow}>
+                    <Iconify icon={"eva:eye-fill"} />
+                    Chi tiết
+                  </MenuItem>
+                  <MenuItem onClick={onEditRow}>
+                    <Iconify icon={"eva:edit-fill"} />
+                    Chỉnh sửa
+                  </MenuItem>
                   <MenuItem
                     onClick={() => {
                       onDeleteRow();
@@ -130,14 +137,6 @@ export default function ReceiptTableRow({
                   >
                     <Iconify icon={"eva:trash-2-outline"} />
                     Xóa
-                  </MenuItem>
-                  <MenuItem onClick={onEditRow} sx={{ color: "primary.main" }}>
-                    <Iconify icon={"eva:edit-fill"} />
-                    Chỉnh sửa
-                  </MenuItem>
-                  <MenuItem onClick={onViewRow} sx={{ color: "success.main" }}>
-                    <Iconify icon={"eva:eye-fill"} />
-                    Chi tiết
                   </MenuItem>
                 </>
               )}

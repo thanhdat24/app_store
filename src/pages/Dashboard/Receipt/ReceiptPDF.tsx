@@ -111,18 +111,18 @@ export default function ReceiptPDF({ receipt }: ReceiptPDFProps) {
             <Text>
               Lý do nộp: &ensp;{" "}
               <Text style={[styles.fontBold]}>
-                {CHITIETPHIEUTHUs[0].NOIDUNG}
+                {CHITIETPHIEUTHUs[0]?.NOIDUNG}
               </Text>
             </Text>
             <Text>
               Số tiền: &ensp;{" "}
               <Text style={[styles.fontBold]}>
-                {formatPriceInVND(CHITIETPHIEUTHUs[0].SOTIEN)}
+                {formatPriceInVND(CHITIETPHIEUTHUs[0]?.SOTIEN)}
               </Text>
               &ensp; (Viết bằng chữ): &ensp;
               <Text style={[styles.fontBold]}>
                 {" "}
-                {VNnum2words(CHITIETPHIEUTHUs[0].SOTIEN)}
+                {VNnum2words(CHITIETPHIEUTHUs[0]?.SOTIEN)}
               </Text>
             </Text>
             <Text>Kièm theo: {Array(40).fill(".").join("")} Chứng từ gốc</Text>
@@ -164,9 +164,9 @@ export default function ReceiptPDF({ receipt }: ReceiptPDFProps) {
           </View>
         </View>
       </Page>
-      <View style={[styles.footer]}>
+      {/* <View style={[styles.footer]}>
         <Image source="/logo/logo_congty.png" style={[styles.col6]} />
-      </View>
+      </View> */}
     </Document>
   );
 }

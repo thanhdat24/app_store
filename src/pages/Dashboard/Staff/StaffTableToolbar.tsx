@@ -1,8 +1,15 @@
 import PropTypes from "prop-types";
-import { Stack, InputAdornment, TextField, MenuItem, Box, Tooltip, IconButton } from "@mui/material";
+import {
+  Stack,
+  InputAdornment,
+  TextField,
+  MenuItem,
+  Box,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
 import Iconify from "../../../components/Iconify";
-import { CSVLink, CSVDownload } from "react-csv";
-
+import { CSVLink } from "react-csv";
 // components
 
 // ----------------------------------------------------------------------
@@ -26,7 +33,7 @@ export default function StaffTableToolbar({
   onFilterName,
   onFilterUser,
   optionsInfo,
-  dataTable, ///CSV
+  dataTable,
 }: StaffTableToolbarProps) {
   return (
     <Stack

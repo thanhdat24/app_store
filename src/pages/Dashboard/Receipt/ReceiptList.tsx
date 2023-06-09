@@ -38,7 +38,10 @@ import useToggle from "../../../hooks/useToggle";
 import { PDFViewer } from "@react-pdf/renderer";
 import ReceiptPDF from "./ReceiptPDF";
 import AlertDialog from "../../../components/Dialog";
-import { resetCasher, updateReceiptStatus } from "../../../redux/slices/cashierReducer";
+import {
+  resetCasher,
+  updateReceiptStatus,
+} from "../../../redux/slices/cashierReducer";
 
 type Props = {};
 
@@ -46,7 +49,7 @@ type Props = {};
 
 const OPTIONS_INFO = ["Thông tin khách hàng", "Mã số phiếu"];
 
-const STATUS_OPTIONS = ["Tất cả", "doanh nghiệp", "hộ dân"];
+const STATUS_OPTIONS = ["Tất cả", "chưa thu", "đã thu"];
 
 const TABLE_HEAD = [
   { id: "MAUSOPHIEU", label: "Mãu số phiếu", align: "left" },
@@ -310,7 +313,7 @@ export default function ReceiptList({}: Props) {
 interface ApplySortFilterProps {
   tableData: any[];
   comparator: (a: any, b: any) => number;
-  filterStatus?: string;
+  filterStatus?: string | boolean;
   filterName?: string;
   filterUser?: string;
 }
@@ -322,10 +325,10 @@ function applySortFilter({
   filterName,
   filterUser,
 }: ApplySortFilterProps) {
-  if (filterStatus === "hộ dân") {
-    filterStatus = "Hộ Dân";
-  } else if (filterStatus === "doanh nghiệp") {
-    filterStatus = "Doanh Nghiệp";
+  if (filterStatus === "chưa thu") {
+    filterStatus = false;
+  } else if (filterStatus === "đã thu") {
+    filterStatus = true;
   }
 
   const stabilizedThis = tableData.map((el, index) => [el, index]);
@@ -341,7 +344,7 @@ function applySortFilter({
 
   if (filterStatus !== "Tất cả") {
     tableData = tableData.filter(
-      (item) => item.KHACHHANG.LOAIKH.TENLOAI === filterStatus
+      (item) => item.TRANGTHAIPHIEU === filterStatus
     );
   }
   if (filterUser === "Mã số phiếu") {
@@ -356,8 +359,11 @@ function applySortFilter({
   if (filterUser === "Thông tin khách hàng") {
     if (filterName) {
       const searchTerm = filterName.toLowerCase();
-      tableData = tableData.filter((item) =>
-        item.KHACHHANG.HOTEN.toLowerCase().includes(searchTerm)
+      tableData = tableData.filter(
+        (item) =>
+          item.KHACHHANG.HOTEN.toLowerCase().includes(searchTerm) ||
+          item.KHACHHANG.MAKHACHHANG.toLowerCase().includes(searchTerm) ||
+          item.KHACHHANG.CMT.includes(searchTerm)
       );
     }
   }

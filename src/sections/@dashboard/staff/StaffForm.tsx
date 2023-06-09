@@ -40,6 +40,7 @@ import {
   resetStaff,
   updateStaff,
 } from "../../../redux/slices/staffReducer";
+import RHFDatePickerField from "../../../components/hook-form/RHFDatePickerField";
 
 type Props = {
   isEdit: boolean;
@@ -58,8 +59,13 @@ export default function StaffForm({ isEdit, currentStaff }: Props) {
   );
 
   const StaffSchema = Yup.object().shape({
-    MANHANVIEN: Yup.string().required("Mã nhân viên là bắt buộc"),
-    HOTEN: Yup.string().required("Họ tên là bắt buộc"),
+    MANHANVIEN: Yup.string()
+      .required("Mã nhân viên là bắt buộc")
+      .matches(/^\S+$/, "Không được chứa khoảng trống")
+      .min(3, "Phải có ít nhất 5 ký tự"),
+    HOTEN: Yup.string()
+      .required("Họ tên là bắt buộc")
+      .matches(/^[a-zA-Z\sÀ-ỹ]+$/, "Họ tên chỉ chứa chữ cái"),
     NGAYSINH: Yup.date()
       .required("Ngày sinh là bắt buộc")
       .test("checkAge", "Ngày sinh phải nhỏ hơn ngày hiện tại", (value) => {
@@ -70,14 +76,14 @@ export default function StaffForm({ isEdit, currentStaff }: Props) {
       .required("Số điện thoại là bắt buộc")
       .matches(/^\S+$/, "Không được chứa khoảng trống")
       .matches(/^\d+$/, "Số điện thoại chỉ chứa số")
-      .matches(/^[0-9]{10}$/, "Số điện thoại gồm 10 số"),
+      .matches(/^\d{10}$/, "Số điện thoại phải có 10 chữ số"),
     DIACHI: Yup.string().required("Địa chỉ là bắt buộc"),
-    ...(isEdit
-      ? {}
-      : {
-          USERNAME: Yup.string().required("Tên đăng nhập là bắt buộc"),
-          PASSWORD: Yup.string().required("Mật khẩu là bắt buộc"),
-        }),
+    // ...(isEdit
+    //   ? {}
+    //   : {
+    //       USERNAME: Yup.string().required("Tên đăng nhập là bắt buộc"),
+    //       PASSWORD: Yup.string().required("Mật khẩu là bắt buộc"),
+    //     }),
   });
   const defaultValues = useMemo(() => {
     const baseValues = {
@@ -164,9 +170,11 @@ export default function StaffForm({ isEdit, currentStaff }: Props) {
               }}
             >
               <RHFTextField
-                disabled={isEdit}
                 name="MANHANVIEN"
                 label="Mã nhân viên"
+                InputProps={{
+                  readOnly: isEdit ? true : false,
+                }}
               />
               <RHFTextField name="HOTEN" label="Họ tên " />
               <RHFTextField
@@ -193,8 +201,8 @@ export default function StaffForm({ isEdit, currentStaff }: Props) {
               {!isEdit && (
                 <>
                   {" "}
-                  <RHFTextField name="USERNAME" label="Tên đăng nhập" />
-                  <RHFTextField
+                  {/* <RHFTextField name="USERNAME" label="Tên đăng nhập" /> */}
+                  {/* <RHFTextField
                     name="PASSWORD"
                     label="Mật khẩu"
                     type={showPassword ? "text" : "password"}
@@ -216,20 +224,15 @@ export default function StaffForm({ isEdit, currentStaff }: Props) {
                         </InputAdornment>
                       ),
                     }}
-                  />
+                  /> */}
                 </>
               )}
-
-              <Controller
+              <RHFDatePickerField
                 name="NGAYSINH"
-                control={control}
-                render={({ field }) => (
-                  <DatePicker
-                    label="Ngày sinh"
-                    value={field.value}
-                    onChange={field.onChange}
-                  />
-                )}
+                views={["year", "month", "day"]}
+                label="Ngày sinh"
+                disableFuture
+                format="yyyy/dd/MM"
               />
 
               <RHFTextField name="SDT" label="Số điện thoại" />

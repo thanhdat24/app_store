@@ -1,22 +1,8 @@
-// routes
-import { PATH_AUTH, PATH_DASHBOARD } from "../../routes/paths";
-// components
 import LoginForm from "./LoginForm";
-import { useAppSelector } from "../../redux/store";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-// sections
 
 type Props = {};
 
 export default function Login({}: Props) {
-  const navigate = useNavigate();
-  const { userLogin } = useAppSelector((state) => state.admin);
-  useEffect(() => {
-    if (userLogin) {
-      navigate(PATH_DASHBOARD.general.dashboard);
-    }
-  }, [userLogin]);
   return (
     <div className="bg-[#CFD2E1] bg-login-pattern bg-cover">
       <div className="container flex flex-row items-center max-w-screen-lg md:px-10 mx-auto z-10 justify-center min-h-screen">
