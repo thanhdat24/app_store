@@ -172,6 +172,7 @@ export default function ReceiptList({}: Props) {
     "Kỳ thu": row.KYTHU.TENKYTHU,
     "Khách hàng": row.KHACHHANG.HOTEN,
     "Loại khách hàng": row.KHACHHANG.LOAIKH.TENLOAI,
+    "Nội dung": row.CHITIETPHIEUTHUs[0]?.NOIDUNG,
     "Giá trị": row.CHITIETPHIEUTHUs[0]?.SOTIEN,
   }));
 

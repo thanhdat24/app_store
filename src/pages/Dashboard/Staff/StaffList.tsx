@@ -211,6 +211,19 @@ export default function StaffList({}: Props) {
     }
   };
 
+  ///CSV
+  const dataCSV = dataFiltered.map((row, index) => ({
+    STT: index + 1,
+    "ID Nhân viên": row.IDNHANVIEN,
+    "Mã Nhân viên": row.MANHANVIEN,
+    "Họ tên": row.HOTEN,
+    "SĐT": row.SDT,
+    "Ngày sinh": row.NGAYSINH,
+    "Địa chỉ": row.DIACHI,
+    "Username": row.USERNAME,
+    "Quyền": row.CHITIETPHANQUYENs,
+  }));
+
   return (
     <Page title="StaffList: List">
       <Container maxWidth={"lg"}>
@@ -281,6 +294,7 @@ export default function StaffList({}: Props) {
           </Tabs>
           <Divider />
           <StaffTableToolbar
+            dataTable={dataCSV}
             filterName={filterName}
             onFilterName={handleFilterName}
             filterUser={filterUser}

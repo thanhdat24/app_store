@@ -55,7 +55,9 @@ export default function RevenueRoutesForm({
     useAppSelector((state) => state.revenueRoutes);
 
   const RevenueRoutesSchema = Yup.object().shape({
-    MATUYENTHU: Yup.string().required("Mã tuyến thu là bắt buộc"),
+    MATUYENTHU: Yup.string()
+      .required("Mã tuyến thu là bắt buộc")
+      .matches(/^\S+$/, "Không được chứa khoảng trống"),
     TENTUYENTHU: Yup.string().required("Tên tuyến thu là bắt buộc"),
     IDQUANHUYEN: Yup.string().required("Quận huyện là bắt buộc"),
     IDXAPHUONG: Yup.string().required("Xã phường là bắt buộc"),
@@ -65,11 +67,11 @@ export default function RevenueRoutesForm({
     () => ({
       MATUYENTHU: currentRevenueRoutes?.MATUYENTHU || "",
       TENTUYENTHU: currentRevenueRoutes?.TENTUYENTHU || "",
-      IDXAPHUONG: currentRevenueRoutes?.XAPHUONG.IDXAPHUONG ||"",
-      IDQUANHUYEN: currentRevenueRoutes?.XAPHUONG.IDQUANHUYEN ||"",
+      IDXAPHUONG: currentRevenueRoutes?.XAPHUONG.IDXAPHUONG || "",
+      IDQUANHUYEN: currentRevenueRoutes?.XAPHUONG.IDQUANHUYEN || "",
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentRevenueRoutes]  
+    [currentRevenueRoutes]
   );
 
   const methods = useForm({
@@ -143,31 +145,31 @@ export default function RevenueRoutesForm({
               <RHFTextField name="MATUYENTHU" label="Mã tuyến thu" />
               <RHFTextField name="TENTUYENTHU" label="Tên tuyến thu" />
               <RHFSelect
-              name="IDXAPHUONG"
-              label="Xã phường"
-              placeholder="Xã phường"
-            >
-              <option value="" />
-              {wardList?.map((option, index) => (
-                <option key={option.IDXAPHUONG} value={option.IDXAPHUONG}>
-                  {option.TENXAPHUONG}
-                </option>
-              ))}
-            </RHFSelect>
-            <RHFSelect
-              name="IDQUANHUYEN"
-              label="Quận huyện"
-              placeholder="Quận huyện"
-            >
-              <option value="" />
-              {districtList?.map((option, index) => (
-                <option key={option.IDQUANHUYEN} value={option.IDQUANHUYEN}>
-                  {option.TENQUANHUYEN}
-                </option>
-              ))}
-            </RHFSelect>
+                name="IDXAPHUONG"
+                label="Xã phường"
+                placeholder="Xã phường"
+              >
+                <option value="" />
+                {wardList?.map((option, index) => (
+                  <option key={option.IDXAPHUONG} value={option.IDXAPHUONG}>
+                    {option.TENXAPHUONG}
+                  </option>
+                ))}
+              </RHFSelect>
+              <RHFSelect
+                name="IDQUANHUYEN"
+                label="Quận huyện"
+                placeholder="Quận huyện"
+              >
+                <option value="" />
+                {districtList?.map((option, index) => (
+                  <option key={option.IDQUANHUYEN} value={option.IDQUANHUYEN}>
+                    {option.TENQUANHUYEN}
+                  </option>
+                ))}
+              </RHFSelect>
             </Box>
-            
+
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
               <LoadingButton
                 type="submit"

@@ -109,6 +109,8 @@ export default function Router({}: Props) {
             },
             { path: "list", element: <ReceiptList /> },
             { path: "user/:id/new", element: <ReceiptAction /> },
+            { path: "user/:id/edit", element: <ReceiptAction /> },
+
           ],
         },
         {

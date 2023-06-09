@@ -15,18 +15,22 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
+  Grid,
 } from "@mui/material";
 import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
 import { PATH_DASHBOARD } from "../../../routes/paths";
 import Iconify from "../../../components/Iconify";
-import { deleteDistrict, getAllDistricts } from "../../../redux/slices/districtReducer";
+import {
+  deleteDistrict,
+  getAllDistricts,
+} from "../../../redux/slices/districtReducer";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { DistrictModel } from "../../../interfaces/DistrictModel";
 import useTable, { emptyRows } from "../../../hooks/useTable";
 import { TableEmptyRows, TableHeadCustom } from "../../../components/table";
 import DistrictTableRow from "./DistrictTableRow";
-import PermissionTableToolbar from "../Permission/PermissionTableToolbar";
+import DistrictTableToolbar from "./DistrictTableToolbar";
 
 type Props = {};
 
@@ -35,11 +39,10 @@ const OPTIONS_INFO = ["Tên quận huyện"];
 const TABLE_HEAD = [
   { id: "id", label: "ID", align: "left" },
   { id: "TENQUANHUYEN", label: "Tên quận huyện", align: "left" },
-  { id: "THAOTAC", label: "Thao tác", align: "right"  },
+  { id: "THAOTAC", label: "Thao tác", align: "right" },
 ];
 
 export default function districtList({}: Props) {
-
   ///
   const dispatch = useAppDispatch();
 
@@ -96,7 +99,6 @@ export default function districtList({}: Props) {
 
   const handleEditRow = (id: number) => {
     navigate(PATH_DASHBOARD.district.edit(id));
-    
   };
 
   const handleFilterName = (filterName: string) => {
@@ -110,6 +112,13 @@ export default function districtList({}: Props) {
     setFilterUser(event.target.value);
   };
   ///
+
+  ///CSV
+  const dataCSV = dataFiltered.map((row, index) => ({
+    STT: index + 1,
+    "ID Quận huyện": row.IDQUANHUYEN,
+    "Tên Quận huyện": row.TENQUANHUYEN,
+  }));
 
   return (
     <Page title="District: List">
@@ -133,65 +142,68 @@ export default function districtList({}: Props) {
             </Button>
           }
         />
-        <Card sx={{ maxWidth: 900}}>
-          <Divider />
-          <PermissionTableToolbar
-            filterName={filterName}
-            onFilterName={handleFilterName}
-            filterUser={filterUser}
-            onFilterUser={(
-              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => handleFilterUser(event)}
-            optionsInfo={OPTIONS_INFO}
-          />
-          {/* <Scrollbar> */}
-          <TableContainer sx={{ minWidth: 800, position: "relative" }}>
-            <Table size={dense ? "small" : "medium"}>
-              <TableHeadCustom
-                order={order}
-                orderBy={orderBy}
-                headLabel={TABLE_HEAD}
-                rowCount={tableData.length}
-                numSelected={selected.length}
-                onSort={onSort}
-              />
-
-              <TableBody>
-                {dataFiltered
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row: any) => (
-                    <DistrictTableRow
-                      key={row.IDQUANHUYEN}
-                      row={row}
-                      // selected={selected.includes(row.id)}
-                      // onSelectRow={() => onSelectRow(row.id)}
-                      onDeleteRow={() => handleDeleteRow(row.IDQUANHUYEN)}
-                      onEditRow={() => handleEditRow(row.IDQUANHUYEN)}
-                    />
-                  ))}
-
-                <TableEmptyRows
-                  height={denseHeight}
-                  emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
+        <Grid container justifyContent="center" alignItems="center">
+          <Card sx={{ maxWidth: 900 }}>
+            <Divider />
+            <DistrictTableToolbar
+              dataTable={dataCSV} ///CSV
+              filterName={filterName}
+              onFilterName={handleFilterName}
+              filterUser={filterUser}
+              onFilterUser={(
+                event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => handleFilterUser(event)}
+              optionsInfo={OPTIONS_INFO}
+            />
+            {/* <Scrollbar> */}
+            <TableContainer sx={{ minWidth: 800, position: "relative" }}>
+              <Table size={dense ? "small" : "medium"}>
+                <TableHeadCustom
+                  order={order}
+                  orderBy={orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={tableData.length}
+                  numSelected={selected.length}
+                  onSort={onSort}
                 />
 
-                {/* <TableNoData isNotFound={isNotFound} /> */}
-              </TableBody>
-            </Table>
-          </TableContainer>{" "}
-          <Box sx={{ position: "relative" }}>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={tableData?.length ?? 0}
-              rowsPerPage={rowsPerPage ?? 5}
-              page={page}
-              onPageChange={onChangePage}
-              onRowsPerPageChange={onChangeRowsPerPage}
-            />
-          </Box>
-          {/* </Scrollbar> */}
-        </Card>
+                <TableBody>
+                  {dataFiltered
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row: any) => (
+                      <DistrictTableRow
+                        key={row.IDQUANHUYEN}
+                        row={row}
+                        // selected={selected.includes(row.id)}
+                        // onSelectRow={() => onSelectRow(row.id)}
+                        onDeleteRow={() => handleDeleteRow(row.IDQUANHUYEN)}
+                        onEditRow={() => handleEditRow(row.IDQUANHUYEN)}
+                      />
+                    ))}
+
+                  <TableEmptyRows
+                    height={denseHeight}
+                    emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
+                  />
+
+                  {/* <TableNoData isNotFound={isNotFound} /> */}
+                </TableBody>
+              </Table>
+            </TableContainer>{" "}
+            <Box sx={{ position: "relative" }}>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={tableData?.length ?? 0}
+                rowsPerPage={rowsPerPage ?? 5}
+                page={page}
+                onPageChange={onChangePage}
+                onRowsPerPageChange={onChangeRowsPerPage}
+              />
+            </Box>
+            {/* </Scrollbar> */}
+          </Card>
+        </Grid>
       </Container>
     </Page>
   );
@@ -209,7 +221,6 @@ function applySortFilter({
   filterName,
   filterUser,
 }: ApplySortFilterProps) {
-
   if (filterUser === "Tên quận huyện") {
     if (filterName) {
       const searchTerm = filterName.toLowerCase();

@@ -15,13 +15,17 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
+  Grid,
 } from "@mui/material";
 import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
 import { PATH_DASHBOARD } from "../../../routes/paths";
 import Iconify from "../../../components/Iconify";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { deletePermission, getAllPermissions } from "../../../redux/slices/permissionReducer";
+import {
+  deletePermission,
+  getAllPermissions,
+} from "../../../redux/slices/permissionReducer";
 import useTable, { emptyRows } from "../../../hooks/useTable";
 import { PermissionModel } from "../../../interfaces/PermissionModel";
 import { TableEmptyRows, TableHeadCustom } from "../../../components/table";
@@ -31,15 +35,13 @@ import PermissionTableToolbar from "./PermissionTableToolbar";
 type Props = {};
 const OPTIONS_INFO = ["Tên quyền"];
 
-
 const TABLE_HEAD = [
   { id: "id", label: "ID", align: "left" },
   { id: "TENQUYEN", label: "Tên quyền", align: "left" },
-  { id: "THAOTAC", label: "Thao tác", align: "right"  },
+  { id: "THAOTAC", label: "Thao tác", align: "right" },
 ];
 
 export default function PermissionList({}: Props) {
-
   ////----
   const dispatch = useAppDispatch();
 
@@ -109,6 +111,14 @@ export default function PermissionList({}: Props) {
     setFilterUser(event.target.value);
   };
   ////----
+
+  ///CSV
+  const dataCSV = dataFiltered.map((row, index) => ({
+    STT: index + 1,
+    "ID Quyền": row.IDQUYEN,
+    "Tên quyền": row.TENQUYEN,
+  }));
+
   return (
     <Page title="Permission: List">
       <Container maxWidth={"lg"}>
@@ -130,66 +140,69 @@ export default function PermissionList({}: Props) {
               Thêm quyền
             </Button>
           }
-        />
-        <Card sx={{ maxWidth: 900}}>
-          <Divider />
-          <PermissionTableToolbar
-            filterName={filterName}
-            onFilterName={handleFilterName}
-            filterUser={filterUser}
-            onFilterUser={(
-              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => handleFilterUser(event)}
-            optionsInfo={OPTIONS_INFO}
-          />
-          {/* <Scrollbar> */}
-          <TableContainer sx={{ minWidth: 800, position: "relative" }}>
-            <Table size={dense ? "small" : "medium"}>
-              <TableHeadCustom
-                order={order}
-                orderBy={orderBy}
-                headLabel={TABLE_HEAD}
-                rowCount={tableData.length}
-                numSelected={selected.length}
-                onSort={onSort}
-              />
-
-              <TableBody>
-                {dataFiltered
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row: any) => (
-                    <PermissionTableRow
-                      key={row.IDQUYEN}
-                      row={row}
-                      // selected={selected.includes(row.id)}
-                      // onSelectRow={() => onSelectRow(row.id)}
-                      onDeleteRow={() => handleDeleteRow(row.IDQUYEN)}
-                      onEditRow={() => handleEditRow(row.IDQUYEN)}
-                    />
-                  ))}
-
-                <TableEmptyRows
-                  height={denseHeight}
-                  emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
+        /> 
+        <Grid container justifyContent="center" alignItems="center">
+          <Card sx={{ maxWidth: 2000 }}>
+            <Divider />
+            <PermissionTableToolbar
+              dataTable={dataCSV}
+              filterName={filterName}
+              onFilterName={handleFilterName}
+              filterUser={filterUser}
+              onFilterUser={(
+                event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => handleFilterUser(event)}
+              optionsInfo={OPTIONS_INFO}
+            />
+            {/* <Scrollbar> */}
+            <TableContainer sx={{ minWidth: 800, position: "relative" }}>
+              <Table size={dense ? "small" : "medium"}>
+                <TableHeadCustom
+                  order={order}
+                  orderBy={orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={tableData.length}
+                  numSelected={selected.length}
+                  onSort={onSort}
                 />
 
-                {/* <TableNoData isNotFound={isNotFound} /> */}
-              </TableBody>
-            </Table>
-          </TableContainer>{" "}
-          <Box sx={{ position: "relative" }}>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={tableData?.length ?? 0}
-              rowsPerPage={rowsPerPage ?? 5}
-              page={page}
-              onPageChange={onChangePage}
-              onRowsPerPageChange={onChangeRowsPerPage}
-            />
-          </Box>
-          {/* </Scrollbar> */}
-        </Card>
+                <TableBody>
+                  {dataFiltered
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row: any) => (
+                      <PermissionTableRow
+                        key={row.IDQUYEN}
+                        row={row}
+                        // selected={selected.includes(row.id)}
+                        // onSelectRow={() => onSelectRow(row.id)}
+                        onDeleteRow={() => handleDeleteRow(row.IDQUYEN)}
+                        onEditRow={() => handleEditRow(row.IDQUYEN)}
+                      />
+                    ))}
+
+                  <TableEmptyRows
+                    height={denseHeight}
+                    emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
+                  />
+
+                  {/* <TableNoData isNotFound={isNotFound} /> */}
+                </TableBody>
+              </Table>
+            </TableContainer>{" "}
+            <Box sx={{ position: "relative" }}>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={dataFiltered?.length ?? 0}
+                rowsPerPage={rowsPerPage ?? 5}
+                page={page}
+                onPageChange={onChangePage}
+                onRowsPerPageChange={onChangeRowsPerPage}
+              />
+            </Box>
+            {/* </Scrollbar> */}
+          </Card>
+          </Grid>
       </Container>
     </Page>
   );
@@ -209,7 +222,6 @@ function applySortFilter({
   filterName,
   filterUser,
 }: ApplySortFilterProps) {
-
   if (filterUser === "Tên quyền") {
     if (filterName) {
       const searchTerm = filterName.toLowerCase();

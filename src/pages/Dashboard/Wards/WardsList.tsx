@@ -114,6 +114,14 @@ export default function WardsList({}: Props) {
     setFilterUser(event.target.value);
   };
 
+    ///CSV
+    const dataCSV = dataFiltered.map((row, index) => ({
+      STT: index + 1,
+      "ID Xã phường": row.IDXAPHUONG,
+      "Tên xã phường": row.TENXAPHUONG,
+      "Tên quận huyện": row.QUANHUYEN.TENQUANHUYEN,
+    }));
+
 
   return (
     <Page title="Wards: List">
@@ -137,10 +145,11 @@ export default function WardsList({}: Props) {
             </Button>
           }
         />
-        <Card>
+        <Card >
           <Divider />
 
           <WardsTableToolbar
+            dataTable={dataCSV} ///CSV
             filterName={filterName}
             onFilterName={handleFilterName}
             filterUser={filterUser}
@@ -189,7 +198,7 @@ export default function WardsList({}: Props) {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={tableData?.length ?? 0}
+              count={dataFiltered?.length ?? 0}
               rowsPerPage={rowsPerPage ?? 5}
               page={page}
               onPageChange={onChangePage}

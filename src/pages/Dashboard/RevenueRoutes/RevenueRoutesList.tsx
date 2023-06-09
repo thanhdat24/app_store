@@ -41,8 +41,7 @@ const TABLE_HEAD = [
   { id: "TENTUYENTHU", label: "Tên tuyến thu", align: "left" },
   { id: "TENQUANHUYEN", label: "Tên quận huyện", align: "left" },
   { id: "TENXAPHUONG", label: "Tên xã phường", align: "left" },
-  { id: "THAOTAC", label: "Thao tác", align: "right"  },
-  
+  { id: "THAOTAC", label: "Thao tác", align: "right" },
 ];
 
 export default function RevenueRoutesList({}: Props) {
@@ -80,7 +79,6 @@ export default function RevenueRoutesList({}: Props) {
 
   const [filterUser, setFilterUser] = useState("Thông tin tuyến thu");
 
-
   const [tableData, setTableData] = useState<RevenueRoutesModel[]>([]);
 
   const denseHeight = dense ? 60 : 80;
@@ -117,6 +115,16 @@ export default function RevenueRoutesList({}: Props) {
     setFilterUser(event.target.value);
   };
 
+  ///CSV
+  const dataCSV = dataFiltered.map((row, index) => ({
+    STT: index + 1,
+    "ID Tuyến thu": row.IDTUYENTHU,
+    "Mã tuyến thu": row.MATUYENTHU,
+    "Tên tuyến thu": row.TENTUYENTHU,
+    "Tên quận huyện": row.XAPHUONG.QUANHUYEN.TENQUANHUYEN,
+    "Tên xã phường": row.XAPHUONG.TENXAPHUONG,
+  }));
+
   return (
     <Page title="RevenueRoutes: List">
       <Container maxWidth={"lg"}>
@@ -142,6 +150,7 @@ export default function RevenueRoutesList({}: Props) {
         <Card>
           <Divider />
           <RevenueRoutesTableToolbar
+            dataTable={dataCSV}
             filterName={filterName}
             onFilterName={handleFilterName}
             filterUser={filterUser}
@@ -189,7 +198,7 @@ export default function RevenueRoutesList({}: Props) {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={tableData?.length ?? 0}
+              count={dataFiltered?.length ?? 0}
               rowsPerPage={rowsPerPage ?? 5}
               page={page}
               onPageChange={onChangePage}
@@ -216,7 +225,6 @@ function applySortFilter({
   filterName,
   filterUser,
 }: ApplySortFilterProps) {
-
   if (filterUser === "Mã tuyến thu") {
     if (filterName) {
       const searchTerm = filterName.toLowerCase();
@@ -233,7 +241,9 @@ function applySortFilter({
         (item) =>
           item.TENTUYENTHU.toLowerCase().includes(searchTerm) ||
           item.XAPHUONG.TENXAPHUONG.toLowerCase().includes(searchTerm) ||
-          item.XAPHUONG.QUANHUYEN.TENQUANHUYEN.toLowerCase().includes(searchTerm)
+          item.XAPHUONG.QUANHUYEN.TENQUANHUYEN.toLowerCase().includes(
+            searchTerm
+          )
       );
     }
   }

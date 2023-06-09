@@ -60,8 +60,17 @@ export default function StaffForm({ isEdit, currentStaff }: Props) {
   const StaffSchema = Yup.object().shape({
     MANHANVIEN: Yup.string().required("Mã nhân viên là bắt buộc"),
     HOTEN: Yup.string().required("Họ tên là bắt buộc"),
-    NGAYSINH: Yup.string().required("Ngày sinh là bắt buộc"),
-    SDT: Yup.string().required("Số điện thoại là bắt buộc"),
+    NGAYSINH: Yup.date()
+      .required("Ngày sinh là bắt buộc")
+      .test("checkAge", "Ngày sinh phải nhỏ hơn ngày hiện tại", (value) => {
+        var today = new Date();
+        return value < today;
+      }),
+    SDT: Yup.string()
+      .required("Số điện thoại là bắt buộc")
+      .matches(/^\S+$/, "Không được chứa khoảng trống")
+      .matches(/^\d+$/, "Số điện thoại chỉ chứa số")
+      .matches(/^[0-9]{10}$/, "Số điện thoại gồm 10 số"),
     DIACHI: Yup.string().required("Địa chỉ là bắt buộc"),
     ...(isEdit
       ? {}

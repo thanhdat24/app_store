@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
-import { Stack, InputAdornment, TextField, MenuItem } from "@mui/material";
+import { Stack, InputAdornment, TextField, MenuItem, Box, Tooltip, IconButton } from "@mui/material";
 import Iconify from "../../../components/Iconify";
+import { CSVLink, CSVDownload } from "react-csv";
 
 // components
 
@@ -16,6 +17,7 @@ interface DistrictTableToolbarProps {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   optionsInfo: string[];
+  dataTable: any[]; ///CSV
 }
 
 export default function DistrictTableToolbar({
@@ -24,6 +26,7 @@ export default function DistrictTableToolbar({
   onFilterName,
   onFilterUser,
   optionsInfo,
+  dataTable, ///CSV
 }: DistrictTableToolbarProps) {
   return (
     <Stack
@@ -70,7 +73,7 @@ export default function DistrictTableToolbar({
         onChange={(event) => onFilterName(event.target.value)}
         placeholder={
           filterUser === "Tên quận huyện"
-            ? "Tìm kiếm theo tên"
+            ? "Tìm kiếm theo tên quận huyện"
             : undefined
         }
         InputProps={{
@@ -84,6 +87,16 @@ export default function DistrictTableToolbar({
           ),
         }}
       />
+      {/* CSV */}
+      <Box className="flex items-center justify" >
+        <CSVLink filename="Danh_sach_quan_huyen" data={dataTable}>
+        <Tooltip title="Xuất danh sách">  
+          <IconButton>
+            <Iconify icon={"eva:save-outline"} sx={{ color: "#1976d2" }} />
+          </IconButton>
+        </Tooltip>
+        </CSVLink>
+      </Box>
     </Stack>
   );
 }

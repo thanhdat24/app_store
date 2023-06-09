@@ -140,18 +140,18 @@ export default function CustomerList({}: Props) {
   };
 
   const dataCSV = dataFiltered.map((row, index) => ({
-    id: index,
-    IDKHACHHANG: row.IDKHACHHANG,
-    MAKHACHHANG: row.MAKHACHHANG,
-    HOTEN: row.HOTEN,
-    CMT: row.CMT,
-    DIACHI: row.DIACHI,
-    NGAYCAP: row.NGAYCAP,
-    LOAIKH: row.LOAIKH.TENLOAI,
-    TENTUYENTHU: row.TUYENTHU.TENTUYENTHU,
-    QUANHUYEN: row.TUYENTHU.XAPHUONG.QUANHUYEN.TENQUANHUYEN,
-    XAPHUONG: row.TUYENTHU.XAPHUONG.TENXAPHUONG,
-    TRANGTHAI: row.TRANGTHAI,
+    STT: index + 1,
+    "ID Khách hàng": row.IDKHACHHANG,
+    "Mã khách hàng": row.MAKHACHHANG,
+    "Họ tên": row.HOTEN,
+    "CMT": row.CMT,
+    "Địa chỉ": row.DIACHI,
+    "Ngày cấp": row.NGAYCAP,
+    "Loại khách hàng": row.LOAIKH.TENLOAI,
+    "Tên tuyến thu": row.TUYENTHU.TENTUYENTHU,
+    "Quận huyện": row.TUYENTHU.XAPHUONG.QUANHUYEN.TENQUANHUYEN,
+    "Xã phường": row.TUYENTHU.XAPHUONG.TENXAPHUONG,
+    "Trạng thái": row.TRANGTHAI,
   }));
 
   return (

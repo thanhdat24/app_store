@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
-import { Stack, InputAdornment, TextField, MenuItem } from "@mui/material";
+import { Stack, InputAdornment, TextField, MenuItem, Box, Tooltip, IconButton } from "@mui/material";
 import Iconify from "../../../components/Iconify";
+import { CSVLink, CSVDownload } from "react-csv";
 
 // components
 
@@ -16,6 +17,7 @@ interface PermissionTableToolbarProps {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   optionsInfo: string[];
+  dataTable: any[]; ///CSV
 }
 
 export default function PermissionTableToolbar({
@@ -24,6 +26,7 @@ export default function PermissionTableToolbar({
   onFilterName,
   onFilterUser,
   optionsInfo,
+  dataTable, ///CSV
 }: PermissionTableToolbarProps) {
   return (
     <Stack
@@ -70,7 +73,7 @@ export default function PermissionTableToolbar({
         onChange={(event) => onFilterName(event.target.value)}
         placeholder={
           filterUser === "Tên quyền"
-            ? "Tìm kiếm theo tên"
+            ? "Tìm kiếm theo  quyền"
             : undefined
         }
         InputProps={{
@@ -84,6 +87,16 @@ export default function PermissionTableToolbar({
           ),
         }}
       />
+      {/* CSV */}
+      <Box className="flex items-center justify" >
+        <CSVLink filename="Danh_sach_quyen" data={dataTable}>
+        <Tooltip title="Xuất danh sách">  
+          <IconButton>
+            <Iconify icon={"eva:save-outline"} sx={{ color: "#1976d2" }} />
+          </IconButton>
+        </Tooltip>
+        </CSVLink>
+      </Box>
     </Stack>
   );
 }
