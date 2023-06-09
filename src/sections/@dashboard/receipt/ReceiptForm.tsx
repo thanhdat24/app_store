@@ -33,7 +33,10 @@ import { CustomerModel } from "../../../interfaces/CustomerModel";
 import { PATH_DASHBOARD } from "../../../routes/paths";
 import {
   createReceipt,
+  getAllReceipt,
   resetReceipt,
+  updateReceipt,
+  updateReceiptSuccess,
 } from "../../../redux/slices/receiptReducer";
 import { ReceiptModel } from "../../../interfaces/ReceiptModel";
 import { DateField } from "@mui/x-date-pickers";
@@ -41,18 +44,29 @@ import { fDateTime, fMonthYear } from "../../../utils/formatTime";
 type Props = {
   isEdit: boolean;
   currentCustomer: CustomerModel | undefined;
+  currentReceipt: ReceiptModel | undefined;
 };
 
-export default function ReceiptForm({ isEdit, currentCustomer }: Props) {
+export default function ReceiptForm({
+  isEdit,
+  currentCustomer,
+  currentReceipt,
+}: Props) {
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(getAllReceipt());
+  }, [dispatch]);
 
   const { billingPeriodList } = useAppSelector((state) => state.billingPeriod);
 
   const { userLogin } = useAppSelector((state) => state.admin);
 
-  const { createReceiptSuccess } = useAppSelector((state) => state.receipt);
+  const { createReceiptSuccess, updateReceiptSuccess } = useAppSelector(
+    (state) => state.receipt
+  );
 
   console.log("12345", dayjs(new Date()).format());
   const NewUserSchema = Yup.object().shape({
@@ -68,15 +82,15 @@ export default function ReceiptForm({ isEdit, currentCustomer }: Props) {
   });
   const defaultValues = useMemo(
     () => ({
-      MAUSOPHIEU: "",
-      KYHIEU: "",
+      MAUSOPHIEU: currentReceipt?.MAUSOPHIEU || "",
+      KYHIEU: currentReceipt?.KYHIEU || "",
       IDKHACHHANG: currentCustomer?.IDKHACHHANG || "",
       IDNHANVIEN: userLogin?.IDNHANVIEN || "",
       KHACHHANG: currentCustomer?.HOTEN || "",
       MAKHACHHANG: currentCustomer?.MAKHACHHANG || "",
       CMT: currentCustomer?.CMT || "",
       DIACHI: currentCustomer?.DIACHI || "",
-      IDKYTHU: 3,
+      IDKYTHU: currentReceipt?.IDKYTHU || "",
       IDTUYENTHU: currentCustomer?.TUYENTHU?.IDTUYENTHU || "",
       TUYENTHU: currentCustomer?.TUYENTHU?.TENTUYENTHU || "",
       XAPHUONG: currentCustomer?.TUYENTHU?.XAPHUONG.TENXAPHUONG || "",
@@ -84,10 +98,11 @@ export default function ReceiptForm({ isEdit, currentCustomer }: Props) {
         currentCustomer?.TUYENTHU?.XAPHUONG.QUANHUYEN.TENQUANHUYEN || "",
       GIA: currentCustomer?.LOAIKH.GIA || "",
       NGAYTAO: dayjs(new Date()),
-      NOIDUNG: "",
+      NOIDUNG:
+        currentReceipt?.CHITIETPHIEUTHUs.map((u) => u.NOIDUNG).join(", ") || "",
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentCustomer]
+    [currentCustomer, currentReceipt]
   );
 
   const methods = useForm({
@@ -106,14 +121,31 @@ export default function ReceiptForm({ isEdit, currentCustomer }: Props) {
 
   const values = watch();
   useEffect(() => {
-    if (isEdit && currentCustomer) {
+    if (isEdit && currentCustomer && currentReceipt) {
       reset(defaultValues);
     }
     if (!isEdit) {
       reset(defaultValues);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEdit, currentCustomer]);
+  }, [isEdit, currentCustomer, currentReceipt]);
+
+  // const onSubmit = async (account: any) => {
+  //   try {
+  //     console.log(account);
+  //     if (isEdit) {
+  //       account = {
+  //         ...account,
+  //         IDPHIEU: currentReceipt?.IDPHIEU,
+  //       };
+  //       await dispatch(updateReceipt(account));
+  //     } else {
+  //       await dispatch(createReceipt(account));
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const onSubmit = async (data: any) => {
     try {
@@ -141,20 +173,20 @@ export default function ReceiptForm({ isEdit, currentCustomer }: Props) {
   };
 
   useEffect(() => {
-    if (createReceiptSuccess) {
+    if (createReceiptSuccess || updateReceiptSuccess) {
       navigate(PATH_DASHBOARD.receipt.list);
     }
     return () => {
       dispatch(resetReceipt());
     };
-  }, [createReceiptSuccess]);
+  }, [createReceiptSuccess, updateReceiptSuccess]);
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <Card sx={{ p: 3 }}>
-            <div className="mb-6 text-lg font-semibold uppercase text-blue-600">
+            <div className="mb-6 text-lg font-semibold text-blue-600 uppercase">
               Thông tin khách hàng
               <Label
                 variant={"ghost"}
@@ -241,7 +273,7 @@ export default function ReceiptForm({ isEdit, currentCustomer }: Props) {
         </Grid>
         <Grid item xs={12} md={6}>
           <Card sx={{ p: 3 }}>
-            <div className="mb-6 text-lg font-semibold uppercase text-blue-600">
+            <div className="mb-6 text-lg font-semibold text-blue-600 uppercase">
               Thông tin phiếu thu
             </div>
             <Box

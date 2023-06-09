@@ -1,15 +1,22 @@
 import PropTypes from "prop-types";
-import { Stack, InputAdornment, TextField, MenuItem, Box, Tooltip, IconButton } from "@mui/material";
+import {
+  Stack,
+  InputAdornment,
+  TextField,
+  MenuItem,
+  Box,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
 import Iconify from "../../../components/Iconify";
-import { CSVLink, CSVDownload } from "react-csv";
-
+import { CSVLink } from 'react-csv';
 // components
 
 // ----------------------------------------------------------------------
 
 const INPUT_WIDTH = 250;
 
-interface BillingPeriodTableToolbarProps {
+interface CustomerTypeTableToolbarProps {
   filterName: string;
   onFilterName: (value: string) => void;
   filterUser: string;
@@ -17,17 +24,17 @@ interface BillingPeriodTableToolbarProps {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   optionsInfo: string[];
-  dataTable: any[]; ///CSV
+  dataTable: any[];
 }
 
-export default function BillingPeriodTableToolbar({
+export default function CustomerTypeTableToolbar({
   filterName,
   filterUser,
   onFilterName,
   onFilterUser,
   optionsInfo,
-  dataTable, ///CSV
-}: BillingPeriodTableToolbarProps) {
+  dataTable,
+}: CustomerTypeTableToolbarProps) {
   return (
     <Stack
       spacing={2}
@@ -72,7 +79,11 @@ export default function BillingPeriodTableToolbar({
         value={filterName}
         onChange={(event) => onFilterName(event.target.value)}
         placeholder={
-          filterUser === "Tên kỳ thu" ? "Tìm kiếm theo tên kỳ thu" : undefined
+          filterUser === "Thông tin loại khách hàng"
+            ? "Tìm kiếm theo tên loại hoặc loại phí"
+            : filterUser === "Giá"
+            ? "Tìm kiếm theo giá"
+            : undefined
         }
         InputProps={{
           startAdornment: (
@@ -85,14 +96,14 @@ export default function BillingPeriodTableToolbar({
           ),
         }}
       />
-      {/* CSV */}
-      <Box className="flex items-center justify">
-        <CSVLink filename="Danh_sach_ky_thu" data={dataTable}>
-          <Tooltip title="Xuất danh sách">
-            <IconButton>
-              <Iconify icon={"eva:save-outline"} sx={{ color: "#1976d2" }} />
-            </IconButton>
-          </Tooltip>
+
+      <Box className="flex items-center justi">
+        <CSVLink filename="Danh_sach_loai_khach_hang" data={dataTable}>
+        <Tooltip title="Xuất danh sách">
+          <IconButton>
+            <Iconify icon={"eva:save-outline"} sx={{ color: "#1976d2" }} />
+          </IconButton>
+        </Tooltip>
         </CSVLink>
       </Box>
     </Stack>

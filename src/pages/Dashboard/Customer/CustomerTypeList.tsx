@@ -29,10 +29,13 @@ import { CustomerTypeModel } from "../../../interfaces/CustomerTypeModel";
 import useTable, { emptyRows } from "../../../hooks/useTable";
 import { TableEmptyRows, TableHeadCustom } from "../../../components/table";
 import CustomerTypeTableRow from "./CustomerTypeTableRow";
+import CustomerTypeTableToolbar from "./CustomerTypeTableToolbar";
 
 type Props = {};
 
 // ----------------------------------------------------------------------
+const OPTIONS_INFO = ["Thông tin loại khách hàng", "Giá"];
+
 const TABLE_HEAD = [
   { id: "id", label: "Id", align: "left" },
   { id: "TENLOAI", label: "Tên loại", align: "left" },
@@ -58,6 +61,7 @@ export default function CustomerTypeList({}: Props) {
     orderBy,
     rowsPerPage,
     selected,
+    setPage,
     //
     onSort,
     onChangePage,
@@ -66,9 +70,19 @@ export default function CustomerTypeList({}: Props) {
 
   const navigate = useNavigate();
 
+  const [filterName, setFilterName] = useState("");
+
+  const [filterUser, setFilterUser] = useState("Thông tin loại khách hàng");
+
   const [tableData, setTableData] = useState<CustomerTypeModel[]>([]);
 
   const denseHeight = dense ? 60 : 80;
+
+  const dataFiltered = applySortFilter({
+    tableData,
+    filterName,
+    filterUser,
+  });
 
   useEffect(() => {
     if (customerTypeList && customerTypeList.length) {
@@ -83,6 +97,24 @@ export default function CustomerTypeList({}: Props) {
   const handleEditRow = (id: number) => {
     navigate(PATH_DASHBOARD.userType.edit(id));
   };
+
+  const handleFilterName = (filterName: string) => {
+    setFilterName(filterName);
+    setPage(0);
+  };
+
+  const handleFilterUser = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFilterUser(event.target.value);
+  };
+
+  const dataCSV = dataFiltered.map((row, index) => ({
+    STT: index + 1,
+    IDLOAIKH: row.IDLOAIKH,
+    TENLOAI: row.TENLOAI,
+    GIA: row.GIA,
+  }));
 
   return (
     <Page title="User: List">
@@ -108,6 +140,16 @@ export default function CustomerTypeList({}: Props) {
         />
         <Card>
           <Divider />
+          <CustomerTypeTableToolbar
+            dataTable={dataCSV}
+            filterName={filterName}
+            onFilterName={handleFilterName}
+            filterUser={filterUser}
+            onFilterUser={(
+              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => handleFilterUser(event)}
+            optionsInfo={OPTIONS_INFO}
+          />
           {/* <Scrollbar> */}
           <TableContainer sx={{ minWidth: 800, position: "relative" }}>
             <Table size={dense ? "small" : "medium"}>
@@ -121,7 +163,7 @@ export default function CustomerTypeList({}: Props) {
               />
 
               <TableBody>
-                {tableData
+                {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row: any) => (
                     <CustomerTypeTableRow
@@ -147,7 +189,7 @@ export default function CustomerTypeList({}: Props) {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={tableData?.length ?? 0}
+              count={dataFiltered?.length ?? 0}
               rowsPerPage={rowsPerPage ?? 5}
               page={page}
               onPageChange={onChangePage}
@@ -159,4 +201,38 @@ export default function CustomerTypeList({}: Props) {
       </Container>
     </Page>
   );
+}
+
+interface ApplySortFilterProps {
+  tableData: any[];
+  filterName?: string;
+  filterUser?: string;
+}
+
+function applySortFilter({
+  tableData,
+  filterName,
+  filterUser,
+}: ApplySortFilterProps) {
+  if (filterUser === "Giá") {
+    if (filterName) {
+      const searchTerm = filterName.toLowerCase();
+      tableData = tableData.filter((item) =>
+        item.GIA.toString().includes(filterName)
+      );
+    }
+  }
+
+  if (filterUser === "Thông tin loại khách hàng") {
+    if (filterName) {
+      const searchTerm = filterName.toLowerCase();
+      tableData = tableData.filter(
+        (item) =>
+          item.TENLOAI.toLowerCase().includes(searchTerm) ||
+          item.TENLOAIPHI.toLowerCase().includes(searchTerm)
+      );
+    }
+  }
+
+  return tableData;
 }

@@ -46,7 +46,7 @@ export default function BillingPeriodForm({
   } = useAppSelector((state) => state.billingPeriod);
 
   const BillingPeriodSchema = Yup.object().shape({
-    TENKYTHU: Yup.string().required("Kỳ thu là bắt buộc"),
+    TENKYTHU: Yup.string().required("Tên kỳ thu là bắt buộc"),
   });
 
   const defaultValues = useMemo(
@@ -118,8 +118,8 @@ export default function BillingPeriodForm({
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={12}>
+      <Grid container spacing={3} justifyContent="center" alignItems="center" >
+        <Grid item xs={9} md={9}>
           <Card sx={{ p: 3 }}>
             <Box
               sx={{

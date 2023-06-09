@@ -97,7 +97,7 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
     MAKHACHHANG: Yup.string()
       .required("Mã khách hàng là bắt buộc")
       .matches(/^\S+$/, "Không được chứa khoảng trống")
-      .min(5, "Phải có ít nhất 5 ký tự"),
+      .min(4, "Phải có ít nhất 4 ký tự"),
     HOTEN: Yup.string()
       .required("Họ tên là bắt buộc")
       .matches(/^[a-zA-Z\sÀ-ỹ]+$/, "Họ tên chỉ chứa chữ cái"),
@@ -210,6 +210,9 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
                 // disabled={isEdit}
                 name="MAKHACHHANG"
                 label="Mã khách hàng"
+                InputProps={{
+                  readOnly: isEdit ? true : false,
+                }}
               />
               <RHFTextField name="HOTEN" label="Họ tên " />
 
@@ -218,6 +221,7 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
                 label="Tuyến thu"
                 placeholder="Tuyến thu"
                 onChange={handleSelectrevenueRoutes}
+                disabled={isEdit}
               >
                 <option value="" />
                 {revenueRoutesList?.map((option, index) => (
@@ -231,14 +235,18 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
                 name="TENQUANHUYEN"
                 label="Quận huyện"
                 value={data.setDistrict}
-                // disabled
+                InputProps={{
+                  readOnly: isEdit ? true : false,
+                }}
               />
 
               <RHFTextField
                 name="TENXAPHUONG"
                 label="Xã phường"
                 value={data.setWard}
-                // disabled
+                InputProps={{
+                  readOnly: true,
+                }}
               />
               {/* <Controller
                 name="NGAYSINH"

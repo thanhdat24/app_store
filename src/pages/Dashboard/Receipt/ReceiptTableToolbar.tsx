@@ -98,7 +98,7 @@ export default function ReceiptTableToolbar({
       />
 
       <Box className="flex items-center justi">
-        <CSVLink data={dataTable}>
+        <CSVLink filename="Danh_sach_phieu_thu" data={dataTable}>
           <Tooltip title="CSV Export">
             <IconButton>
               <Iconify icon={"eva:save-outline"} sx={{ color: "#1976d2" }} />

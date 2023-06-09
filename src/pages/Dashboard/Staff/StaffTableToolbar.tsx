@@ -24,7 +24,7 @@ interface StaffTableToolbarProps {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   optionsInfo: string[];
-  dataTable: any[];
+  dataTable: any[]; ///CSV
 }
 
 export default function StaffTableToolbar({
@@ -96,14 +96,14 @@ export default function StaffTableToolbar({
           ),
         }}
       />
-
-      <Box className="flex items-center justi">
-        <CSVLink data={dataTable}>
-          <Tooltip title="CSV Export">
-            <IconButton>
-              <Iconify icon={"eva:save-outline"} sx={{ color: "#1976d2" }} />
-            </IconButton>
-          </Tooltip>
+      {/* CSV */}
+      <Box className="flex items-center justify" >
+        <CSVLink filename="Danh_sach_nhan_vien" data={dataTable}>
+        <Tooltip title="Xuất danh sách">  
+          <IconButton>
+            <Iconify icon={"eva:save-outline"} sx={{ color: "#1976d2" }} />
+          </IconButton>
+        </Tooltip>
         </CSVLink>
       </Box>
     </Stack>

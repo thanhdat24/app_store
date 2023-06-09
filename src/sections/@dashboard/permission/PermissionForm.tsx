@@ -93,7 +93,7 @@ export default function PermissionForm({ isEdit, currentPermission }: Props) {
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} justifyContent="center" alignItems="center" >
         <Grid item xs={6} md={8}>
           <Card sx={{ p: 3 }}>
             <Box

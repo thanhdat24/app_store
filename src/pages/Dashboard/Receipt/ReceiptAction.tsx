@@ -15,6 +15,8 @@ import {
 } from "../../../redux/slices/customerReducer";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { getAllBillingPeriods } from "../../../redux/slices/billingPeriodReducer";
+import { getAllReceipt } from "../../../redux/slices/receiptReducer";
+
 
 type Props = {};
 
@@ -29,8 +31,15 @@ export default function ReceiptAction({}: Props) {
 
   const { customerList } = useAppSelector((state) => state.customer);
 
+  const { receiptList } = useAppSelector((state) => state.receipt);
+
+
   const currentCustomer = customerList?.find(
     (customer) => customer.IDKHACHHANG === Number(id)
+  );
+
+  const currentReceipt = receiptList?.find(
+    (receipt) => receipt.IDPHIEU === Number(id)
   );
 
   console.log("currentCustomer", currentCustomer);
@@ -38,6 +47,7 @@ export default function ReceiptAction({}: Props) {
   useEffect(() => {
     dispatch(getAllCustomer());
     dispatch(getAllBillingPeriods());
+    dispatch(getAllReceipt());
   }, [dispatch]);
 
   return (
@@ -52,7 +62,7 @@ export default function ReceiptAction({}: Props) {
           ]}
         />
 
-        <ReceiptForm isEdit={isEdit} currentCustomer={currentCustomer} />
+        <ReceiptForm isEdit={isEdit} currentCustomer={currentCustomer} currentReceipt={currentReceipt}  />
       </Container>
     </Page>
   );

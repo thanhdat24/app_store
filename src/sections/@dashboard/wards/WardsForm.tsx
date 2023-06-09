@@ -127,7 +127,7 @@ export default function WardsForm({ isEdit, currentWard }: Props) {
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} justifyContent="center" alignItems="center">
         <Grid item xs={12} md={12}>
           <Card sx={{ p: 3 }}>
             <Box

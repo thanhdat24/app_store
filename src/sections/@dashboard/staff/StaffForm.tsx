@@ -75,7 +75,7 @@ export default function StaffForm({ isEdit, currentStaff }: Props) {
     SDT: Yup.string()
       .required("Số điện thoại là bắt buộc")
       .matches(/^\S+$/, "Không được chứa khoảng trống")
-      .matches(/^\d+$/, "Chứng minh thư chỉ chứa số")
+      .matches(/^\d+$/, "Số điện thoại chỉ chứa số")
       .matches(/^\d{10}$/, "Số điện thoại phải có 10 chữ số"),
     DIACHI: Yup.string().required("Địa chỉ là bắt buộc"),
     // ...(isEdit
