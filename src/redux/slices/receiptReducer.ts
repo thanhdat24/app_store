@@ -24,7 +24,6 @@ const receiptReducer = createSlice({
   initialState,
   reducers: {
     hasError(state, action) {
-
       switch (true) {
         case "phieu" in action.payload:
           toast.error(action.payload.phieu[0], { autoClose: 2000 });
@@ -47,6 +46,7 @@ const receiptReducer = createSlice({
       toast.success("Tạo thành công!", { autoClose: 2000 });
     },
     resetReceiptSuccess(state) {
+      state.receiptList = null;
       state.createReceiptSuccess = null;
     },
     updateReceiptSuccess(state, action: PayloadAction<Number>) {

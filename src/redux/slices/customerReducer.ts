@@ -34,12 +34,10 @@ const customerReducer = createSlice({
     hasError(state, action) {
       state.error = action.payload;
       const { makh, cmt, inputcheck } = action.payload;
-      if (makh?.length > 0)
-        toast.error(makh[0], { autoClose: 2000 });
-      if (cmt?.length > 0)
-        toast.error(cmt[0], { autoClose: 2000 });
+      if (makh?.length > 0) toast.error(makh[0], { autoClose: 2000 });
+      if (cmt?.length > 0) toast.error(cmt[0], { autoClose: 2000 });
       if (!inputcheck?.makh) {
-          toast.error(inputcheck[0], { autoClose: 2000 });
+        toast.error(inputcheck[0], { autoClose: 2000 });
       }
     },
 
@@ -61,6 +59,7 @@ const customerReducer = createSlice({
       toast.success("Xóa thành công!", { autoClose: 2000 });
     },
     resetCustomerSuccess(state) {
+      state.customerList = null;
       state.createCustomerSuccess = null;
       state.updateCustomerSuccess = null;
       state.deleteCustomerSuccess = null;
@@ -144,8 +143,7 @@ export const getDetailCustomer = (id: number) => {
       const response = await axios.get(`api/KHACHHANGs/${id}`);
 
       const data: CustomerModel = await response.data;
-      const action: PayloadAction<CustomerModel> =
-        detailCustomerSuccess(data);
+      const action: PayloadAction<CustomerModel> = detailCustomerSuccess(data);
       dispatch(action);
     } catch (error) {
       console.log(error);

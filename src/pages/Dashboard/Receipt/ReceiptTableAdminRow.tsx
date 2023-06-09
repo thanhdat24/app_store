@@ -19,7 +19,7 @@ import { TableMoreMenu } from "../../../components/table";
 import Iconify from "../../../components/Iconify";
 import Label from "../../../components/Label";
 import { formatPriceInVND } from "../../../utils/formatNumber";
-import { fDate, fDateTime } from "../../../utils/formatTime";
+import { fDate, fDateTime, fMonthYear } from "../../../utils/formatTime";
 type Props = {
   row: any;
   onDeleteRow: () => void;
@@ -28,7 +28,7 @@ type Props = {
   onConfirmRow: () => void;
 };
 
-export default function ReceiptTableRow({
+export default function ReceiptTableAdminRow({
   row,
   onDeleteRow,
   onEditRow,
@@ -70,7 +70,7 @@ export default function ReceiptTableRow({
           {TRANGTHAIPHIEU ? "Đã thu" : "Chưa thu"}
         </Label>
       </TableCell>
-      <TableCell align="left">{KYTHU.TENKYTHU}</TableCell>
+      <TableCell align="left">{fMonthYear(KYTHU.TENKYTHU)}</TableCell>
       <TableCell align="left">{KHACHHANG.HOTEN}</TableCell>
       <TableCell align="left">
         {" "}
@@ -89,6 +89,7 @@ export default function ReceiptTableRow({
       <TableCell align="left">
         {formatPriceInVND(CHITIETPHIEUTHUs[0]?.SOTIEN)}
       </TableCell>
+      <TableCell align="left">{KHACHHANG.TUYENTHU.TENTUYENTHU}</TableCell>
       <TableCell align="left">
         {!TRANGTHAIPHIEU && (
           <Button
@@ -97,7 +98,8 @@ export default function ReceiptTableRow({
             sx={{
               borderRadius: 2,
               textTransform: "none",
-              fontSize: 14,
+              fontSize: 13,
+              padding: "6px 12px",
               textWrap: "nowrap",
             }}
             variant="outlined"

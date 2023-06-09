@@ -18,6 +18,7 @@ import { TableMoreMenu } from "../../../components/table";
 import Iconify from "../../../components/Iconify";
 import Label from "../../../components/Label";
 import { fDate } from "../../../utils/formatTime";
+import { toast } from "react-toastify";
 
 type Props = {
   row: any;
@@ -55,6 +56,7 @@ export default function CustomerTableRow({
     MAKHACHHANG,
     TUYENTHU,
     TRANGTHAI,
+    USERNAME,
   } = row;
   return (
     <TableRow hover selected={selected}>

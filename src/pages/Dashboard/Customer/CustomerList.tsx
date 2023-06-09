@@ -40,6 +40,8 @@ import { CustomerModel } from "../../../interfaces/CustomerModel";
 import CustomerTableRow from "./CustomerTableRow";
 import CustomerTableToolbar from "./CustomerTableToolbar";
 import { toast } from "react-toastify";
+import { getCustomersByCashier } from "../../../redux/slices/cashierReducer";
+import { CashierModel } from "../../../interfaces/CashierModel";
 
 type Props = {};
 
@@ -69,9 +71,19 @@ export default function CustomerList({}: Props) {
   const { customerList, deleteCustomerSuccess } = useAppSelector(
     (state) => state.customer
   );
+  const { customersByCashierList } = useAppSelector((state) => state.cashier);
+  const { userLogin } = useAppSelector((state) => state.admin);
+  console.log("customersByCashierList", customersByCashierList);
 
   useEffect(() => {
-    dispatch(getAllCustomer());
+    if (userLogin?.USERNAME === "admin") {
+      dispatch(getAllCustomer());
+    } else {
+      dispatch(getCustomersByCashier(Number(userLogin?.IDNHANVIEN)));
+    }
+
+    // if()
+    // dispatch(getCustomersByCashier(userLogin?.idNhanVien));
   }, [dispatch, deleteCustomerSuccess]);
 
   console.log("customerList", customerList);
@@ -100,7 +112,9 @@ export default function CustomerList({}: Props) {
 
   const [filterUser, setFilterUser] = useState("Thông tin khách hàng");
 
-  const [tableData, setTableData] = useState<CustomerModel[]>([]);
+  const [tableData, setTableData] = useState<CustomerModel[] | CashierModel[]>(
+    []
+  );
 
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } =
     useTabs("Tất cả");
@@ -118,8 +132,10 @@ export default function CustomerList({}: Props) {
   useEffect(() => {
     if (customerList && customerList.length) {
       setTableData(customerList);
+    } else if (customersByCashierList && customersByCashierList.length > 0) {
+      setTableData(customersByCashierList);
     }
-  }, [customerList ?? []]);
+  }, [customerList ?? [], customersByCashierList ?? []]);
 
   const handleDeleteRow = (id: number) => {
     dispatch(deleteCustomer(id));
@@ -166,44 +182,49 @@ export default function CustomerList({}: Props) {
             { name: "Danh sách" },
           ]}
           action={
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "repeat(2, 1fr);",
-                gap: "10px",
-              }}
-            >
-              <Button
-                sx={{ borderRadius: 2, textTransform: "none" }}
-                variant="contained"
-                component={RouterLink}
-                to={
-                  selected.length < 2 && selected.length === 1
-                    ? PATH_DASHBOARD.receipt.new(selected[0])
-                    : ""
-                }
-                onClick={() =>
-                  (selected.length === 0 || selected.length > 1) &&
-                  toast.warning("Vui lòng chọn duy nhất 1 khách hàng để tạo!", {
-                    autoClose: 2000,
-                    position: "top-center",
-                  })
-                }
-                // disabled={selected.length === 0 || selected.length > 1}
-                startIcon={<Iconify icon={"eva:plus-fill"} />}
+            userLogin?.USERNAME === "admin" && (
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(2, 1fr);",
+                  gap: "10px",
+                }}
               >
-                Tạo phiếu thu
-              </Button>
-              <Button
-                sx={{ borderRadius: 2, textTransform: "none" }}
-                variant="contained"
-                component={RouterLink}
-                to={PATH_DASHBOARD.user.new}
-                startIcon={<Iconify icon={"eva:plus-fill"} />}
-              >
-                Thêm khách hàng
-              </Button>
-            </Box>
+                <Button
+                  sx={{ borderRadius: 2, textTransform: "none" }}
+                  variant="contained"
+                  component={RouterLink}
+                  to={
+                    selected.length < 2 && selected.length === 1
+                      ? PATH_DASHBOARD.receipt.new(selected[0])
+                      : ""
+                  }
+                  onClick={() =>
+                    (selected.length === 0 || selected.length > 1) &&
+                    toast.warning(
+                      "Vui lòng chọn duy nhất 1 khách hàng để tạo!",
+                      {
+                        autoClose: 2000,
+                        position: "top-center",
+                      }
+                    )
+                  }
+                  // disabled={selected.length === 0 || selected.length > 1}
+                  startIcon={<Iconify icon={"eva:plus-fill"} />}
+                >
+                  Tạo phiếu thu
+                </Button>
+                <Button
+                  sx={{ borderRadius: 2, textTransform: "none" }}
+                  variant="contained"
+                  component={RouterLink}
+                  to={PATH_DASHBOARD.user.new}
+                  startIcon={<Iconify icon={"eva:plus-fill"} />}
+                >
+                  Thêm khách hàng
+                </Button>
+              </Box>
+            )
           }
         />
         <Card>

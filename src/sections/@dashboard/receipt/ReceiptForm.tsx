@@ -295,10 +295,13 @@ export default function ReceiptForm({
                 sx={{ gridColumn: { sm: "1 / 3" } }}
               />
               <RHFSelect name="IDKYTHU" label="Kỳ thu" placeholder="Kỳ thu">
+                <option></option>
                 {billingPeriodList?.map((option, index) => (
-                  <option key={index} value={option.IDKYTHU}>
-                    {fMonthYear(option.TENKYTHU)}
-                  </option>
+                  <>
+                    <option key={index} value={option.IDKYTHU}>
+                      {fMonthYear(option.TENKYTHU)}
+                    </option>
+                  </>
                 ))}
               </RHFSelect>
               {/* <Controller

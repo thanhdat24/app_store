@@ -47,7 +47,6 @@ type Props = {
 };
 
 export default function CustomerForm({ isEdit, currentCustomer }: Props) {
-  
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
@@ -72,7 +71,8 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
 
   const [data, setData] = useState({
     setWard: currentCustomer?.TUYENTHU.XAPHUONG.TENXAPHUONG || "",
-    setDistrict: currentCustomer?.TUYENTHU.XAPHUONG.QUANHUYEN.TENQUANHUYEN || "",
+    setDistrict:
+      currentCustomer?.TUYENTHU.XAPHUONG.QUANHUYEN.TENQUANHUYEN || "",
     setIDXAPHUONG: currentCustomer?.TUYENTHU.XAPHUONG.IDXAPHUONG || "",
   });
 
@@ -116,7 +116,7 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
     IDTUYENTHU: Yup.string().required("Phiếu thu là bắt buộc"),
     IDLOAIKH: Yup.string().required("Loại khách hàng là bắt buộc"),
   });
-  
+
   const defaultValues = useMemo(
     () => ({
       MAKHACHHANG: currentCustomer?.MAKHACHHANG || "",
@@ -126,11 +126,12 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
       CMT: currentCustomer?.CMT || "",
       IDTUYENTHU: currentCustomer?.TUYENTHU?.IDTUYENTHU || "",
       TENXAPHUONG: currentCustomer?.TUYENTHU.XAPHUONG.IDXAPHUONG || "",
-      IDLOAIKH: currentCustomer?.IDLOAIKH || "",  
+      IDLOAIKH: currentCustomer?.IDLOAIKH || "",
       // NGAYTAO: dayjs(new Date()),
       // NGAYCHINHSUA: dayjs(new Date()),
       // TRANGTHAI: "",
-      TENQUANHUYEN: currentCustomer?.TUYENTHU.XAPHUONG.QUANHUYEN.IDQUANHUYEN|| "",
+      TENQUANHUYEN:
+        currentCustomer?.TUYENTHU.XAPHUONG.QUANHUYEN.IDQUANHUYEN || "",
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentCustomer]
@@ -169,7 +170,8 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
         account = {
           ...account,
           IDKHACHHANG: currentCustomer?.IDKHACHHANG,
-          };
+        };
+        console.log("account", account);
         await dispatch(updateCustomer(account));
       } else {
         await dispatch(createCustomer(account));
@@ -178,8 +180,6 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
       console.error(error);
     }
   };
-
-
 
   useEffect(() => {
     if (createCustomerSuccess || updateCustomerSuccess) {

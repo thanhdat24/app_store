@@ -14,7 +14,6 @@ import RevenueRoutesForm from "../../../sections/@dashboard/revenueStream/Revenu
 type Props = {};
 
 export default function RevenueRoutesAction({}: Props) {
-
   const dispatch = useAppDispatch();
 
   const { pathname } = useLocation();
@@ -46,7 +45,10 @@ export default function RevenueRoutesAction({}: Props) {
           ]}
         />
 
-        <RevenueRoutesForm isEdit={isEdit} currentRevenueRoutes={currentRevenueRoutes}/>
+        <RevenueRoutesForm
+          isEdit={isEdit}
+          currentRevenueRoutes={currentRevenueRoutes}
+        />
       </Container>
     </Page>
   );

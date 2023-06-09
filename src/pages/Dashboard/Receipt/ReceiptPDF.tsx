@@ -16,8 +16,14 @@ interface ReceiptPDFProps {
 }
 export default function ReceiptPDF({ receipt }: ReceiptPDFProps) {
   console.log("receipt", receipt);
-  const { MAUSOPHIEU, KHACHHANG, CHITIETPHIEUTHUs, NHANVIEN, TRANGTHAIPHIEU } =
-    receipt;
+  const {
+    MAUSOPHIEU,
+    KHACHHANG,
+    CHITIETPHIEUTHUs,
+    NHANVIEN,
+    TRANGTHAIPHIEU,
+    NGUOITHU,
+  } = receipt;
   return (
     <Document>
       <Page size="A5" style={styles.page}>
@@ -161,6 +167,7 @@ export default function ReceiptPDF({ receipt }: ReceiptPDFProps) {
           <View style={[styles.gridItem]}>
             <Text style={[styles.h4]}>NV Thu ngân</Text>
             <Text style={[styles.h6, styles.fontItalic]}>(Ký, họ tên)</Text>
+            <Text style={[styles.subtitle1, styles.mt35]}>{NGUOITHU}</Text>
           </View>
         </View>
       </Page>

@@ -23,12 +23,16 @@ type Props = {
   row: any;
   onDeleteRow: () => void;
   onEditRow: () => void;
+  selected: boolean;
+  onSelectRow : () => void;
 };
 
 export default function RevenueRoutesTableRow({
   row,
+  selected,
   onDeleteRow,
   onEditRow,
+  onSelectRow,
 }: Props) {
   const [openMenu, setOpenMenuActions] = useState<null | HTMLElement>(null); // Add type annotation
 
@@ -41,14 +45,30 @@ export default function RevenueRoutesTableRow({
     setOpenMenuActions(null);
   };
 
-  const { IDTUYENTHU, MATUYENTHU, TENTUYENTHU, XAPHUONG } = row;
+  const { IDTUYENTHU, MATUYENTHU, TENTUYENTHU, XAPHUONG, PHANQUYENTUYENTHUs } =
+    row;
+  console.log("row", row);
   return (
-    <TableRow hover>
+    <TableRow hover selected={selected}>
+      <TableCell padding="checkbox">
+        <Checkbox checked={selected} onClick={onSelectRow} />
+      </TableCell>
       <TableCell align="left">{IDTUYENTHU}</TableCell>
       <TableCell align="left">{MATUYENTHU}</TableCell>
       <TableCell align="left">{TENTUYENTHU}</TableCell>
       <TableCell align="left">{XAPHUONG.QUANHUYEN.TENQUANHUYEN}</TableCell>
       <TableCell align="left">{XAPHUONG.TENXAPHUONG}</TableCell>
+      <TableCell align="left">
+        {PHANQUYENTUYENTHUs.map((item: any, index: number) => (
+          <p key={index}>
+            <span className="!text-blue-500 underline cursor-pointer">
+              {item.NHANVIEN.MANHANVIEN}:
+            </span>
+            &nbsp;
+            {item.NHANVIEN.HOTEN}
+          </p>
+        ))}
+      </TableCell>
       <TableCell align="right">
         <TableMoreMenu
           open={openMenu}

@@ -15,6 +15,14 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
+  FormControl,
+  InputLabel,
+  Select,
+  OutlinedInput,
+  SelectChangeEvent,
+  MenuItem,
+  Checkbox,
+  ListItemText,
 } from "@mui/material";
 import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
@@ -27,22 +35,43 @@ import {
 } from "../../../redux/slices/revenueRoutesReducer";
 import useTable, { emptyRows } from "../../../hooks/useTable";
 import { RevenueRoutesModel } from "../../../interfaces/RevenueRoutesModel";
-import { TableEmptyRows, TableHeadCustom } from "../../../components/table";
+import {
+  TableEmptyRows,
+  TableHeadCustom,
+  TableSelectedActions,
+} from "../../../components/table";
 import RevenueRoutesTableRow from "./RevenueRoutesTableRow";
 import RevenueRoutesTableToolbar from "./RevenueRoutesTableToolbar";
+import { getAllStaff } from "../../../redux/slices/staffReducer";
+import { toast } from "react-toastify";
+import { staffPermissionRoutes } from "../../../redux/slices/permissionRevenueRoutesReducer";
 
 type Props = {};
 
 const OPTIONS_INFO = ["Thông tin tuyến thu", "Mã tuyến thu"];
 
 const TABLE_HEAD = [
+  { id: "" },
   { id: "id", label: "ID", align: "left" },
   { id: "MATUYENTHU", label: "Mã tuyến thu", align: "left" },
   { id: "TENTUYENTHU", label: "Tên tuyến thu", align: "left" },
   { id: "TENQUANHUYEN", label: "Tên quận huyện", align: "left" },
   { id: "TENXAPHUONG", label: "Tên xã phường", align: "left" },
+  { id: "PHANQUYENTUYENTHU", label: "Phân quyền tuyến thu", align: "left" },
   { id: "THAOTAC", label: "Thao tác", align: "right" },
 ];
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 export default function RevenueRoutesList({}: Props) {
   ///
@@ -51,9 +80,14 @@ export default function RevenueRoutesList({}: Props) {
   const { revenueRoutesList, deleteRevenueRoutesSuccess } = useAppSelector(
     (state) => state.revenueRoutes
   );
+
+  const { staffList } = useAppSelector((state) => state.staff);
+
+  const { createPermissionRevenueSuccess } = useAppSelector( (state) => state.permissionRevenueRoutes);
   useEffect(() => {
     dispatch(getAllRevenueRoutes());
-  }, [dispatch, deleteRevenueRoutesSuccess]);
+    dispatch(getAllStaff());
+  }, [dispatch, deleteRevenueRoutesSuccess, createPermissionRevenueSuccess]);
 
   const {
     dense,
@@ -81,6 +115,8 @@ export default function RevenueRoutesList({}: Props) {
 
   const [tableData, setTableData] = useState<RevenueRoutesModel[]>([]);
 
+  const [staffId, setStaffId] = useState<string[]>([]);
+  console.log("staffId", staffId);
   const denseHeight = dense ? 60 : 80;
 
   const dataFiltered = applySortFilter({
@@ -124,6 +160,45 @@ export default function RevenueRoutesList({}: Props) {
     "Tên quận huyện": row.XAPHUONG.QUANHUYEN.TENQUANHUYEN,
     "Tên xã phường": row.XAPHUONG.TENXAPHUONG,
   }));
+  const handleChangeStaff = (event: SelectChangeEvent<typeof staffId>) => {
+    const {
+      target: { value },
+    } = event;
+    setStaffId(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
+  const handleePermissionStaff = async () => {
+    if (selected.length > 1 || selected.length === 0)
+      return (
+        (selected.length === 0 || selected.length > 1) &&
+        toast.warning("Vui lòng chọn duy nhất 1 tuyến thu!", {
+          autoClose: 2000,
+          position: "top-center",
+        })
+      );
+
+    if (staffId.length === 0)
+      return toast.warning("Vui lòng chọn ít nhất 1 nhân viên!", {
+        autoClose: 2000,
+        position: "top-center",
+      });
+    const result: any[] = [];
+    for (let i = 0; i < staffId.length; i++) {
+      const item = {
+        idTuyenThu: selected[0],
+        idNhanVien: staffId[i],
+      };
+      result.push(item);
+    }
+    if (staffId.length > 0) {
+      await dispatch(staffPermissionRoutes(result));
+      setSelected([]);
+      setStaffId([]);
+    }
+  };
 
   return (
     <Page title="RevenueRoutes: List">
@@ -136,15 +211,61 @@ export default function RevenueRoutesList({}: Props) {
             { name: "Danh sách" },
           ]}
           action={
-            <Button
-              sx={{ borderRadius: 2, textTransform: "none" }}
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.revenueRoutes.new}
-              startIcon={<Iconify icon={"eva:plus-fill"} />}
-            >
-              Thêm tuyến thu
-            </Button>
+            <Box className="flex items-center">
+              <FormControl sx={{ m: 1, width: 300 }}>
+                <InputLabel id="demo-multiple-checkbox-label">
+                  Nhân viên
+                </InputLabel>
+                <Select
+                  labelId="demo-multiple-checkbox-label"
+                  id="demo-multiple-checkbox"
+                  multiple
+                  value={staffId} // Thay đổi tại đây
+                  onChange={handleChangeStaff}
+                  input={<OutlinedInput label="Nhân viên" />}
+                  renderValue={(selected) =>
+                    selected
+                      .map((staffId) => {
+                        const staff = staffList?.find(
+                          (staff) =>
+                            Number(staff.IDNHANVIEN) === Number(staffId)
+                        );
+                        return staff ? staff.HOTEN : "";
+                      })
+                      .join(", ")
+                  }
+                  MenuProps={MenuProps}
+                >
+                  {staffList?.map((name) => (
+                    <MenuItem key={name.IDNHANVIEN} value={name.IDNHANVIEN}>
+                      <Checkbox
+                        checked={staffId.indexOf(Number(name.IDNHANVIEN)) > -1}
+                      />{" "}
+                      {/* Thay đổi tại đây */}
+                      <ListItemText primary={name.HOTEN} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <Button
+                sx={{ borderRadius: 2, textTransform: "none", marginRight: 1 }}
+                variant="contained"
+                startIcon={<Iconify icon={"eva:plus-fill"} />}
+                color="success"
+                onClick={handleePermissionStaff}
+              >
+                Phân quyền
+              </Button>
+              <Button
+                sx={{ borderRadius: 2, textTransform: "none" }}
+                variant="contained"
+                component={RouterLink}
+                to={PATH_DASHBOARD.revenueRoutes.new}
+                startIcon={<Iconify icon={"eva:plus-fill"} />}
+              >
+                Thêm tuyến thu
+              </Button>
+            </Box>
           }
         />
         <Card>
@@ -161,6 +282,19 @@ export default function RevenueRoutesList({}: Props) {
           />
           {/* <Scrollbar> */}
           <TableContainer sx={{ minWidth: 800, position: "relative" }}>
+            {selected.length > 0 && (
+              <TableSelectedActions
+                dense={dense}
+                numSelected={selected.length}
+                rowCount={tableData.length}
+                onSelectAllRows={(checked) =>
+                  onSelectAllRows(
+                    checked,
+                    tableData.map((row) => row.IDTUYENTHU)
+                  )
+                }
+              />
+            )}
             <Table size={dense ? "small" : "medium"}>
               <TableHeadCustom
                 order={order}
@@ -178,8 +312,8 @@ export default function RevenueRoutesList({}: Props) {
                     <RevenueRoutesTableRow
                       key={row.IDTUYENTHU}
                       row={row}
-                      // selected={selected.includes(row.id)}
-                      // onSelectRow={() => onSelectRow(row.id)}
+                      selected={selected.includes(row.IDTUYENTHU)}
+                      onSelectRow={() => onSelectRow(row.IDTUYENTHU)}
                       onDeleteRow={() => handleDeleteRow(row.IDTUYENTHU)}
                       onEditRow={() => handleEditRow(row.IDTUYENTHU)}
                     />

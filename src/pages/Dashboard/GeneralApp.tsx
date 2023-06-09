@@ -6,10 +6,13 @@ import { Grid, Container, Typography } from "@mui/material";
 // components
 import Page from "../../components/Page";
 import { AnalyticsWidgetSummary } from "../../sections/@dashboard/general";
-import { getAllCustomer } from "../../redux/slices/customerReducer";
+import {
+  getAllCustomer,
+  resetCustomerSuccess,
+} from "../../redux/slices/customerReducer";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { getAllStaff } from "../../redux/slices/staffReducer";
-import { getAllReceipt } from "../../redux/slices/receiptReducer";
+import { getAllReceipt, resetReceipt } from "../../redux/slices/receiptReducer";
 import { getAllRevenueRoutes } from "../../redux/slices/revenueRoutesReducer";
 // ----------------------------------------------------------------------
 
@@ -27,6 +30,11 @@ export default function GeneralApp({}) {
     dispatch(getAllStaff());
     dispatch(getAllReceipt());
     dispatch(getAllRevenueRoutes());
+
+    return () => {
+      dispatch(resetCustomerSuccess());
+      dispatch(resetReceipt());
+    };
   }, [dispatch]);
 
   console.log("customerList ", customerList);

@@ -59,6 +59,7 @@ export const PATH_DASHBOARD = {
     list: path(ROOTS_DASHBOARD, "/receipt/list"),
     
   },
+
   billingPeriod: {
     root: path(ROOTS_DASHBOARD, "/billing-period"),
     list: path(ROOTS_DASHBOARD, "/billing-period/list"),

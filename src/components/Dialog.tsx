@@ -35,18 +35,17 @@ const AlertDialog: React.FC<AlertDialogProps> = ({
             <Iconify icon={"eva:alert-circle-outline"} />{" "}
           </IconButton>
         </DialogTitle>
-        {/* <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
-          </DialogContentText>
-        </DialogContent> */}
+
         <DialogActions>
-          <Button sx={{ fontSize: 13 }} onClick={onClose} variant="outlined">
+          <Button
+            sx={{ fontSize: 13, padding: "6px 10px" }}
+            onClick={onClose}
+            variant="outlined"
+          >
             Hủy bỏ
           </Button>
           <Button
-            sx={{ fontSize: 13 }}
+            sx={{ fontSize: 13, padding: "6px 10px" }}
             onClick={onConfirm}
             autoFocus
             variant="contained"
