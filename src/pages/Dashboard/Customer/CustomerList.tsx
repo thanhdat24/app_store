@@ -15,6 +15,7 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
+  Stack,
 } from "@mui/material";
 import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
@@ -42,7 +43,12 @@ import CustomerTableToolbar from "./CustomerTableToolbar";
 import { toast } from "react-toastify";
 import { getCustomersByCashier } from "../../../redux/slices/cashierReducer";
 import { CashierModel } from "../../../interfaces/CashierModel";
-
+import TagFiltered from "../../../components/TagFiltered";
+import { FormProvider } from "../../../components/hook-form";
+import { useForm } from "react-hook-form";
+import { values } from "lodash";
+import { CSVLink } from "react-csv";
+import Image from "../../../components/Image";
 type Props = {};
 
 // ----------------------------------------------------------------------
@@ -73,7 +79,6 @@ export default function CustomerList({}: Props) {
   );
   const { customersByCashierList } = useAppSelector((state) => state.cashier);
   const { userLogin } = useAppSelector((state) => state.admin);
-  console.log("customersByCashierList", customersByCashierList);
 
   useEffect(() => {
     if (userLogin?.USERNAME === "admin") {
@@ -116,6 +121,13 @@ export default function CustomerList({}: Props) {
     []
   );
 
+  const methods = useForm({});
+
+  const { reset, watch, setValue, handleSubmit } = methods;
+
+  const values = watch();
+  const onSubmit = () => {};
+  const isDefault = values.TUYENTHU?.length === 0;
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } =
     useTabs("Tất cả");
 
@@ -127,6 +139,7 @@ export default function CustomerList({}: Props) {
     filterStatus,
     filterName,
     filterUser,
+    values,
   });
 
   useEffect(() => {
@@ -156,12 +169,26 @@ export default function CustomerList({}: Props) {
     setFilterUser(event.target.value);
   };
 
+  const handleRemoveRevenueRoute = (value: any) => {
+    const newValue = values.TUYENTHU.filter((item: any) => item !== value);
+    setValue("TUYENTHU", newValue);
+  };
+
+  const handleRemoveActive = (value: any) => {
+    const newValue = values.TRANGTHAI.filter((item: any) => item !== value);
+    setValue("TRANGTHAI", newValue);
+  };
+
+  const handleResetFilter = () => {
+    reset();
+  };
+
   const dataCSV = dataFiltered.map((row, index) => ({
     STT: index + 1,
     "ID Khách hàng": row.IDKHACHHANG,
     "Mã khách hàng": row.MAKHACHHANG,
     "Họ tên": row.HOTEN,
-    "CMT": row.CMT,
+    CMT: row.CMT,
     "Địa chỉ": row.DIACHI,
     "Ngày cấp": row.NGAYCAP,
     "Loại khách hàng": row.LOAIKH.TENLOAI,
@@ -185,8 +212,7 @@ export default function CustomerList({}: Props) {
             userLogin?.USERNAME === "admin" && (
               <Box
                 sx={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(2, 1fr);",
+                  display: "flex",
                   gap: "10px",
                 }}
               >
@@ -223,6 +249,17 @@ export default function CustomerList({}: Props) {
                 >
                   Thêm khách hàng
                 </Button>
+                <Box>
+                  <CSVLink data={dataCSV}>
+                    <Tooltip title="Excel Export">
+                      <img
+                        src="/icons/ic_excel.png"
+                        alt="export excel"
+                        className="w-7 h-7 leading-3 block"
+                      />
+                    </Tooltip>
+                  </CSVLink>
+                </Box>
               </Box>
             )
           }
@@ -241,16 +278,42 @@ export default function CustomerList({}: Props) {
             ))}
           </Tabs>
           <Divider />
-          <CustomerTableToolbar
-            dataTable={dataCSV}
-            filterName={filterName}
-            onFilterName={handleFilterName}
-            filterUser={filterUser}
-            onFilterUser={(
-              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => handleFilterUser(event)}
-            optionsInfo={OPTIONS_INFO}
-          />
+          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+            <CustomerTableToolbar
+              // filterRevenueRoute={filterRevenueRoute}
+              // onFilterRevenueRoute={(
+              //   event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              // ) => handleFilterRevenueRoute(event)}
+              optionRevenueRoute={customerList}
+              dataTable={dataCSV}
+              filterName={filterName}
+              onFilterName={handleFilterName}
+              filterUser={filterUser}
+              onFilterUser={(
+                event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => handleFilterUser(event)}
+              optionsInfo={OPTIONS_INFO}
+            />
+          </FormProvider>
+          {(values.TUYENTHU?.length > 0 || values.TRANGTHAI?.length > 0) && (
+            <Stack
+              spacing={2}
+              direction={{ md: "column" }}
+              sx={{ py: 0, px: 3 }}
+            >
+              <Box>
+                <strong>{dataFiltered.length}</strong>
+                <span className="ml-1 !text-[#637381]">Kết quả tìm thấy</span>
+              </Box>
+              <TagFiltered
+                filters={values}
+                onRemoveRevenueRoute={handleRemoveRevenueRoute}
+                isShowReset={!isDefault}
+                onResetAll={handleResetFilter}
+                onRemoveActive={handleRemoveActive}
+              />
+            </Stack>
+          )}
           {/* <Scrollbar> */}
           <TableContainer sx={{ minWidth: 800, position: "relative" }}>
             {selected.length > 0 && (
@@ -331,6 +394,8 @@ interface ApplySortFilterProps {
   filterStatus?: string;
   filterName?: string;
   filterUser?: string;
+  filterRevenueRoute?: string;
+  values: any;
 }
 
 function applySortFilter({
@@ -339,6 +404,7 @@ function applySortFilter({
   filterStatus,
   filterName,
   filterUser,
+  values,
 }: ApplySortFilterProps) {
   if (filterStatus === "hộ dân") {
     filterStatus = "Hộ Dân";
@@ -379,6 +445,18 @@ function applySortFilter({
           item.CMT.toString().includes(filterName)
       );
     }
+  }
+  console.log("tableData", tableData);
+  if (values.TUYENTHU?.length > 0) {
+    tableData = tableData.filter((TT) =>
+      values.TUYENTHU.includes(TT.TUYENTHU.TENTUYENTHU)
+    );
+  }
+
+  if (values.TRANGTHAI?.length > 0) {
+    tableData = tableData.filter((TT) =>
+      values.TRANGTHAI.includes(TT.TRANGTHAI === true ? "Hoạt động" : "Khoá")
+    );
   }
 
   return tableData;

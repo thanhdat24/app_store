@@ -1,4 +1,6 @@
 import PropTypes from "prop-types";
+// form
+import { useForm } from "react-hook-form";
 import {
   Stack,
   InputAdornment,
@@ -9,7 +11,10 @@ import {
   IconButton,
 } from "@mui/material";
 import Iconify from "../../../components/Iconify";
-import { CSVLink } from 'react-csv';
+import { CSVLink } from "react-csv";
+import { CustomerModel } from "../../../interfaces/CustomerModel";
+import { FormProvider } from "../../../components/hook-form";
+import RHFSelectMultiple from "../../../components/hook-form/RHFSelectMultiple";
 // components
 
 // ----------------------------------------------------------------------
@@ -25,6 +30,7 @@ interface CustomerTableToolbarProps {
   ) => void;
   optionsInfo: string[];
   dataTable: any[];
+  optionRevenueRoute: CustomerModel[] | null;
 }
 
 export default function CustomerTableToolbar({
@@ -34,6 +40,9 @@ export default function CustomerTableToolbar({
   onFilterUser,
   optionsInfo,
   dataTable,
+  // filterRevenueRoute,
+  // onFilterRevenueRoute,
+  optionRevenueRoute,
 }: CustomerTableToolbarProps) {
   return (
     <Stack
@@ -73,6 +82,22 @@ export default function CustomerTableToolbar({
           </MenuItem>
         ))}
       </TextField>
+      {/* <FormProvider methods={methods}> */}
+      <RHFSelectMultiple
+        name="TUYENTHU"
+        options={Array.from(
+          new Set(
+            optionRevenueRoute?.map((option) => option.TUYENTHU.TENTUYENTHU)
+          )
+        )}
+        label="Tuyến thu"
+      />
+
+      <RHFSelectMultiple
+        name="TRANGTHAI"
+        options={["Hoạt động", "Khoá"]}
+        label="Trạng thái"
+      />
 
       <TextField
         fullWidth
@@ -96,16 +121,6 @@ export default function CustomerTableToolbar({
           ),
         }}
       />
-
-      <Box className="flex items-center justi">
-        <CSVLink data={dataTable}>
-        <Tooltip title="CSV Export">
-          <IconButton>
-            <Iconify icon={"eva:save-outline"} sx={{ color: "#1976d2" }} />
-          </IconButton>
-        </Tooltip>
-        </CSVLink>
-      </Box>
     </Stack>
   );
 }
