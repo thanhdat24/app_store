@@ -46,7 +46,6 @@ import { CashierModel } from "../../../interfaces/CashierModel";
 import TagFiltered from "../../../components/TagFiltered";
 import { FormProvider } from "../../../components/hook-form";
 import { useForm } from "react-hook-form";
-import { values } from "lodash";
 import { CSVLink } from "react-csv";
 import Image from "../../../components/Image";
 type Props = {};
@@ -249,7 +248,7 @@ export default function CustomerList({}: Props) {
                 >
                   Thêm khách hàng
                 </Button>
-                <Box>
+                <Box className="flex items-center leading-[1]">
                   <CSVLink data={dataCSV}>
                     <Tooltip title="Excel Export">
                       <img
@@ -280,11 +279,7 @@ export default function CustomerList({}: Props) {
           <Divider />
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <CustomerTableToolbar
-              // filterRevenueRoute={filterRevenueRoute}
-              // onFilterRevenueRoute={(
-              //   event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-              // ) => handleFilterRevenueRoute(event)}
-              optionRevenueRoute={customerList}
+              optionRevenueRoute={tableData}
               dataTable={dataCSV}
               filterName={filterName}
               onFilterName={handleFilterName}

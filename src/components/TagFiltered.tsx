@@ -3,6 +3,7 @@ import { useTheme, styled } from "@mui/material/styles";
 import { Chip, Typography, Stack, Button } from "@mui/material";
 // utils
 import Iconify from "./Iconify";
+import { fMonthYear } from "../utils/formatTime";
 // components
 
 // ----------------------------------------------------------------------
@@ -66,6 +67,7 @@ interface TagFilteredProps {
   onRemoveRevenueRoute: any;
   onResetAll: any;
   onRemoveActive: any;
+  onRemoveBillPeriod?: any;
 }
 
 export default function TagFiltered({
@@ -74,10 +76,10 @@ export default function TagFiltered({
   isShowReset,
   onResetAll,
   onRemoveActive,
+  onRemoveBillPeriod,
 }: TagFilteredProps) {
   const theme = useTheme();
-  const { TUYENTHU, TRANGTHAI } = filters;
-
+  const { TUYENTHU, TRANGTHAI, KYTHUBATDAU, KYTHUKETTHUC } = filters;
   return (
     <RootStyle>
       {TUYENTHU?.length > 0 && (
@@ -114,6 +116,46 @@ export default function TagFiltered({
                 }}
               />
             ))}
+          </Stack>
+        </WrapperStyle>
+      )}
+
+      {(KYTHUBATDAU || KYTHUKETTHUC) && (
+        <WrapperStyle>
+          <LabelStyle>Kỳ thu:</LabelStyle>
+          <Stack direction="row" flexWrap="wrap" sx={{ p: 0 }}>
+            <Chip
+              key={KYTHUBATDAU}
+              label={
+                KYTHUBATDAU && KYTHUKETTHUC
+                  ? `${fMonthYear(KYTHUBATDAU)} - ${fMonthYear(KYTHUKETTHUC)}`
+                  : fMonthYear(KYTHUBATDAU)
+              }
+              size="small"
+              onDelete={() => onRemoveBillPeriod(KYTHUBATDAU)}
+              sx={{
+                py: 1.3,
+                m: 0.5,
+                borderRadius: "8px",
+                height: "24px",
+                fontSize: "0.8125rem",
+                "&:hover": {
+                  backgroundColor: "rgb(69, 79, 91)",
+                },
+                color: "#fff",
+                backgroundColor: "rgb(33, 43, 54)",
+                "& .MuiSvgIcon-root": {
+                  color: "#fff",
+                  opacity: 0.48,
+                  fontSize: 19,
+                },
+                "&:hover .MuiSvgIcon-root": {
+                  color: "#fff",
+                  opacity: 1,
+                  transition: "all 250ms ease-in-out",
+                },
+              }}
+            />
           </Stack>
         </WrapperStyle>
       )}

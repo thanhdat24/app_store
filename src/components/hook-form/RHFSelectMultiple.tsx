@@ -31,12 +31,14 @@ interface RHFSelectProps {
   name: string;
   label?: string;
   options: any[];
+  sx?: any;
 }
 
 const RHFSelectMultiple: React.FC<RHFSelectProps> = ({
   name,
   label,
   options,
+  sx,
   ...other
 }) => {
   const { control } = useFormContext();
@@ -47,7 +49,7 @@ const RHFSelectMultiple: React.FC<RHFSelectProps> = ({
       render={({ field: { onChange, onBlur, value, name } }) => (
         <>
           {/* <p>{value}</p> */}
-          <FormControl sx={{ width: 800 }}>
+          <FormControl sx={sx}>
             <InputLabel id="demo-multiple-checkbox-label">{label}</InputLabel>
             <Select
               labelId="demo-multiple-checkbox-label"

@@ -15,6 +15,7 @@ import { CSVLink } from "react-csv";
 import { CustomerModel } from "../../../interfaces/CustomerModel";
 import { FormProvider } from "../../../components/hook-form";
 import RHFSelectMultiple from "../../../components/hook-form/RHFSelectMultiple";
+import { CashierModel } from "../../../interfaces/CashierModel";
 // components
 
 // ----------------------------------------------------------------------
@@ -30,7 +31,7 @@ interface CustomerTableToolbarProps {
   ) => void;
   optionsInfo: string[];
   dataTable: any[];
-  optionRevenueRoute: CustomerModel[] | null;
+  optionRevenueRoute: CustomerModel[] | CashierModel[] | undefined;
 }
 
 export default function CustomerTableToolbar({

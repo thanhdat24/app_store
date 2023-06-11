@@ -18,6 +18,7 @@ import {
   Dialog,
   DialogActions,
   alpha,
+  Stack,
 } from "@mui/material";
 import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
@@ -44,9 +45,13 @@ import {
   resetCasher,
   updateReceiptStatus,
 } from "../../../redux/slices/cashierReducer";
+import { useForm } from "react-hook-form";
 import { fDate, fMonthYear } from "../../../utils/formatTime";
 import { formatPriceInVND } from "../../../utils/formatNumber";
 import { CustomerModel } from "../../../interfaces/CustomerModel";
+import { FormProvider } from "../../../components/hook-form";
+import TagFiltered from "../../../components/TagFiltered";
+import { CSVLink } from "react-csv";
 
 type Props = {};
 
@@ -124,6 +129,13 @@ export default function ReceiptList({}: Props) {
   const [tableData, setTableData] = useState<ReceiptModel[] | CustomerModel[]>(
     []
   );
+  const methods = useForm({});
+
+  const { reset, watch, setValue, handleSubmit } = methods;
+
+  const values = watch();
+  const onSubmit = () => {};
+  const isDefault = values.TUYENTHU?.length === 0 || values.KYTHU?.length === 0;
 
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } =
     useTabs("Tất cả");
@@ -138,6 +150,7 @@ export default function ReceiptList({}: Props) {
     filterStatus,
     filterName,
     filterUser,
+    values,
   });
 
   useEffect(() => {
@@ -184,6 +197,26 @@ export default function ReceiptList({}: Props) {
   ) => {
     setFilterUser(event.target.value);
   };
+
+  const handleRemoveRevenueRoute = (value: any) => {
+    const newValue = values.TUYENTHU.filter((item: any) => item !== value);
+    setValue("TUYENTHU", newValue);
+  };
+
+  const handleRemoveBillPeriod = (value: any) => {
+    setValue("KYTHUBATDAU", "");
+    setValue("KYTHUKETTHUC", "");
+  };
+
+  const handleRemoveActive = (value: any) => {
+    const newValue = values.TRANGTHAI.filter((item: any) => item !== value);
+    setValue("TRANGTHAI", newValue);
+  };
+
+  const handleResetFilter = () => {
+    reset();
+  };
+
   console.log("dataFiltered ", dataFiltered);
   const dataCSV = dataFiltered.map((row, index) => ({
     STT: index + 1,
@@ -204,7 +237,7 @@ export default function ReceiptList({}: Props) {
   useEffect(() => {
     if (updateReceiptStatusSuccess) {
       dispatch(resetCasher());
-    } 
+    }
   }, [updateReceiptStatusSuccess]);
 
   return (
@@ -217,6 +250,19 @@ export default function ReceiptList({}: Props) {
             { name: "Phiếu thu", href: PATH_DASHBOARD.receipt.root },
             { name: "Danh sách" },
           ]}
+          action={
+            <Box className="flex items-center leading-[1]">
+              <CSVLink data={dataCSV}>
+                <Tooltip title="Excel Export">
+                  <img
+                    src="/icons/ic_excel.png"
+                    alt="export excel"
+                    className="w-7 h-7 leading-3 block"
+                  />
+                </Tooltip>
+              </CSVLink>
+            </Box>
+          }
         />
         <Card>
           <Tabs
@@ -232,16 +278,42 @@ export default function ReceiptList({}: Props) {
             ))}
           </Tabs>
           <Divider />
-          <ReceiptTableToolbar
-            dataTable={dataCSV}
-            filterName={filterName}
-            onFilterName={handleFilterName}
-            filterUser={filterUser}
-            onFilterUser={(
-              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => handleFilterUser(event)}
-            optionsInfo={OPTIONS_INFO}
-          />
+          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+            <ReceiptTableToolbar
+              optionRevenueRoute={tableData}
+              dataTable={dataCSV}
+              filterName={filterName}
+              onFilterName={handleFilterName}
+              filterUser={filterUser}
+              onFilterUser={(
+                event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => handleFilterUser(event)}
+              optionsInfo={OPTIONS_INFO}
+            />
+          </FormProvider>
+          {(values.TUYENTHU?.length > 0 ||
+            values.KYTHU?.length > 0 ||
+            values.KYTHUBATDAU ||
+            values.KYTHUKETTHUC) && (
+            <Stack
+              spacing={2}
+              direction={{ md: "column" }}
+              sx={{ py: 0, px: 3 }}
+            >
+              <Box>
+                <strong>{dataFiltered.length}</strong>
+                <span className="ml-1 !text-[#637381]">Kết quả tìm thấy</span>
+              </Box>
+              <TagFiltered
+                filters={values}
+                onRemoveRevenueRoute={handleRemoveRevenueRoute}
+                onRemoveBillPeriod={handleRemoveBillPeriod}
+                isShowReset={!isDefault}
+                onResetAll={handleResetFilter}
+                onRemoveActive={handleRemoveActive}
+              />
+            </Stack>
+          )}
           {/* <Scrollbar> */}
           <TableContainer sx={{ minWidth: 800, position: "relative" }}>
             <Table size={dense ? "small" : "medium"}>
@@ -267,7 +339,6 @@ export default function ReceiptList({}: Props) {
                       onConfirmRow={() => handleOpenDialog(row.IDPHIEU)}
                     />
                   ))}
-                ;
                 <TableEmptyRows
                   height={denseHeight}
                   emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
@@ -337,6 +408,7 @@ interface ApplySortFilterProps {
   filterStatus?: string | boolean;
   filterName?: string;
   filterUser?: string;
+  values?: any;
 }
 
 function applySortFilter({
@@ -345,6 +417,7 @@ function applySortFilter({
   filterStatus,
   filterName,
   filterUser,
+  values,
 }: ApplySortFilterProps) {
   if (filterStatus === "chưa thu") {
     filterStatus = false;
@@ -387,6 +460,37 @@ function applySortFilter({
           item.KHACHHANG.CMT.includes(searchTerm)
       );
     }
+  }
+
+  if (values.TUYENTHU?.length > 0) {
+    tableData = tableData.filter((TT) =>
+      values.TUYENTHU.includes(TT.KHACHHANG.TUYENTHU.TENTUYENTHU)
+    );
+  }
+
+  // if (values.KYTHU?.length > 0) {
+  //   tableData = tableData.filter((TT) =>
+  //     values.KYTHU.includes(TT.KYTHU.TENKYTHU)
+  //   );
+  // }
+  if (values.KYTHUBATDAU && !values.KYTHUKETTHUC) {
+    tableData = tableData.filter((TT) => {
+      const startDate = fMonthYear(values.KYTHUBATDAU);
+
+      const kyThuTen = fMonthYear(TT.KYTHU.TENKYTHU);
+
+      return startDate === kyThuTen;
+    });
+  }
+  if (values.KYTHUBATDAU && values.KYTHUKETTHUC) {
+    tableData = tableData.filter((TT) => {
+      const startDate = fMonthYear(values.KYTHUBATDAU);
+      const endDate = fMonthYear(values.KYTHUKETTHUC);
+
+      const kyThuTen = fMonthYear(TT.KYTHU.TENKYTHU);
+
+      return kyThuTen >= startDate && kyThuTen <= endDate;
+    });
   }
 
   return tableData;
