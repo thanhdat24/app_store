@@ -30,6 +30,7 @@ import useTable, { emptyRows } from "../../../hooks/useTable";
 import { TableEmptyRows, TableHeadCustom } from "../../../components/table";
 import CustomerTypeTableRow from "./CustomerTypeTableRow";
 import CustomerTypeTableToolbar from "./CustomerTypeTableToolbar";
+import { CSVLink } from "react-csv";
 
 type Props = {};
 
@@ -127,6 +128,12 @@ export default function CustomerTypeList({}: Props) {
             { name: "Danh sách loại" },
           ]}
           action={
+            <Box
+                sx={{
+                  display: "flex",
+                  gap: "10px",
+                }}
+              >
             <Button
               sx={{ borderRadius: 2, textTransform: "none" }}
               variant="contained"
@@ -136,6 +143,18 @@ export default function CustomerTypeList({}: Props) {
             >
               Thêm loại khách hàng
             </Button>
+            <Box className="flex items-center leading-[1]">
+                  <CSVLink filename="Danh_sach_loai_khach_hang" data={dataCSV}>
+                    <Tooltip title="Xuất danh sách">
+                      <img
+                        src="/icons/ic_excel.png"
+                        alt="export excel"
+                        className="w-7 h-7 leading-3 block"
+                      />
+                    </Tooltip>
+                  </CSVLink>
+                </Box>
+            </Box>
           }
         />
         <Card>

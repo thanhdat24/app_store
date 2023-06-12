@@ -26,7 +26,6 @@ export default function PermissionTableToolbar({
   onFilterName,
   onFilterUser,
   optionsInfo,
-  dataTable, ///CSV
 }: PermissionTableToolbarProps) {
   return (
     <Stack
@@ -87,16 +86,6 @@ export default function PermissionTableToolbar({
           ),
         }}
       />
-      {/* CSV */}
-      <Box className="flex items-center justify" >
-        <CSVLink filename="Danh_sach_quyen" data={dataTable}>
-        <Tooltip title="Xuất danh sách">  
-          <IconButton>
-            <Iconify icon={"eva:save-outline"} sx={{ color: "#1976d2" }} />
-          </IconButton>
-        </Tooltip>
-        </CSVLink>
-      </Box>
     </Stack>
   );
 }

@@ -85,16 +85,6 @@ export default function BillingPeriodTableToolbar({
           ),
         }}
       />
-      {/* CSV */}
-      <Box className="flex items-center justify">
-        <CSVLink filename="Danh_sach_ky_thu" data={dataTable}>
-          <Tooltip title="Xuất danh sách">
-            <IconButton>
-              <Iconify icon={"eva:save-outline"} sx={{ color: "#1976d2" }} />
-            </IconButton>
-          </Tooltip>
-        </CSVLink>
-      </Box>
     </Stack>
   );
 }

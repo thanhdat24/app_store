@@ -40,6 +40,7 @@ import {
   resetEmployeePermission,
 } from "../../../redux/slices/detailPermissionReducer";
 import { toast } from "react-toastify";
+import { CSVLink } from "react-csv";
 
 type Props = {};
 
@@ -248,6 +249,12 @@ export default function StaffList({}: Props) {
           ]}
           action={
             <Box
+                sx={{
+                  display: "flex",
+                  gap: "10px",
+                }}
+              >
+            <Box
               sx={{
                 display: "grid",
                 gridTemplateColumns: "repeat(3, 1fr);",
@@ -288,6 +295,18 @@ export default function StaffList({}: Props) {
               >
                 Thêm nhân viên
               </Button>
+            </Box>
+            <Box className="flex items-center leading-[1]">
+                  <CSVLink filename="Danh_sach_nhan_vien" data={dataCSV}>
+                    <Tooltip title="Xuất danh sách">
+                      <img
+                        src="/icons/ic_excel.png"
+                        alt="export excel"
+                        className="w-7 h-7 leading-3 block"
+                      />
+                    </Tooltip>
+                  </CSVLink>
+                </Box>
             </Box>
           }
         />

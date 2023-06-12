@@ -31,6 +31,7 @@ import useTable, { emptyRows } from "../../../hooks/useTable";
 import { TableEmptyRows, TableHeadCustom } from "../../../components/table";
 import DistrictTableRow from "./DistrictTableRow";
 import DistrictTableToolbar from "./DistrictTableToolbar";
+import { CSVLink } from "react-csv";
 
 type Props = {};
 
@@ -131,15 +132,33 @@ export default function districtList({}: Props) {
             { name: "Danh sách" },
           ]}
           action={
-            <Button
-              sx={{ borderRadius: 2, textTransform: "none" }}
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.district.new}
-              startIcon={<Iconify icon={"eva:plus-fill"} />}
+            <Box
+              sx={{
+                display: "flex",
+                gap: "10px",
+              }}
             >
-              Thêm quận huyện
-            </Button>
+              <Button
+                sx={{ borderRadius: 2, textTransform: "none" }}
+                variant="contained"
+                component={RouterLink}
+                to={PATH_DASHBOARD.district.new}
+                startIcon={<Iconify icon={"eva:plus-fill"} />}
+              >
+                Thêm quận huyện
+              </Button>
+              <Box className="flex items-center leading-[1]">
+                <CSVLink filename="Danh_sach_quan_huyen" data={dataCSV}>
+                  <Tooltip title="Xuất danh sách">
+                    <img
+                      src="/icons/ic_excel.png"
+                      alt="export excel"
+                      className="w-7 h-7 leading-3 block"
+                    />
+                  </Tooltip>
+                </CSVLink>
+              </Box>
+            </Box>
           }
         />
         <Grid container justifyContent="center" alignItems="center">
