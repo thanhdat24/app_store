@@ -16,6 +16,8 @@ import {
   TableContainer,
   TablePagination,
   Stack,
+  DialogTitle,
+  DialogActions,
 } from "@mui/material";
 import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
@@ -48,6 +50,7 @@ import { FormProvider } from "../../../components/hook-form";
 import { useForm } from "react-hook-form";
 import { CSVLink } from "react-csv";
 import Image from "../../../components/Image";
+import DialogAnimate from "../../../components/animate/DialogAnimate";
 type Props = {};
 
 // ----------------------------------------------------------------------
@@ -55,20 +58,6 @@ type Props = {};
 const OPTIONS_INFO = ["Thông tin khách hàng", "Mã khách hàng"];
 
 const STATUS_OPTIONS = ["Tất cả", "doanh nghiệp", "hộ dân"];
-
-const TABLE_HEAD = [
-  { id: "" },
-  { id: "id", label: "Id", align: "left" },
-  { id: "MAKHACHHANG", label: "Mã", align: "left" },
-  { id: "HOTEN", label: "Họ tên", align: "left" },
-  { id: "CMT", label: "CMT", align: "left" },
-  { id: "NGAYCAP", label: "Ngày cấp", align: "left" },
-  { id: "DIACHI", label: "Địa chỉ", align: "left" },
-  { id: "LOAIKH", label: "Loại", align: "left" },
-  { id: "TENTUYENTHU", label: "Tuyến thu", align: "left" },
-  { id: "TRANGTHAI", label: "Trạng thái", align: "left" },
-  { id: "THAOTAC", label: "Thao tác" },
-];
 
 export default function CustomerList({}: Props) {
   const dispatch = useAppDispatch();
@@ -78,6 +67,20 @@ export default function CustomerList({}: Props) {
   );
   const { customersByCashierList } = useAppSelector((state) => state.cashier);
   const { userLogin } = useAppSelector((state) => state.admin);
+
+  const TABLE_HEAD = [
+    { id: "" },
+    { id: "id", label: "Id", align: "left" },
+    { id: "MAKHACHHANG", label: "Mã", align: "left" },
+    { id: "HOTEN", label: "Họ tên", align: "left" },
+    { id: "CMT", label: "CMT", align: "left" },
+    { id: "NGAYCAP", label: "Ngày cấp", align: "left" },
+    { id: "DIACHI", label: "Địa chỉ", align: "left" },
+    { id: "LOAIKH", label: "Loại", align: "left" },
+    { id: "TENTUYENTHU", label: "Tuyến thu", align: "left" },
+    { id: "TRANGTHAI", label: "Trạng thái", align: "left" },
+    { id: "THAOTAC", label: "Thao tác", align: "left" },
+  ];
 
   useEffect(() => {
     if (userLogin?.USERNAME === "admin") {
@@ -90,7 +93,7 @@ export default function CustomerList({}: Props) {
     // dispatch(getCustomersByCashier(userLogin?.idNhanVien));
   }, [dispatch, deleteCustomerSuccess]);
 
-  console.log("customerList", customerList);
+  console.log("customersByCashierList", customersByCashierList);
 
   const {
     dense,
@@ -345,6 +348,7 @@ export default function CustomerList({}: Props) {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row: any) => (
                     <CustomerTableRow
+                      userLogin={userLogin}
                       key={row.IDKHACHHANG}
                       row={row}
                       selected={selected.includes(row.IDKHACHHANG)}
