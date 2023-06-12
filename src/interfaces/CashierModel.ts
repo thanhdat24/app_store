@@ -12,6 +12,30 @@ export interface CashierModel {
   NGAYCHINHSUA: null;
   TRANGTHAI: boolean;
   LOAIKH: {};
-  TUYENTHU: {};
+  TUYENTHU: Tuyenthu;
   PHIEUTHUs: any[];
+}
+
+export interface Tuyenthu {
+  IDTUYENTHU: number;
+  IDXAPHUONG: number;
+  MATUYENTHU: string;
+  TENTUYENTHU: string;
+  KHACHHANGs: null;
+  PHANQUYENTUYENTHUs: any[];
+  XAPHUONG: Xaphuong;
+}
+
+export interface Xaphuong {
+  IDXAPHUONG: number;
+  IDQUANHUYEN: number;
+  TENXAPHUONG: string;
+  QUANHUYEN: Quanhuyen;
+  TUYENTHUs: any[];
+}
+
+export interface Quanhuyen {
+  IDQUANHUYEN: number;
+  TENQUANHUYEN: string;
+  XAPHUONGs: null;
 }

@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import {
   Stack,
   InputAdornment,
@@ -10,11 +9,13 @@ import {
 } from "@mui/material";
 import Iconify from "../../../components/Iconify";
 import { CSVLink, CSVDownload } from "react-csv";
+import RHFSelectMultiple from "../../../components/hook-form/RHFSelectMultiple";
+import { ReceiptModel } from "../../../interfaces/ReceiptModel";
+import { CustomerModel } from "../../../interfaces/CustomerModel";
+import RHFDatePickerField from "../../../components/hook-form/RHFDatePickerField";
 // components
 
 // ----------------------------------------------------------------------
-
-const INPUT_WIDTH = 250;
 
 interface ReceiptTableToolbarProps {
   filterName: string;
@@ -25,6 +26,7 @@ interface ReceiptTableToolbarProps {
   ) => void;
   optionsInfo: string[];
   dataTable: any[];
+  optionRevenueRoute: ReceiptModel[] | CustomerModel[] | undefined;
 }
 
 export default function ReceiptTableToolbar({
@@ -34,78 +36,105 @@ export default function ReceiptTableToolbar({
   onFilterUser,
   optionsInfo,
   dataTable,
+  optionRevenueRoute,
 }: ReceiptTableToolbarProps) {
   return (
-    <Stack
-      spacing={2}
-      direction={{ xs: "column", md: "row" }}
-      sx={{ py: 2.5, px: 3 }}
-    >
-      <TextField
-        fullWidth
-        select
-        label="Lọc"
-        value={filterUser}
-        onChange={onFilterUser}
-        SelectProps={{
-          MenuProps: {
-            sx: { "& .MuiPaper-root": { maxHeight: 260 } },
-          },
-        }}
-        sx={{
-          maxWidth: { md: INPUT_WIDTH },
-          textTransform: "capitalize",
-        }}
+    <Stack>
+      <Stack
+        spacing={2}
+        direction={{ xs: "column", md: "row" }}
+        sx={{ py: 2.5, px: 3 }}
       >
-        {optionsInfo.map((option: any) => (
-          <MenuItem
-            key={option}
-            value={option}
-            sx={{
-              mx: 1,
-              my: 0.5,
-              borderRadius: 0.75,
-              typography: "body2",
-              textTransform: "capitalize",
-            }}
-          >
-            {option}
-          </MenuItem>
-        ))}
-      </TextField>
+        <TextField
+          fullWidth
+          select
+          label="Lọc"
+          value={filterUser}
+          onChange={onFilterUser}
+          SelectProps={{
+            MenuProps: {
+              sx: { "& .MuiPaper-root": { maxHeight: 260 } },
+            },
+          }}
+          sx={{
+            maxWidth: { md: 220 },
+            textTransform: "capitalize",
+          }}
+        >
+          {optionsInfo.map((option: any) => (
+            <MenuItem
+              key={option}
+              value={option}
+              sx={{
+                mx: 1,
+                my: 0.5,
+                borderRadius: 0.75,
+                typography: "body2",
+                textTransform: "capitalize",
+              }}
+            >
+              {option}
+            </MenuItem>
+          ))}
+        </TextField>
 
-      <TextField
-        fullWidth
-        value={filterName}
-        onChange={(event) => onFilterName(event.target.value)}
-        placeholder={
-          filterUser === "Thông tin khách hàng"
-            ? "Tìm kiếm theo tên, mã hoặc CMT"
-            : filterUser === "Mã số phiếu"
-            ? "Tìm kiếm theo mã số phiếu"
-            : undefined
-        }
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Iconify
-                icon={"eva:search-fill"}
-                sx={{ color: "text.disabled", width: 20, height: 20 }}
-              />
-            </InputAdornment>
-          ),
-        }}
-      />
+        <RHFSelectMultiple
+          sx={{ width: 1000 }}
+          name="TUYENTHU"
+          options={Array.from(
+            new Set(
+              optionRevenueRoute?.map(
+                (option) => option.KHACHHANG.TUYENTHU.TENTUYENTHU
+              )
+            )
+          )}
+          label="Tuyến thu"
+        />
 
-      <Box className="flex items-center justi">
-        <CSVLink filename="Danh_sach_phieu_thu" data={dataTable}>
-          <Tooltip title="CSV Export">
-            <IconButton>
-              <Iconify icon={"eva:save-outline"} sx={{ color: "#1976d2" }} />
-            </IconButton>
-          </Tooltip>
-        </CSVLink>
-      </Box>
+        <TextField
+          fullWidth
+          value={filterName}
+          onChange={(event) => onFilterName(event.target.value)}
+          placeholder={
+            filterUser === "Thông tin khách hàng"
+              ? "Tìm kiếm theo tên, mã hoặc CMT"
+              : filterUser === "Mã số phiếu"
+              ? "Tìm kiếm theo mã số phiếu"
+              : undefined
+          }
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Iconify
+                  icon={"eva:search-fill"}
+                  sx={{ color: "text.disabled", width: 20, height: 20 }}
+                />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Stack>
+      <Stack
+        spacing={2}
+        direction={{ xs: "column", md: "row" }}
+        sx={{ pb: 2.5, px: 3 }}
+      >
+        <RHFDatePickerField
+          sx={{ width: 220 }}
+          name="KYTHUBATDAU"
+          label="Kỳ thu bắt đầu"
+          views={["month", "year"]}
+          format="MMMM YYYY"
+        />
+
+        <RHFDatePickerField
+          sx={{ width: 190 }}
+          name="KYTHUKETTHUC"
+          label="Kỳ thu kết thúc"
+          views={["month", "year"]}
+          format="MMMM YYYY"
+        />
+      </Stack>
     </Stack>
   );
 }

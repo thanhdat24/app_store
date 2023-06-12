@@ -8,61 +8,73 @@ import {
   InputLabel,
   ListItemText,
   MenuItem,
+  OutlinedInput,
   Select,
   TextField,
 } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
 interface RHFSelectProps {
   name: string;
   label?: string;
-  placeholder?: string;
-  children: React.ReactNode | any;
+  options: any[];
+  sx?: any;
 }
 
 const RHFSelectMultiple: React.FC<RHFSelectProps> = ({
   name,
   label,
-  placeholder,
-  children,
+  options,
+  sx,
   ...other
 }) => {
   const { control } = useFormContext();
-
   return (
     <Controller
       name={name}
       control={control}
-      render={({
-        field: { onChange, onBlur, value, name },
-        fieldState: { error },
-      }) => (
-        <FormControl sx={{ m: 1, width: 300 }}>
-          <InputLabel id={`${name}-label`}>{label}</InputLabel>
-          <Select
-            labelId={`${name}-label`}
-            id={`${name}-select`}
-            multiple
-            value={value}
-            onChange={onChange}
-            onBlur={onBlur}
-            input={<TextField label={label} />}
-            renderValue={(selected) => selected.join(", ")}
-          >
-            {children}
-          </Select>
-        </FormControl>
+      render={({ field: { onChange, onBlur, value, name } }) => (
+        <>
+          {/* <p>{value}</p> */}
+          <FormControl sx={sx}>
+            <InputLabel id="demo-multiple-checkbox-label">{label}</InputLabel>
+            <Select
+              labelId="demo-multiple-checkbox-label"
+              id="demo-multiple-checkbox"
+              multiple
+              value={Array.isArray(value) ? value : []}
+              onChange={onChange}
+              onBlur={onBlur}
+              input={<OutlinedInput label="Tuyến thu" />}
+              renderValue={(selected) => selected.join(", ")}
+              MenuProps={MenuProps}
+            >
+              {options.length > 0 &&
+                options?.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    <Checkbox checked={value?.includes(option)} />{" "}
+                    <ListItemText primary={option} />
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+        </>
       )}
     />
   );
-};
-
-RHFSelectMultiple.propTypes = {
-  name: PropTypes.string.isRequired,
-  children: PropTypes.node,
-  label: PropTypes.string,
-  placeholder: PropTypes.string,
 };
 
 export default RHFSelectMultiple;
