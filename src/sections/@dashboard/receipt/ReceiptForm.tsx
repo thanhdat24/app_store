@@ -68,12 +68,11 @@ export default function ReceiptForm({
     (state) => state.receipt
   );
 
-  console.log("12345", dayjs(new Date()).format());
   const NewUserSchema = Yup.object().shape({
     MAUSOPHIEU: Yup.string()
       .required("Mẫu số phiếu là bắt buộc")
       .matches(/^\S+$/, "Không được chứa khoảng trống")
-      .min(5, "Phải có ít nhất 3 ký tự"),
+      .min(5, "Phải có ít nhất 5 ký tự"),
     IDKYTHU: Yup.string().required("Kỳ thu là bắt buộc"),
     KYHIEU: Yup.string().required("Ký hiệu là bắt buộc"),
     NOIDUNG: Yup.string()
@@ -84,22 +83,40 @@ export default function ReceiptForm({
     () => ({
       MAUSOPHIEU: currentReceipt?.MAUSOPHIEU || "",
       KYHIEU: currentReceipt?.KYHIEU || "",
-      IDKHACHHANG: currentCustomer?.IDKHACHHANG || "",
+      IDKHACHHANG:
+        currentReceipt?.IDKHACHHANG || currentCustomer?.IDKHACHHANG || "",
+      KHACHHANG:
+        currentReceipt?.KHACHHANG.HOTEN || currentCustomer?.HOTEN || "",
       IDNHANVIEN: userLogin?.IDNHANVIEN || "",
-      KHACHHANG: currentCustomer?.HOTEN || "",
-      MAKHACHHANG: currentCustomer?.MAKHACHHANG || "",
-      CMT: currentCustomer?.CMT || "",
-      DIACHI: currentCustomer?.DIACHI || "",
+      MAKHACHHANG:
+        currentReceipt?.KHACHHANG.MAKHACHHANG ||
+        currentCustomer?.MAKHACHHANG ||
+        "",
+      CMT: currentReceipt?.KHACHHANG.CMT || currentCustomer?.CMT || "",
+      DIACHI: currentReceipt?.KHACHHANG.DIACHI || currentCustomer?.DIACHI || "",
       IDKYTHU: currentReceipt?.IDKYTHU || "",
-      IDTUYENTHU: currentCustomer?.TUYENTHU?.IDTUYENTHU || "",
-      TUYENTHU: currentCustomer?.TUYENTHU?.TENTUYENTHU || "",
-      XAPHUONG: currentCustomer?.TUYENTHU?.XAPHUONG.TENXAPHUONG || "",
+      IDTUYENTHU: currentReceipt?.KHACHHANG.IDTUYENTHU || "",
+      TUYENTHU:
+        currentReceipt?.KHACHHANG.TUYENTHU.TENTUYENTHU ||
+        currentCustomer?.TUYENTHU?.TENTUYENTHU ||
+        "",
+      XAPHUONG:
+        currentCustomer?.TUYENTHU?.XAPHUONG.TENXAPHUONG ||
+        currentReceipt?.KHACHHANG?.TUYENTHU.XAPHUONG?.TENXAPHUONG ||
+        "",
       QUANHUYEN:
-        currentCustomer?.TUYENTHU?.XAPHUONG.QUANHUYEN.TENQUANHUYEN || "",
-      GIA: currentCustomer?.LOAIKH.GIA || "",
-      NGAYTAO: dayjs(new Date()),
-      NOIDUNG:
-        currentReceipt?.CHITIETPHIEUTHUs.map((u) => u.NOIDUNG).join(", ") || "",
+        currentCustomer?.TUYENTHU?.XAPHUONG.QUANHUYEN.TENQUANHUYEN ||
+        currentReceipt?.KHACHHANG.TUYENTHU.XAPHUONG?.QUANHUYEN?.TENQUANHUYEN ||
+        "",
+      NGAYTAO: dayjs(currentReceipt?.NGAYTAO) || dayjs(new Date()),
+      NOIDUNG: currentReceipt?.CHITIETPHIEUTHUs[0]?.NOIDUNG || "",
+      GIA:
+        currentReceipt?.CHITIETPHIEUTHUs[0]?.SOTIEN ||
+        currentCustomer?.LOAIKH.GIA ||
+        "",
+      TRANGTHAIPHIEU: currentReceipt?.TRANGTHAIPHIEU || "",
+      NGAYCAPNHAT: dayjs(currentReceipt?.NGAYCAPNHAT) || dayjs(new Date()),
+      NGUOICAPNHAT: userLogin?.HOTEN || "",
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentCustomer, currentReceipt]
@@ -149,26 +166,34 @@ export default function ReceiptForm({
 
   const onSubmit = async (data: any) => {
     try {
-      console.log("data", data);
-      const convertedData: any = {
-        IDKHACHHANG: data.IDKHACHHANG,
-        IDNHANVIEN: data.IDNHANVIEN,
-        MAUSOPHIEU: data.MAUSOPHIEU,
-        KYHIEU: data.KYHIEU,
-        IDKYTHU: Number(data.IDKYTHU),
-        TRANGTHAIPHIEU: false,
-        NGAYTAO: fDateTime(data.NGAYTAO),
-        CHITIETPHIEUTHUs: [
-          {
-            NOIDUNG: data.NOIDUNG,
-            SOTIEN: data.GIA,
-          },
-        ],
-      };
-      console.log("convertedData", convertedData);
-      await dispatch(createReceipt(convertedData));
+      console.log(data);
+      if (isEdit) {
+        data = {
+          ...data,
+          IDPHIEU: currentReceipt?.IDPHIEU,
+        };
+        await dispatch(updateReceipt(data));
+      } else {
+        const convertedData: any = {
+          IDKHACHHANG: Number(data.IDKHACHHANG),
+          IDNHANVIEN: Number(data.IDNHANVIEN),
+          MAUSOPHIEU: data.MAUSOPHIEU,
+          KYHIEU: data.KYHIEU,
+          IDKYTHU: Number(data.IDKYTHU),
+          TRANGTHAIPHIEU: false,
+          NGAYTAO: fDateTime(data.NGAYTAO),
+          CHITIETPHIEUTHUs: [
+            {
+              NOIDUNG: data.NOIDUNG,
+              SOTIEN: data.GIA,
+            },
+          ],
+        };
+        console.log("convertedData", convertedData);
+        await dispatch(createReceipt(convertedData));
+      }
     } catch (error) {
-      console.error("error", error);
+      console.error(error);
     }
   };
 
@@ -260,10 +285,10 @@ export default function ReceiptForm({
                 InputProps={{
                   readOnly: true,
                 }}
-              />{" "}
+              />
               <RHFTextField
                 name="XAPHUONG"
-                label="Phường xã"
+                label="Xã phường"
                 InputProps={{
                   readOnly: true,
                 }}

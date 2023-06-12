@@ -7,6 +7,9 @@ export interface ReceiptModel {
   KYHIEU: string;
   TRANGTHAIPHIEU: boolean;
   NGAYTAO: null;
+  NGAYCAPNHAT: null;
+  NGUOICAPNHAT: string;
+  NGUOITHU: null;
   CHITIETPHIEUTHUs: CHITIETPHIEUTHUs[];
   KHACHHANG: Khachhang;
   KYTHU: Kythu;

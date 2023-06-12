@@ -96,16 +96,6 @@ export default function CustomerTypeTableToolbar({
           ),
         }}
       />
-
-      <Box className="flex items-center justi">
-        <CSVLink filename="Danh_sach_loai_khach_hang" data={dataTable}>
-        <Tooltip title="Xuất danh sách">
-          <IconButton>
-            <Iconify icon={"eva:save-outline"} sx={{ color: "#1976d2" }} />
-          </IconButton>
-        </Tooltip>
-        </CSVLink>
-      </Box>
     </Stack>
   );
 }

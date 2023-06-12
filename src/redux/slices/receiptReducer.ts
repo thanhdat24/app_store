@@ -48,6 +48,8 @@ const receiptReducer = createSlice({
     resetReceiptSuccess(state) {
       state.receiptList = null;
       state.createReceiptSuccess = null;
+      state.updateReceiptSuccess = null;
+      state.deleteReceiptSuccess = null;
     },
     updateReceiptSuccess(state, action: PayloadAction<Number>) {
       if (action.payload === 204) {

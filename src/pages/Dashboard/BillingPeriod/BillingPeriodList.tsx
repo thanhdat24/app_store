@@ -31,6 +31,7 @@ import useTable, { emptyRows } from "../../../hooks/useTable";
 import { TableEmptyRows, TableHeadCustom } from "../../../components/table";
 import BillingPeriodTableToolbar from "./BillingPeriodTableToolbar";
 import BillingPeriodTableRow from "./BillingPeriodTableRow";
+import { CSVLink } from "react-csv";
 
 type Props = {};
 const OPTIONS_INFO = ["Tên kỳ thu"];
@@ -130,6 +131,12 @@ export default function BillingPeriodList({}: Props) {
             { name: "Danh sách" },
           ]}
           action={
+            <Box
+                sx={{
+                  display: "flex",
+                  gap: "10px",
+                }}
+              >
             <Button
               sx={{ borderRadius: 2, textTransform: "none" }}
               variant="contained"
@@ -139,6 +146,18 @@ export default function BillingPeriodList({}: Props) {
             >
               Thêm kỳ thu
             </Button>
+            <Box className="flex items-center leading-[1]">
+                  <CSVLink filename="Danh_sach_ky_thu" data={dataCSV}>
+                    <Tooltip title="Xuất danh sách">
+                      <img
+                        src="/icons/ic_excel.png"
+                        alt="export excel"
+                        className="w-7 h-7 leading-3 block"
+                      />
+                    </Tooltip>
+                  </CSVLink>
+                </Box>
+            </Box>
           }
         />
         <Grid container justifyContent="center" alignItems="center">

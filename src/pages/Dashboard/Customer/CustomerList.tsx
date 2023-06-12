@@ -249,8 +249,8 @@ export default function CustomerList({}: Props) {
                   Thêm khách hàng
                 </Button>
                 <Box className="flex items-center leading-[1]">
-                  <CSVLink data={dataCSV}>
-                    <Tooltip title="Excel Export">
+                  <CSVLink filename="Danh_sach_khach_hang" data={dataCSV}>
+                    <Tooltip title="Xuất danh sách">
                       <img
                         src="/icons/ic_excel.png"
                         alt="export excel"

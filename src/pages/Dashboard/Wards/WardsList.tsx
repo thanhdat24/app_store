@@ -27,6 +27,7 @@ import { deleteWard, getAllWard } from "../../../redux/slices/wardReducer";
 import { TableEmptyRows, TableHeadCustom } from "../../../components/table";
 import WardsTableRow from "./WardsTableRow";
 import WardsTableToolbar from "./WardsTableToolbar";
+import { CSVLink } from "react-csv";
 
 type Props = {};
 
@@ -37,18 +38,13 @@ const TABLE_HEAD = [
   { id: "TENXAPHUONG", label: "Tên xã phường", align: "left" },
   { id: "IDQUANHUYEN", label: "Tên quận huyện", align: "left" },
   { id: "THAOTAC", label: "Thao tác", align: "right" },
-  
-];  
+];
 
 export default function WardsList({}: Props) {
-
-
   ///
   const dispatch = useAppDispatch();
 
-  const { wardList, deleteWardSuccess } = useAppSelector(
-    (state) => state.ward
-  );
+  const { wardList, deleteWardSuccess } = useAppSelector((state) => state.ward);
   useEffect(() => {
     dispatch(getAllWard());
   }, [dispatch, deleteWardSuccess]);
@@ -77,7 +73,6 @@ export default function WardsList({}: Props) {
 
   const [filterUser, setFilterUser] = useState("Tên xã phường");
 
-
   const [tableData, setTableData] = useState<WardModel[]>([]);
 
   const denseHeight = dense ? 60 : 80;
@@ -87,7 +82,6 @@ export default function WardsList({}: Props) {
     filterName,
     filterUser,
   });
-  
 
   useEffect(() => {
     if (wardList && wardList.length) {
@@ -114,14 +108,13 @@ export default function WardsList({}: Props) {
     setFilterUser(event.target.value);
   };
 
-    ///CSV
-    const dataCSV = dataFiltered.map((row, index) => ({
-      STT: index + 1,
-      "ID Xã phường": row.IDXAPHUONG,
-      "Tên xã phường": row.TENXAPHUONG,
-      "Tên quận huyện": row.QUANHUYEN.TENQUANHUYEN,
-    }));
-
+  ///CSV
+  const dataCSV = dataFiltered.map((row, index) => ({
+    STT: index + 1,
+    "ID Xã phường": row.IDXAPHUONG,
+    "Tên xã phường": row.TENXAPHUONG,
+    "Tên quận huyện": row.QUANHUYEN.TENQUANHUYEN,
+  }));
 
   return (
     <Page title="Wards: List">
@@ -134,20 +127,37 @@ export default function WardsList({}: Props) {
             { name: "Danh sách" },
           ]}
           action={
-            <Button
-              sx={{ borderRadius: 2, textTransform: "none" }}
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.wards.new}
-              startIcon={<Iconify icon={"eva:plus-fill"} />}
+            <Box
+              sx={{
+                display: "flex",
+                gap: "10px",
+              }}
             >
-              Thêm xã phường
-            </Button>
+              <Button
+                sx={{ borderRadius: 2, textTransform: "none" }}
+                variant="contained"
+                component={RouterLink}
+                to={PATH_DASHBOARD.wards.new}
+                startIcon={<Iconify icon={"eva:plus-fill"} />}
+              >
+                Thêm xã phường
+              </Button>
+              <Box className="flex items-center leading-[1]">
+                <CSVLink filename="Danh_sach_xa_phuong" data={dataCSV}>
+                  <Tooltip title="Excel Export">
+                    <img
+                      src="/icons/ic_excel.png"
+                      alt="export excel"
+                      className="w-7 h-7 leading-3 block"
+                    />
+                  </Tooltip>
+                </CSVLink>
+              </Box>
+            </Box>
           }
         />
-        <Card >
+        <Card>
           <Divider />
-
           <WardsTableToolbar
             dataTable={dataCSV} ///CSV
             filterName={filterName}
@@ -158,7 +168,6 @@ export default function WardsList({}: Props) {
             ) => handleFilterUser(event)}
             optionsInfo={OPTIONS_INFO}
           />
-
           {/* <Scrollbar> */}
           <TableContainer sx={{ minWidth: 800, position: "relative" }}>
             <Table size={dense ? "small" : "medium"}>
@@ -224,7 +233,6 @@ function applySortFilter({
   filterName,
   filterUser,
 }: ApplySortFilterProps) {
-
   if (filterUser === "Tên xã phường") {
     if (filterName) {
       const searchTerm = filterName.toLowerCase();
@@ -241,7 +249,6 @@ function applySortFilter({
       );
     }
   }
-
 
   return tableData;
 }

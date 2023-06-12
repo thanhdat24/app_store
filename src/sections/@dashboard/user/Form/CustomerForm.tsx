@@ -299,6 +299,9 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
                 name="IDLOAIKH"
                 label="Loại khách hàng"
                 placeholder="Loại khách hàng"
+                InputProps={{
+                  readOnly: isEdit ? true : false,
+                }}
               >
                 <option value="" />
                 {customerTypeList?.map((option, index) => (

@@ -31,6 +31,7 @@ import { PermissionModel } from "../../../interfaces/PermissionModel";
 import { TableEmptyRows, TableHeadCustom } from "../../../components/table";
 import PermissionTableRow from "./PermissionTableRow";
 import PermissionTableToolbar from "./PermissionTableToolbar";
+import { CSVLink } from "react-csv";
 
 type Props = {};
 const OPTIONS_INFO = ["Tên quyền"];
@@ -130,17 +131,35 @@ export default function PermissionList({}: Props) {
             { name: "Danh sách" },
           ]}
           action={
-            <Button
-              sx={{ borderRadius: 2, textTransform: "none" }}
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.permission.new}
-              startIcon={<Iconify icon={"eva:plus-fill"} />}
+            <Box
+              sx={{
+                display: "flex",
+                gap: "10px",
+              }}
             >
-              Thêm quyền
-            </Button>
+              <Button
+                sx={{ borderRadius: 2, textTransform: "none" }}
+                variant="contained"
+                component={RouterLink}
+                to={PATH_DASHBOARD.permission.new}
+                startIcon={<Iconify icon={"eva:plus-fill"} />}
+              >
+                Thêm quyền
+              </Button>
+              <Box className="flex items-center leading-[1]">
+                <CSVLink filename="Danh_sach_quyen" data={dataCSV}>
+                  <Tooltip title="Xuất danh sách">
+                    <img
+                      src="/icons/ic_excel.png"
+                      alt="export excel"
+                      className="w-7 h-7 leading-3 block"
+                    />
+                  </Tooltip>
+                </CSVLink>
+              </Box>
+            </Box>
           }
-        /> 
+        />
         <Grid container justifyContent="center" alignItems="center">
           <Card sx={{ maxWidth: 2000 }}>
             <Divider />
@@ -202,7 +221,7 @@ export default function PermissionList({}: Props) {
             </Box>
             {/* </Scrollbar> */}
           </Card>
-          </Grid>
+        </Grid>
       </Container>
     </Page>
   );

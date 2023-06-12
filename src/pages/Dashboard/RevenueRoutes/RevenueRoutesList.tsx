@@ -45,6 +45,7 @@ import RevenueRoutesTableToolbar from "./RevenueRoutesTableToolbar";
 import { getAllStaff } from "../../../redux/slices/staffReducer";
 import { toast } from "react-toastify";
 import { staffPermissionRoutes } from "../../../redux/slices/permissionRevenueRoutesReducer";
+import { CSVLink } from "react-csv";
 
 type Props = {};
 
@@ -83,7 +84,9 @@ export default function RevenueRoutesList({}: Props) {
 
   const { staffList } = useAppSelector((state) => state.staff);
 
-  const { createPermissionRevenueSuccess } = useAppSelector( (state) => state.permissionRevenueRoutes);
+  const { createPermissionRevenueSuccess } = useAppSelector(
+    (state) => state.permissionRevenueRoutes
+  );
   useEffect(() => {
     dispatch(getAllRevenueRoutes());
     dispatch(getAllStaff());
@@ -211,60 +214,84 @@ export default function RevenueRoutesList({}: Props) {
             { name: "Danh sách" },
           ]}
           action={
-            <Box className="flex items-center">
-              <FormControl sx={{ m: 1, width: 300 }}>
-                <InputLabel id="demo-multiple-checkbox-label">
-                  Nhân viên
-                </InputLabel>
-                <Select
-                  labelId="demo-multiple-checkbox-label"
-                  id="demo-multiple-checkbox"
-                  multiple
-                  value={staffId} // Thay đổi tại đây
-                  onChange={handleChangeStaff}
-                  input={<OutlinedInput label="Nhân viên" />}
-                  renderValue={(selected) =>
-                    selected
-                      .map((staffId) => {
-                        const staff = staffList?.find(
-                          (staff) =>
-                            Number(staff.IDNHANVIEN) === Number(staffId)
-                        );
-                        return staff ? staff.HOTEN : "";
-                      })
-                      .join(", ")
-                  }
-                  MenuProps={MenuProps}
+            <Box
+              sx={{
+                display: "flex",
+                gap: "10px",
+              }}
+            >
+              <Box className="flex items-center">
+                <FormControl sx={{ m: 1, width: 300 }}>
+                  <InputLabel id="demo-multiple-checkbox-label">
+                    Nhân viên
+                  </InputLabel>
+                  <Select
+                    labelId="demo-multiple-checkbox-label"
+                    id="demo-multiple-checkbox"
+                    multiple
+                    value={staffId} // Thay đổi tại đây
+                    onChange={handleChangeStaff}
+                    input={<OutlinedInput label="Nhân viên" />}
+                    renderValue={(selected) =>
+                      selected
+                        .map((staffId) => {
+                          const staff = staffList?.find(
+                            (staff) =>
+                              Number(staff.IDNHANVIEN) === Number(staffId)
+                          );
+                          return staff ? staff.HOTEN : "";
+                        })
+                        .join(", ")
+                    }
+                    MenuProps={MenuProps}
+                  >
+                    {staffList?.map((name) => (
+                      <MenuItem key={name.IDNHANVIEN} value={name.IDNHANVIEN}>
+                        <Checkbox
+                          checked={
+                            staffId.indexOf(Number(name.IDNHANVIEN)) > -1
+                          }
+                        />{" "}
+                        {/* Thay đổi tại đây */}
+                        <ListItemText primary={name.HOTEN} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <Button
+                  sx={{
+                    borderRadius: 2,
+                    textTransform: "none",
+                    marginRight: 1,
+                  }}
+                  variant="contained"
+                  startIcon={<Iconify icon={"eva:plus-fill"} />}
+                  color="success"
+                  onClick={handleePermissionStaff}
                 >
-                  {staffList?.map((name) => (
-                    <MenuItem key={name.IDNHANVIEN} value={name.IDNHANVIEN}>
-                      <Checkbox
-                        checked={staffId.indexOf(Number(name.IDNHANVIEN)) > -1}
-                      />{" "}
-                      {/* Thay đổi tại đây */}
-                      <ListItemText primary={name.HOTEN} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <Button
-                sx={{ borderRadius: 2, textTransform: "none", marginRight: 1 }}
-                variant="contained"
-                startIcon={<Iconify icon={"eva:plus-fill"} />}
-                color="success"
-                onClick={handleePermissionStaff}
-              >
-                Phân quyền
-              </Button>
-              <Button
-                sx={{ borderRadius: 2, textTransform: "none" }}
-                variant="contained"
-                component={RouterLink}
-                to={PATH_DASHBOARD.revenueRoutes.new}
-                startIcon={<Iconify icon={"eva:plus-fill"} />}
-              >
-                Thêm tuyến thu
-              </Button>
+                  Phân quyền
+                </Button>
+                <Button
+                  sx={{ borderRadius: 2, textTransform: "none" }}
+                  variant="contained"
+                  component={RouterLink}
+                  to={PATH_DASHBOARD.revenueRoutes.new}
+                  startIcon={<Iconify icon={"eva:plus-fill"} />}
+                >
+                  Thêm tuyến thu
+                </Button>
+              </Box>
+              <Box className="flex items-center leading-[1]">
+                <CSVLink filename="Danh_sach_tuyen_thu" data={dataCSV}>
+                  <Tooltip title="Xuất danh sách">
+                    <img
+                      src="/icons/ic_excel.png"
+                      alt="export excel"
+                      className="w-7 h-7 leading-3 block"
+                    />
+                  </Tooltip>
+                </CSVLink>
+              </Box>
             </Box>
           }
         />
