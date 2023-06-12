@@ -8,12 +8,17 @@ import Page from "../../components/Page";
 import { AnalyticsWidgetSummary } from "../../sections/@dashboard/general";
 import {
   getAllCustomer,
+  resetCustomer,
   resetCustomerSuccess,
 } from "../../redux/slices/customerReducer";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { getAllStaff } from "../../redux/slices/staffReducer";
 import { getAllReceipt, resetReceipt } from "../../redux/slices/receiptReducer";
 import { getAllRevenueRoutes } from "../../redux/slices/revenueRoutesReducer";
+import {
+  getBillingPeriodByCashier,
+  getCustomersByCashier,
+} from "../../redux/slices/cashierReducer";
 // ----------------------------------------------------------------------
 
 export default function GeneralApp({}) {
@@ -25,19 +30,29 @@ export default function GeneralApp({}) {
   const { revenueRoutesList } = useAppSelector(
     (state: any) => state.revenueRoutes
   );
+  const { customersByCashierList, billingPeriodByCashierList } = useAppSelector(
+    (state: any) => state.cashier
+  );
+  const { userLogin } = useAppSelector((state: any) => state.admin);
   useEffect(() => {
-    dispatch(getAllCustomer());
-    dispatch(getAllStaff());
-    dispatch(getAllReceipt());
-    dispatch(getAllRevenueRoutes());
+    if (userLogin.USERNAME === "admin") {
+      dispatch(getAllCustomer());
+      dispatch(getAllStaff());
+      dispatch(getAllReceipt());
+      dispatch(getAllRevenueRoutes());
+    } else {
+      dispatch(getCustomersByCashier(Number(userLogin?.IDNHANVIEN)));
+      dispatch(getBillingPeriodByCashier(Number(userLogin?.IDNHANVIEN)));
+      dispatch(getAllStaff());
+    }
 
     return () => {
-      dispatch(resetCustomerSuccess());
+      dispatch(resetCustomer());
       dispatch(resetReceipt());
     };
   }, [dispatch]);
 
-  console.log("customerList ", customerList);
+  console.log("billingPeriodByCashierList ", billingPeriodByCashierList);
   return (
     <Page title="General: Analytics">
       <Container maxWidth={"xl"}>
@@ -50,8 +65,8 @@ export default function GeneralApp({}) {
             <AnalyticsWidgetSummary
               title="Khách hàng"
               color="success"
-              total={customerList?.length}
-              icon={"ant-design:shopping-cart-outlined"}
+              total={customerList?.length || customersByCashierList?.length}
+              icon={"mdi:people"}
             />
           </Grid>
 
@@ -66,17 +81,26 @@ export default function GeneralApp({}) {
           <Grid item xs={12} sm={6} md={3}>
             <AnalyticsWidgetSummary
               title="Phiếu thu"
-              total={receiptList?.length}
+              total={receiptList?.length || billingPeriodByCashierList?.length}
               color="warning"
-              icon={"ant-design:user-outlined"}
+              icon={"fluent:receipt-28-filled"}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <AnalyticsWidgetSummary
               title="Tuyến thu"
-              total={revenueRoutesList?.length}
+              total={
+                revenueRoutesList?.length ||
+                Array.from(
+                  new Set(
+                    customersByCashierList?.map(
+                      (option: any) => option.TUYENTHU.TENTUYENTHU
+                    )
+                  )
+                )?.length
+              }
               color="error"
-              icon={"ant-design:user-outlined"}
+              icon={"clarity:map-solid"}
             />
           </Grid>
         </Grid>

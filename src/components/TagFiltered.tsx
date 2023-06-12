@@ -4,6 +4,7 @@ import { Chip, Typography, Stack, Button } from "@mui/material";
 // utils
 import Iconify from "./Iconify";
 import { fMonthYear } from "../utils/formatTime";
+import { Icon } from "@iconify/react";
 // components
 
 // ----------------------------------------------------------------------
@@ -189,11 +190,19 @@ export default function TagFiltered({
 
       {isShowReset && (
         <Button
-          sx={{ ml: 1 }}
+          sx={{ ml: 1, color: "rgb(255, 86, 48)" }}
           color="error"
           size="small"
           onClick={onResetAll}
-          startIcon={<Iconify icon={"ic:round-clear-all"} />}
+          startIcon={
+            <Icon
+              icon="basil:trash-solid"
+              color="#ff5630"
+              width="20"
+              height="20"
+              hFlip={true}
+            />
+          }
         >
           Xoá tất cả
         </Button>

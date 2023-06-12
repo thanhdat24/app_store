@@ -78,19 +78,6 @@ export default function ReceiptTableToolbar({
           ))}
         </TextField>
 
-        <RHFSelectMultiple
-          sx={{ width: 1000 }}
-          name="TUYENTHU"
-          options={Array.from(
-            new Set(
-              optionRevenueRoute?.map(
-                (option) => option.KHACHHANG.TUYENTHU.TENTUYENTHU
-              )
-            )
-          )}
-          label="Tuyến thu"
-        />
-
         <TextField
           fullWidth
           value={filterName}
@@ -133,6 +120,18 @@ export default function ReceiptTableToolbar({
           label="Kỳ thu kết thúc"
           views={["month", "year"]}
           format="MMMM YYYY"
+        />
+        <RHFSelectMultiple
+          sx={{ width: 1200 }}
+          name="TUYENTHU"
+          options={Array.from(
+            new Set(
+              optionRevenueRoute?.map(
+                (option) => option.KHACHHANG.TUYENTHU.TENTUYENTHU
+              )
+            )
+          )}
+          label="Tuyến thu"
         />
       </Stack>
     </Stack>

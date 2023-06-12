@@ -13,6 +13,7 @@ import {
   DialogContent,
   Switch,
   FormControlLabel,
+  IconButton,
 } from "@mui/material";
 import { TableMoreMenu } from "../../../components/table";
 import Iconify from "../../../components/Iconify";
@@ -26,6 +27,7 @@ type Props = {
   onDeleteRow: () => void;
   onEditRow: () => void;
   onSelectRow: () => void;
+  userLogin: any;
 };
 
 export default function CustomerTableRow({
@@ -34,6 +36,7 @@ export default function CustomerTableRow({
   onDeleteRow,
   onEditRow,
   onSelectRow,
+  userLogin,
 }: Props) {
   const [openMenu, setOpenMenuActions] = useState<null | HTMLElement>(null); // Add type annotation
 
@@ -92,31 +95,45 @@ export default function CustomerTableRow({
           {TRANGTHAI ? "Hoạt động" : "Khoá"}
         </Label>
       </TableCell>
-      <TableCell align="right">
-        <TableMoreMenu
-          open={openMenu}
-          onOpen={handleOpenMenu}
-          onClose={handleCloseMenu}
-          actions={
-            <>
-              <MenuItem
-                onClick={() => {
-                  onDeleteRow();
-                  handleCloseMenu();
-                }}
-                sx={{ color: "error.main" }}
-              >
-                <Iconify icon={"eva:trash-2-outline"} />
-                Xóa
-              </MenuItem>
-              <MenuItem onClick={onEditRow}>
-                <Iconify icon={"eva:edit-fill"} />
-                Chỉnh sửa
-              </MenuItem>
-            </>
-          }
-        />
-      </TableCell>
+      {userLogin?.USERNAME === "admin" ? (
+        <TableCell align="right">
+          <TableMoreMenu
+            open={openMenu}
+            onOpen={handleOpenMenu}
+            onClose={handleCloseMenu}
+            actions={
+              <>
+                <MenuItem
+                  onClick={() => {
+                    onDeleteRow();
+                    handleCloseMenu();
+                  }}
+                  sx={{ color: "error.main" }}
+                >
+                  <Iconify icon={"eva:trash-2-outline"} />
+                  Xóa
+                </MenuItem>
+                <MenuItem onClick={onEditRow}>
+                  <Iconify icon={"eva:edit-fill"} />
+                  Chỉnh sửa
+                </MenuItem>
+              </>
+            }
+          />
+        </TableCell>
+      ) : (
+        <TableCell align="right">
+          <IconButton
+            color="primary"
+            onClick={() => {
+              // onDeleteRow();
+              // handleCloseMenu();
+            }}
+          >
+            <Iconify icon={"raphael:view"} sx={{ width: 25, height: 25 }} />
+          </IconButton>
+        </TableCell>
+      )}
     </TableRow>
   );
 }
