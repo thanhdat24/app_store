@@ -7,6 +7,9 @@ export interface ReceiptModel {
   KYHIEU: string;
   TRANGTHAIPHIEU: boolean;
   NGAYTAO: null;
+  NGAYCAPNHAT: null;
+  NGUOICAPNHAT: string;
+  NGUOITHU: null;
   CHITIETPHIEUTHUs: CHITIETPHIEUTHUs[];
   KHACHHANG: Khachhang;
   KYTHU: Kythu;
@@ -34,8 +37,32 @@ export interface Khachhang {
   NGAYCHINHSUA: null;
   TRANGTHAI: boolean;
   LOAIKH: null;
-  TUYENTHU: null;
+  TUYENTHU: Tuyenthu;
   PHIEUTHUs: any[];
+}
+
+export interface Tuyenthu {
+  IDTUYENTHU: number;
+  IDXAPHUONG: number;
+  MATUYENTHU: string;
+  TENTUYENTHU: string;
+  KHACHHANGs: null;
+  PHANQUYENTUYENTHUs: any[];
+  XAPHUONG: Xaphuong;
+}
+
+export interface Xaphuong {
+  IDXAPHUONG: number;
+  IDQUANHUYEN: number;
+  TENXAPHUONG: string;
+  QUANHUYEN: Quanhuyen;
+  TUYENTHUs: any[];
+}
+
+export interface Quanhuyen {
+  IDQUANHUYEN: number;
+  TENQUANHUYEN: string;
+  XAPHUONGs: null;
 }
 
 export interface Kythu {

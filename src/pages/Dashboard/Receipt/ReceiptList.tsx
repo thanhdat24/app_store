@@ -267,7 +267,6 @@ export default function ReceiptList({}: Props) {
                       onConfirmRow={() => handleOpenDialog(row.IDPHIEU)}
                     />
                   ))}
-                ;
                 <TableEmptyRows
                   height={denseHeight}
                   emptyRows={emptyRows(page, rowsPerPage, tableData.length)}

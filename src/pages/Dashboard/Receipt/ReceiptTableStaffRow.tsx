@@ -81,7 +81,7 @@ export default function ReceiptTableStaffRow({
           </Label>
         )}
       </TableCell>
-      {/* <TableCell align="left">{fMonthYear(KYTHU.TENKYTHU)}</TableCell> */}
+      <TableCell align="left">{fMonthYear(KYTHU.TENKYTHU)}</TableCell>
       <TableCell align="left">{HOTEN}</TableCell>
       <TableCell align="left">
         {" "}
