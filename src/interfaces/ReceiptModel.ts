@@ -4,8 +4,10 @@ export interface ReceiptModel {
   IDKYTHU: number;
   IDNHANVIEN: number;
   MAUSOPHIEU: string;
+  MASOPHIEU: string;
   KYHIEU: string;
   TRANGTHAIPHIEU: boolean;
+  TRANGTHAIHUY: boolean;
   NGAYTAO: null;
   NGAYCAPNHAT: null;
   NGUOICAPNHAT: string;

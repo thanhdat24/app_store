@@ -31,6 +31,9 @@ const receiptReducer = createSlice({
         case "xoaphieu" in action.payload:
           toast.error(action.payload.xoaphieu[0], { autoClose: 2000 });
           break;
+        case "khachhang" in action.payload:
+          toast.error(action.payload.khachhang[0], { autoClose: 2000 });
+          break;
         // Xử lý các trường hợp khác nếu cần thiết
         default:
           // Xử lý trường hợp mặc định nếu cần thiết
@@ -112,8 +115,8 @@ export const updateReceipt = (receipt: ReceiptModel) => {
       const data: Number = await response.status;
       const action: PayloadAction<Number> = updateReceiptSuccess(data);
       dispatch(action);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      dispatch(hasError(error.ModelState));
     }
   };
 };
