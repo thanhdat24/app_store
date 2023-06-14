@@ -221,6 +221,7 @@ export default function ReceiptList({}: Props) {
   const dataCSV = dataFiltered.map((row, index) => ({
     STT: index + 1,
     "Mẫu số phiếu": row.MAUSOPHIEU,
+    "Mã số phiếu" : row.MASOPHIEU,
     "Ký hiệu": row.KYHIEU,
     "Ngày tạo phiếu": row.NGAYTAO ?? "",
     "Trạng thái phiếu": row.TRANGTHAIPHIEU ? "Đã thu" : "Chưa thu",
@@ -252,7 +253,7 @@ export default function ReceiptList({}: Props) {
           ]}
           action={
             <Box className="flex items-center leading-[1]">
-              <CSVLink data={dataCSV}>
+              <CSVLink filename="Danh_sach_phieu_thu" data={dataCSV}>
                 <Tooltip title="Excel Export">
                   <img
                     src="/icons/ic_excel.png"

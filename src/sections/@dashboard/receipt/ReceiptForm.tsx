@@ -69,20 +69,21 @@ export default function ReceiptForm({
   );
 
   const NewUserSchema = Yup.object().shape({
-    MAUSOPHIEU: Yup.string()
-      .required("Mẫu số phiếu là bắt buộc")
-      .matches(/^\S+$/, "Không được chứa khoảng trống")
-      .min(5, "Phải có ít nhất 5 ký tự"),
+    // MAUSOPHIEU: Yup.string()
+    //   .required("Mẫu số phiếu là bắt buộc"),
+    //   .matches(/^\S+$/, "Không được chứa khoảng trống")
+    //   .min(5, "Phải có ít nhất 5 ký tự"),
     IDKYTHU: Yup.string().required("Kỳ thu là bắt buộc"),
-    KYHIEU: Yup.string().required("Ký hiệu là bắt buộc"),
+    // KYHIEU: Yup.string().required("Ký hiệu là bắt buộc"),
     NOIDUNG: Yup.string()
       .required("Nội dung là bắt buộc")
       .min(10, "Phải có ít nhất 10 ký tự"),
   });
   const defaultValues = useMemo(
     () => ({
-      MAUSOPHIEU: currentReceipt?.MAUSOPHIEU || "",
-      KYHIEU: currentReceipt?.KYHIEU || "",
+      MAUSOPHIEU: currentReceipt?.MAUSOPHIEU || "Mẫu số 01",
+      MASOPHIEU: currentReceipt?.MASOPHIEU || "",
+      KYHIEU: currentReceipt?.KYHIEU || "TT", 
       IDKHACHHANG:
         currentReceipt?.IDKHACHHANG || currentCustomer?.IDKHACHHANG || "",
       KHACHHANG:
@@ -102,11 +103,11 @@ export default function ReceiptForm({
         "",
       XAPHUONG:
         currentCustomer?.TUYENTHU?.XAPHUONG.TENXAPHUONG ||
-        currentReceipt?.KHACHHANG?.TUYENTHU.XAPHUONG?.TENXAPHUONG ||
+        currentReceipt?.KHACHHANG.TUYENTHU.XAPHUONG.TENXAPHUONG ||
         "",
       QUANHUYEN:
         currentCustomer?.TUYENTHU?.XAPHUONG.QUANHUYEN.TENQUANHUYEN ||
-        currentReceipt?.KHACHHANG.TUYENTHU.XAPHUONG?.QUANHUYEN?.TENQUANHUYEN ||
+        currentReceipt?.KHACHHANG.TUYENTHU.XAPHUONG.QUANHUYEN.TENQUANHUYEN ||
         "",
       NGAYTAO: dayjs(currentReceipt?.NGAYTAO) || dayjs(new Date()),
       NOIDUNG: currentReceipt?.CHITIETPHIEUTHUs[0]?.NOIDUNG || "",
@@ -115,6 +116,7 @@ export default function ReceiptForm({
         currentCustomer?.LOAIKH.GIA ||
         "",
       TRANGTHAIPHIEU: currentReceipt?.TRANGTHAIPHIEU || "",
+      TRANGTHAIHUY: currentReceipt?.TRANGTHAIHUY || "",
       NGAYCAPNHAT: dayjs(currentReceipt?.NGAYCAPNHAT) || dayjs(new Date()),
       NGUOICAPNHAT: userLogin?.HOTEN || "",
     }),
@@ -138,31 +140,14 @@ export default function ReceiptForm({
 
   const values = watch();
   useEffect(() => {
-    if (isEdit && currentCustomer && currentReceipt) {
+    if (isEdit && currentReceipt) {
       reset(defaultValues);
     }
     if (!isEdit) {
       reset(defaultValues);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEdit, currentCustomer, currentReceipt]);
-
-  // const onSubmit = async (account: any) => {
-  //   try {
-  //     console.log(account);
-  //     if (isEdit) {
-  //       account = {
-  //         ...account,
-  //         IDPHIEU: currentReceipt?.IDPHIEU,
-  //       };
-  //       await dispatch(updateReceipt(account));
-  //     } else {
-  //       await dispatch(createReceipt(account));
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  }, [isEdit, currentReceipt]);
 
   const onSubmit = async (data: any) => {
     try {
@@ -171,6 +156,12 @@ export default function ReceiptForm({
         data = {
           ...data,
           IDPHIEU: currentReceipt?.IDPHIEU,
+          CHITIETPHIEUTHUs: [
+            {
+              NOIDUNG: data.NOIDUNG,
+              SOTIEN: data.GIA,
+            },
+          ],
         };
         await dispatch(updateReceipt(data));
       } else {
@@ -181,7 +172,9 @@ export default function ReceiptForm({
           KYHIEU: data.KYHIEU,
           IDKYTHU: Number(data.IDKYTHU),
           TRANGTHAIPHIEU: false,
-          NGAYTAO: fDateTime(data.NGAYTAO),
+          TRANGTHAIHUY: false,
+          NGAYTAO: (data.NGAYTAO),
+          // NGAYTAO: fDateTime(data.NGAYTAO),
           CHITIETPHIEUTHUs: [
             {
               NOIDUNG: data.NOIDUNG,
@@ -312,8 +305,22 @@ export default function ReceiptForm({
                 },
               }}
             >
-              <RHFTextField name="MAUSOPHIEU" label="Mẫu số phiếu" />
-              <RHFTextField name="KYHIEU" label="Ký hiệu" />
+              <RHFTextField
+                name="MAUSOPHIEU"
+                value="Mẫu số 01"
+                label="Mẫu số phiếu"
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+              <RHFTextField
+                name="KYHIEU"
+                value="TT"
+                label="Ký hiệu"
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
               <RHFTextField
                 name="NOIDUNG"
                 label="Nội dung"
@@ -329,17 +336,6 @@ export default function ReceiptForm({
                   </>
                 ))}
               </RHFSelect>
-              {/* <Controller
-                name="KYTHU"
-                control={control}
-                render={({ field }) => (
-                  <DatePicker
-                    label="Kỳ thu"
-                    value={field.value}
-                    onChange={field.onChange}
-                  />
-                )}
-              /> */}
               <Controller
                 name="NGAYTAO"
                 control={control}
