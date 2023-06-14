@@ -32,7 +32,7 @@ import {
 } from "../../../redux/slices/receiptReducer";
 import useTable, { emptyRows, getComparator } from "../../../hooks/useTable";
 import { ReceiptModel } from "../../../interfaces/ReceiptModel";
-import ReceiptTableAdminRow from "./ReceiptTableAdminRow";
+import ReceiptTableRow from "./ReceiptTableRow";
 import useTabs from "../../../hooks/useTabs";
 import ReceiptTableToolbar from "./ReceiptTableToolbar";
 import useToggle from "../../../hooks/useToggle";
@@ -62,8 +62,7 @@ const OPTIONS_INFO = ["Thông tin khách hàng", "Mã số phiếu"];
 const STATUS_OPTIONS = ["Tất cả", "chưa thu", "đã thu"];
 
 const TABLE_HEAD = [
-  { id: "MAUSOPHIEU", label: "Mãu số phiếu", align: "left" },
-  { id: "KYHIEU", label: "Ký hiệu", align: "left" },
+  { id: "MASOPHIEU", label: "Mã số phiếu", align: "left" },
   { id: "NGAYTAO", label: "Ngày tạo", align: "left" },
   { id: "TRANGTHAIPHIEU", label: "Trạng thái", align: "left" },
   { id: "KYTHU", label: "Kỳ thu", align: "left" },
@@ -71,7 +70,7 @@ const TABLE_HEAD = [
   { id: "LOAIKH", label: "Loại người nộp/nhận", align: "left" },
   { id: "SOTIEN", label: "Giá trị", align: "left" },
   { id: "TUYENTHU", label: "Tuyến Thu", align: "left" },
-  { id: "CONFIRM", label: "Xác nhận" },
+  { id: "CONFIRM", label: "Thu phiếu" },
   { id: "ACTION", label: "Thao Tác" },
 ];
 
@@ -92,8 +91,6 @@ export default function ReceiptList({}: Props) {
   const { updateReceiptStatusSuccess, billingPeriodByCashierList } =
     useAppSelector((state) => state.cashier);
 
-  console.log("billingPeriodByCashierList", billingPeriodByCashierList);
-
   const { userLogin } = useAppSelector((state) => state.admin);
   useEffect(() => {
     if (userLogin?.USERNAME === "admin") {
@@ -101,7 +98,12 @@ export default function ReceiptList({}: Props) {
     } else {
       dispatch(getBillingPeriodByCashier(Number(userLogin?.IDNHANVIEN)));
     }
-  }, [dispatch, deleteReceiptSuccess, updateReceiptStatusSuccess]);
+  }, [
+    dispatch,
+    deleteReceiptSuccess,
+    updateReceiptStatusSuccess,
+    updateReceiptStatusSuccess,
+  ]);
 
   const {
     dense,
@@ -155,17 +157,24 @@ export default function ReceiptList({}: Props) {
 
   useEffect(() => {
     if (receiptList && receiptList.length > 0) {
+      console.log("receiptList", receiptList);
       setTableData(receiptList);
     } else if (
       billingPeriodByCashierList &&
       billingPeriodByCashierList.length > 0
     ) {
+      console.log("billingPeriodByCashierList", billingPeriodByCashierList);
+
       setTableData(billingPeriodByCashierList);
     }
   }, [receiptList ?? [], billingPeriodByCashierList ?? []]);
 
   const handleDeleteRow = (id: number) => {
     dispatch(deleteReceipt(id));
+  };
+
+  const handleCancelRow = async (id: number) => {
+    await dispatch(updateReceiptStatus(id, Number(userLogin?.IDNHANVIEN)));
   };
 
   const handleEditRow = (id: number) => {
@@ -220,8 +229,8 @@ export default function ReceiptList({}: Props) {
   console.log("dataFiltered ", dataFiltered);
   const dataCSV = dataFiltered.map((row, index) => ({
     STT: index + 1,
+    "Mã số phiếu": row.MASOPHIEU,
     "Mẫu số phiếu": row.MAUSOPHIEU,
-    "Mã số phiếu" : row.MASOPHIEU,
     "Ký hiệu": row.KYHIEU,
     "Ngày tạo phiếu": row.NGAYTAO ?? "",
     "Trạng thái phiếu": row.TRANGTHAIPHIEU ? "Đã thu" : "Chưa thu",
@@ -331,9 +340,10 @@ export default function ReceiptList({}: Props) {
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row: any, index: number) => (
-                    <ReceiptTableAdminRow
+                    <ReceiptTableRow
                       key={index}
                       row={row}
+                      onCancelRow={() => handleCancelRow(row.IDPHIEU)}
                       onDeleteRow={() => handleDeleteRow(row.IDPHIEU)}
                       onEditRow={() => handleEditRow(row.IDPHIEU)}
                       onViewRow={() => handleViewRow(row)}

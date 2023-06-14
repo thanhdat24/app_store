@@ -52,7 +52,6 @@ export default function GeneralApp({}) {
     };
   }, [dispatch]);
 
-  console.log("billingPeriodByCashierList ", billingPeriodByCashierList);
   return (
     <Page title="General: Analytics">
       <Container maxWidth={"xl"}>

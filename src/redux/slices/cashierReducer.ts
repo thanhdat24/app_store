@@ -85,6 +85,7 @@ export const getBillingPeriodByCashier = (idNhanVien: number) => {
       const response = await axios.get(`phieuthu/${idNhanVien}`);
 
       const data: CustomerModel[] = await response.data;
+      console.log("data", data);
       const action: PayloadAction<CustomerModel[]> =
         getBillingPeriodByCashierSuccess(data);
       dispatch(action);

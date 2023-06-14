@@ -10,6 +10,7 @@ import NavbarAccount from "./NavbarAccount";
 import { NAVBAR } from "../../../utils/config";
 import navConfig from "./NavConfig";
 import { NavSectionVertical } from "./nav-section";
+import { useAppSelector } from "../../../redux/store";
 // hooks
 
 // ----------------------------------------------------------------------
@@ -45,6 +46,8 @@ const NavbarVertical: React.FC<NavbarVerticalProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
+  const { userLogin } = useAppSelector((state) => state.admin);
+  console.log("userLogin", userLogin);
   const renderContent = (
     <Scrollbar
       sx={{
@@ -80,10 +83,9 @@ const NavbarVertical: React.FC<NavbarVerticalProps> = ({
             />
           )} */}
         </Stack>
-
       </Stack>
 
-      <NavSectionVertical navConfig={navConfig} />
+      <NavSectionVertical navConfig={navConfig} userLogin={userLogin} />
 
       <Box sx={{ flexGrow: 1 }} />
 

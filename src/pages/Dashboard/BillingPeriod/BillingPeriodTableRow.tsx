@@ -43,12 +43,22 @@ export default function BillingPeriodTableRow({
   };
 
   const { IDKYTHU, TENKYTHU, TRANGTHAIKYTHU } = row;
+  console.log(row);
   return (
     <TableRow hover>
       <TableCell align="left">{IDKYTHU}</TableCell>
       {/* <TableCell align="left">{TENKYTHU}</TableCell> */}
       <TableCell align="left">{fMonthYear(TENKYTHU)}</TableCell>
-      <TableCell align="left">{TRANGTHAIKYTHU}</TableCell>
+      <TableCell align="left">
+        {" "}
+        <Label
+          variant={"ghost"}
+          color={!TRANGTHAIKYTHU ? "success" : "error"}
+          sx={{ textTransform: "uppercase", mb: 1 }}
+        >
+          {!TRANGTHAIKYTHU ? "Đang hoạt động" : "Đã kết thúc"}
+        </Label>
+      </TableCell>
       <TableCell align="right">
         <TableMoreMenu
           open={openMenu}

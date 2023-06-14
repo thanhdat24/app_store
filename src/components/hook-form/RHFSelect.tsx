@@ -12,6 +12,7 @@ interface RHFSelectProps {
   placeholder?: string;
   children: React.ReactNode;
   sx?: any;
+  [key: string]: any;
   onChange?: (event: number) => void;
 }
 

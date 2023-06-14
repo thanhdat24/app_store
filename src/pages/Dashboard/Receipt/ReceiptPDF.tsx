@@ -9,6 +9,7 @@ import { default as VNnum2words } from "vn-num2words";
 import styles from "./ReceiptStyle";
 import { Box } from "@mui/material";
 import { formatPriceInVND } from "../../../utils/formatNumber";
+import dayjs from "dayjs";
 
 // ----------------------------------------------------------------------
 interface ReceiptPDFProps {
@@ -23,14 +24,19 @@ export default function ReceiptPDF({ receipt }: ReceiptPDFProps) {
     NHANVIEN,
     TRANGTHAIPHIEU,
     NGUOITHU,
+    NGAYTAO,
+    KYHIEU,
   } = receipt;
+
+  const formattedNgayTao = dayjs(NGAYTAO)
+    .locale("vi")
+    .format("Ngày DD [tháng] MM [năm] YYYY");
   return (
     <Document>
       <Page size="A5" style={styles.page}>
         <View style={[styles.gridContainer, styles.mb25]}>
           <View style={{ alignItems: "flex-start", flexDirection: "column" }}>
             <Text style={[styles.h3]}>VNPT CẦN THƠ</Text>
-
             <Text>
               <Text style={styles.h5}>Địa chỉ:</Text> 02 Nguyễn Trãi, An Hội,
               Ninh Kiều, Cần Thơ
@@ -52,7 +58,9 @@ export default function ReceiptPDF({ receipt }: ReceiptPDFProps) {
                 flexDirection: "column",
               }}
             >
-              <Text style={styles.h3}>Mẫu số 01 - TT</Text>
+              <Text style={styles.h3}>
+                Mẫu số {MAUSOPHIEU} - {KYHIEU}
+              </Text>
               <Text style={styles.fontItalic}>
                 (Ban hành theo Thông tư số: 200/2014/TT
               </Text>
@@ -79,7 +87,11 @@ export default function ReceiptPDF({ receipt }: ReceiptPDFProps) {
           <View style={{ alignItems: "center", flexDirection: "column" }}>
             <Text style={[styles.h1, styles.mb3]}>PHIẾU THU</Text>
             <Text style={[styles.h5, styles.fontItalic]}>
-              Ngày......tháng......năm......
+              {formattedNgayTao ? (
+                <Text style={[styles.h5, styles.fontItalic]}>
+                  {formattedNgayTao}
+                </Text>
+              ) : null}
             </Text>
           </View>
           <View

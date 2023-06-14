@@ -211,61 +211,64 @@ export default function CustomerList({}: Props) {
             { name: "Danh sách" },
           ]}
           action={
-            userLogin?.USERNAME === "admin" && (
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: "10px",
-                }}
-              >
-                <Button
-                  sx={{ borderRadius: 2, textTransform: "none" }}
-                  variant="contained"
-                  component={RouterLink}
-                  to={
-                    selected.length < 2 && selected.length === 1
-                      ? PATH_DASHBOARD.receipt.new(selected[0])
-                      : ""
-                  }
-                  onClick={() =>
-                    (selected.length === 0 || selected.length > 1) &&
-                    toast.warning(
-                      "Vui lòng chọn duy nhất 1 khách hàng để tạo!",
-                      {
-                        autoClose: 2000,
-                        position: "top-center",
-                      }
-                    )
-                  }
-                  // disabled={selected.length === 0 || selected.length > 1}
-                  startIcon={<Iconify icon={"eva:plus-fill"} />}
-                >
-                  Tạo phiếu thu
-                </Button>
-                <Button
-                  sx={{ borderRadius: 2, textTransform: "none" }}
-                  variant="contained"
-                  component={RouterLink}
-                  to={PATH_DASHBOARD.user.new}
-                  startIcon={<Iconify icon={"eva:plus-fill"} />}
-                >
-                  Thêm khách hàng
-                </Button>
-                <Box className="flex items-center leading-[1]">
-                  <CSVLink filename="Danh_sach_khach_hang" data={dataCSV}>
-                    <Tooltip title="Xuất danh sách">
-                      <img
-                        src="/icons/ic_excel.png"
-                        alt="export excel"
-                        className="w-7 h-7 leading-3 block"
-                      />
-                    </Tooltip>
-                  </CSVLink>
-                </Box>
+            <Box
+              sx={{
+                display: "flex",
+                gap: "10px",
+              }}
+            >
+              {userLogin?.USERNAME === "admin" && (
+                <>
+                  <Button
+                    sx={{ borderRadius: 2, textTransform: "none" }}
+                    variant="contained"
+                    component={RouterLink}
+                    to={
+                      selected.length < 2 && selected.length === 1
+                        ? PATH_DASHBOARD.receipt.new(selected[0])
+                        : ""
+                    }
+                    onClick={() =>
+                      (selected.length === 0 || selected.length > 1) &&
+                      toast.warning(
+                        "Vui lòng chọn duy nhất 1 khách hàng để tạo!",
+                        {
+                          autoClose: 2000,
+                          position: "top-center",
+                        }
+                      )
+                    }
+                    // disabled={selected.length === 0 || selected.length > 1}
+                    startIcon={<Iconify icon={"eva:plus-fill"} />}
+                  >
+                    Tạo phiếu thu
+                  </Button>
+                  <Button
+                    sx={{ borderRadius: 2, textTransform: "none" }}
+                    variant="contained"
+                    component={RouterLink}
+                    to={PATH_DASHBOARD.user.new}
+                    startIcon={<Iconify icon={"eva:plus-fill"} />}
+                  >
+                    Thêm khách hàng
+                  </Button>
+                </>
+              )}
+              <Box className="flex items-center leading-[1]">
+                <CSVLink filename="Danh_sach_khach_hang" data={dataCSV}>
+                  <Tooltip title="Xuất danh sách">
+                    <img
+                      src="/icons/ic_excel.png"
+                      alt="export excel"
+                      className="w-7 h-7 leading-3 block"
+                    />
+                  </Tooltip>
+                </CSVLink>
               </Box>
-            )
+            </Box>
           }
         />
+
         <Card>
           <Tabs
             allowScrollButtonsMobile

@@ -23,14 +23,16 @@ import { fDate, fDateTime, fMonthYear } from "../../../utils/formatTime";
 type Props = {
   row: any;
   onDeleteRow: () => void;
+  onCancelRow: () => void;
   onEditRow: () => void;
   onViewRow: () => void;
   onConfirmRow: () => void;
 };
 
-export default function ReceiptTableStaffRow({
+export default function ReceiptTableRow({
   row,
   onDeleteRow,
+  onCancelRow,
   onEditRow,
   onViewRow,
   onConfirmRow,
@@ -47,58 +49,47 @@ export default function ReceiptTableStaffRow({
   };
 
   const {
-    PHIEUTHUs,
-    LOAIKH,
-    TUYENTHU,
+    MASOPHIEU,
+    NGAYTAO,
     TRANGTHAIPHIEU,
     KYTHU,
-    HOTEN,
+    KHACHHANG,
     CHITIETPHIEUTHUs,
   } = row;
   return (
     <TableRow hover>
-      <TableCell align="left">{PHIEUTHUs[0]?.MAUSOPHIEU}</TableCell>
-      <TableCell align="left">{PHIEUTHUs[0]?.KYHIEU}</TableCell>
+      <TableCell align="left">{MASOPHIEU}</TableCell>
+      <TableCell align="left">{fDateTime(NGAYTAO)}</TableCell>
       <TableCell align="left">
-        {PHIEUTHUs[0]?.NGAYTAO && fDate(PHIEUTHUs[0]?.NGAYTAO)}
-      </TableCell>
-      <TableCell align="left">
-        {PHIEUTHUs.length > 0 ? (
-          <Label
-            variant={"ghost"}
-            color={PHIEUTHUs[0]?.TRANGTHAIPHIEU ? "success" : "error"}
-            sx={{ textTransform: "uppercase", mb: 1 }}
-          >
-            {PHIEUTHUs[0]?.TRANGTHAIPHIEU ? "Đã thu" : "Chưa thu"}
-          </Label>
-        ) : (
-          <Label
-            variant={"ghost"}
-            color={"secondary"}
-            sx={{ textTransform: "uppercase", mb: 1 }}
-          >
-            Chưa có phiếu thu
-          </Label>
-        )}
+        {" "}
+        <Label
+          variant={"ghost"}
+          color={TRANGTHAIPHIEU ? "success" : "error"}
+          sx={{ textTransform: "uppercase", mb: 1 }}
+        >
+          {TRANGTHAIPHIEU ? "Đã thu" : "Chưa thu"}
+        </Label>
       </TableCell>
       <TableCell align="left">{fMonthYear(KYTHU.TENKYTHU)}</TableCell>
-      <TableCell align="left">{HOTEN}</TableCell>
+      <TableCell align="left">{KHACHHANG.HOTEN}</TableCell>
       <TableCell align="left">
         {" "}
         <Label
           variant={"ghost"}
           color={
-            (LOAIKH.TENLOAI === "Hộ Dân" && "info") ||
-            (LOAIKH.TENLOAI === "Doanh Nghiệp" && "error") ||
+            (KHACHHANG.LOAIKH.TENLOAI === "Hộ Dân" && "info") ||
+            (KHACHHANG.LOAIKH.TENLOAI === "Doanh Nghiệp" && "error") ||
             "default"
           }
           sx={{ textTransform: "uppercase", mb: 1 }}
         >
-          {LOAIKH.TENLOAI}
+          {KHACHHANG.LOAIKH.TENLOAI}
         </Label>
       </TableCell>
-
-      <TableCell align="left">{TUYENTHU.TENTUYENTHU}</TableCell>
+      <TableCell align="left">
+        {formatPriceInVND(CHITIETPHIEUTHUs[0]?.SOTIEN)}
+      </TableCell>
+      <TableCell align="left">{KHACHHANG.TUYENTHU.TENTUYENTHU}</TableCell>
       <TableCell align="left">
         {!TRANGTHAIPHIEU && (
           <Button
@@ -148,6 +139,16 @@ export default function ReceiptTableStaffRow({
                   >
                     <Iconify icon={"eva:trash-2-outline"} />
                     Xóa
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      onCancelRow();
+                      handleCloseMenu();
+                    }}
+                    sx={{ color: "error.main" }}
+                  >
+                    <Iconify icon={"eva:trash-2-outline"} />
+                    Huỷ phiếu
                   </MenuItem>
                 </>
               )}

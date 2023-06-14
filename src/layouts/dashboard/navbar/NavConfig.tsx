@@ -102,7 +102,14 @@ const navConfig = [
         icon: ICONS.user,
         children: [{ title: "Danh sách", path: PATH_DASHBOARD.staff.list }],
       },
-
+      {
+        title: "Tuyến thu",
+        path: PATH_DASHBOARD.revenueRoutes.root,
+        icon: ICONS.user,
+        children: [
+          { title: "Danh sách", path: PATH_DASHBOARD.revenueRoutes.list },
+        ],
+      },
       {
         title: "Quyền",
         path: PATH_DASHBOARD.permission.root,
@@ -122,14 +129,6 @@ const navConfig = [
         path: PATH_DASHBOARD.wards.root,
         icon: ICONS.wards,
         children: [{ title: "Danh sách", path: PATH_DASHBOARD.wards.list }],
-      },
-      {
-        title: "Tuyến thu",
-        path: PATH_DASHBOARD.revenueRoutes.root,
-        icon: ICONS.user,
-        children: [
-          { title: "Danh sách", path: PATH_DASHBOARD.revenueRoutes.list },
-        ],
       },
     ],
   },

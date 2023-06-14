@@ -23,7 +23,6 @@ const RHFTextField: React.FC<RHFTextFieldProps> = ({ sx, name, ...other }) => {
         <TextField
           {...field}
           fullWidth
-          
           sx={sx}
           error={!!error}
           helperText={error?.message}

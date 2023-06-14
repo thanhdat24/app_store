@@ -81,9 +81,8 @@ export default function ReceiptForm({
   });
   const defaultValues = useMemo(
     () => ({
-      MAUSOPHIEU: currentReceipt?.MAUSOPHIEU || "Mẫu số 01",
-      MASOPHIEU: currentReceipt?.MASOPHIEU || "",
-      KYHIEU: currentReceipt?.KYHIEU || "TT", 
+      MAUSOPHIEU: currentReceipt?.MAUSOPHIEU || "01",
+      KYHIEU: currentReceipt?.KYHIEU || "TT",
       IDKHACHHANG:
         currentReceipt?.IDKHACHHANG || currentCustomer?.IDKHACHHANG || "",
       KHACHHANG:
@@ -109,7 +108,8 @@ export default function ReceiptForm({
         currentCustomer?.TUYENTHU?.XAPHUONG.QUANHUYEN.TENQUANHUYEN ||
         currentReceipt?.KHACHHANG.TUYENTHU.XAPHUONG.QUANHUYEN.TENQUANHUYEN ||
         "",
-      NGAYTAO: dayjs(currentReceipt?.NGAYTAO) || dayjs(new Date()),
+      NGAYTAO:
+        dayjs(currentReceipt?.NGAYTAO).add(7, "hour") || dayjs(new Date()),
       NOIDUNG: currentReceipt?.CHITIETPHIEUTHUs[0]?.NOIDUNG || "",
       GIA:
         currentReceipt?.CHITIETPHIEUTHUs[0]?.SOTIEN ||
@@ -173,7 +173,7 @@ export default function ReceiptForm({
           IDKYTHU: Number(data.IDKYTHU),
           TRANGTHAIPHIEU: false,
           TRANGTHAIHUY: false,
-          NGAYTAO: (data.NGAYTAO),
+          NGAYTAO: data.NGAYTAO,
           // NGAYTAO: fDateTime(data.NGAYTAO),
           CHITIETPHIEUTHUs: [
             {
@@ -305,28 +305,19 @@ export default function ReceiptForm({
                 },
               }}
             >
-              <RHFTextField
-                name="MAUSOPHIEU"
-                value="Mẫu số 01"
-                label="Mẫu số phiếu"
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
-              <RHFTextField
-                name="KYHIEU"
-                value="TT"
-                label="Ký hiệu"
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
+              <RHFTextField name="MAUSOPHIEU" label="Mẫu số phiếu" disabled />
+              <RHFTextField name="KYHIEU" label="Ký hiệu" disabled />
               <RHFTextField
                 name="NOIDUNG"
                 label="Nội dung"
                 sx={{ gridColumn: { sm: "1 / 3" } }}
               />
-              <RHFSelect name="IDKYTHU" label="Kỳ thu" placeholder="Kỳ thu">
+              <RHFSelect
+                name="IDKYTHU"
+                label="Kỳ thu"
+                placeholder="Kỳ thu"
+                disabled={isEdit ? true : false}
+              >
                 <option></option>
                 {billingPeriodList?.map((option, index) => (
                   <>
