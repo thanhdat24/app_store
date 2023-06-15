@@ -1,4 +1,3 @@
-
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // utils
 import axios from "../../utils/axios";
@@ -30,10 +29,19 @@ const billingPeriodReducer = createSlice({
   initialState,
   reducers: {
     hasError(state, action) {
-      state.error = action.payload;
-      const { TENKYTHU, kythu } = action.payload;
-      if (TENKYTHU?.length > 0) toast.error(TENKYTHU[0], { autoClose: 2000 });
-      if (kythu?.length > 0) toast.error(kythu[0], { autoClose: 2000 });
+      switch (true) {
+        case "TENKYTHU" in action.payload:
+          toast.error(action.payload.TENKYTHU[0], { autoClose: 2000 });
+          break;
+        case "kythu" in action.payload:
+          toast.error(action.payload.kythu[0], { autoClose: 2000 });
+          break;
+        // Xử lý các trường hợp khác nếu cần thiết
+        default:
+          // Xử lý trường hợp mặc định nếu cần thiết
+          break;
+      }
+
     },
     getAllBillingPeriodsSuccess(
       state,

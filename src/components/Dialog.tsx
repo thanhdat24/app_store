@@ -13,6 +13,7 @@ interface AlertDialogProps {
   onClose: () => void;
   onConfirm?: () => void;
   title?: string;
+  children?: React.ReactNode; // Add the children prop here
 }
 
 const AlertDialog: React.FC<AlertDialogProps> = ({
@@ -20,6 +21,7 @@ const AlertDialog: React.FC<AlertDialogProps> = ({
   onConfirm,
   onClose,
   title,
+  children, // Add children here
 }) => {
   return (
     <div>
@@ -35,7 +37,7 @@ const AlertDialog: React.FC<AlertDialogProps> = ({
             <Iconify icon={"eva:alert-circle-outline"} />{" "}
           </IconButton>
         </DialogTitle>
-
+        {children} {/* Render the children component */}
         <DialogActions>
           <Button
             sx={{ fontSize: 13, padding: "6px 10px" }}

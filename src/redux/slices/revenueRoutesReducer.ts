@@ -30,13 +30,22 @@ const revenueRoutesReducer = createSlice({
   initialState,
   reducers: {
     hasError(state, action) {
-      state.error = action.payload;
-      const { MATUYENTHU } = action.payload;
-      if (MATUYENTHU?.length > 0)
-        toast.error(MATUYENTHU[0], { autoClose: 2000 });
-      },
+      switch (true) {
+        case "MATUYENTHU" in action.payload:
+          toast.error(action.payload.MATUYENTHU[0], { autoClose: 2000 });
+          break;
 
-    getAllRevenueRoutesSuccess(state, action: PayloadAction<RevenueRoutesModel[]>) {
+        // Xử lý các trường hợp khác nếu cần thiết
+        default:
+          // Xử lý trường hợp mặc định nếu cần thiết
+          break;
+      }
+    },
+
+    getAllRevenueRoutesSuccess(
+      state,
+      action: PayloadAction<RevenueRoutesModel[]>
+    ) {
       state.revenueRoutesList = action.payload;
     },
     getDetailRevenueRoutesSuccess(
@@ -45,7 +54,10 @@ const revenueRoutesReducer = createSlice({
     ) {
       state.detailRevenueRouteSuccess = action.payload;
     },
-    createRevenueRoutesSuccess(state, action: PayloadAction<RevenueRoutesModel>) {
+    createRevenueRoutesSuccess(
+      state,
+      action: PayloadAction<RevenueRoutesModel>
+    ) {
       state.createRevenueRoutesSuccess = action.payload;
       toast.success("Tạo thành công!", { autoClose: 2000 });
     },
@@ -55,7 +67,10 @@ const revenueRoutesReducer = createSlice({
         toast.success("Cập nhật thành công!", { autoClose: 2000 });
       }
     },
-    deleteRevenueRoutesSuccess(state, action: PayloadAction<RevenueRoutesModel>) {
+    deleteRevenueRoutesSuccess(
+      state,
+      action: PayloadAction<RevenueRoutesModel>
+    ) {
       state.deleteRevenueRoutesSuccess = action.payload;
       toast.success("Xóa thành công!", { autoClose: 2000 });
     },
@@ -127,8 +142,7 @@ export const updateRevenueRoutes = (revenueRoute: RevenueRoutesModel) => {
         revenueRoute
       );
       const data: Number = await response.status;
-      const action: PayloadAction<Number> =
-        updateRevenueRoutesSuccess(data);
+      const action: PayloadAction<Number> = updateRevenueRoutesSuccess(data);
       dispatch(action);
     } catch (error: any) {
       dispatch(hasError(error.ModelState));
@@ -144,8 +158,8 @@ export const deleteRevenueRoutes = (id: number) => {
       const action: PayloadAction<RevenueRoutesModel> =
         deleteRevenueRoutesSuccess(data);
       dispatch(action);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      dispatch(hasError(error.ModelState));
     }
   };
 };

@@ -21,6 +21,17 @@ const cashierReducer = createSlice({
   name: "cashierReducer",
   initialState,
   reducers: {
+    hasError(state, action) {
+      switch (true) {
+        case "kythu" in action.payload:
+          toast.error(action.payload.kythu[0], { autoClose: 2000 });
+          break;
+        // Xử lý các trường hợp khác nếu cần thiết
+        default:
+          // Xử lý trường hợp mặc định nếu cần thiết
+          break;
+      }
+    },
     updateReceiptStatusSuccess(state, action: PayloadAction<Number>) {
       if (action.payload === 204) {
         state.updateReceiptStatusSuccess = action.payload;
@@ -47,6 +58,7 @@ export const {
   getCustomersByCashierSuccess,
   resetCasherSuccess,
   getBillingPeriodByCashierSuccess,
+  hasError,
 } = cashierReducer.actions;
 
 export const updateReceiptStatus = (idPhieu: number, idNhanVien: number) => {
@@ -58,8 +70,8 @@ export const updateReceiptStatus = (idPhieu: number, idNhanVien: number) => {
       const data: Number = await response.status;
       const action: PayloadAction<Number> = updateReceiptStatusSuccess(data);
       dispatch(action);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      dispatch(hasError(error.ModelState));
     }
   };
 };

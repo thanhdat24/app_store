@@ -65,10 +65,11 @@ const LabelStyle = styled(({ children, ...props }: LabelStyleProps) => (
 interface TagFilteredProps {
   filters: any;
   isShowReset: boolean;
-  onRemoveRevenueRoute: any;
+  onRemoveRevenueRoute?: any;
   onResetAll: any;
-  onRemoveActive: any;
+  onRemoveActive?: any;
   onRemoveBillPeriod?: any;
+  onRemoveStaff?: any;
 }
 
 export default function TagFiltered({
@@ -78,9 +79,11 @@ export default function TagFiltered({
   onResetAll,
   onRemoveActive,
   onRemoveBillPeriod,
+  onRemoveStaff,
 }: TagFilteredProps) {
   const theme = useTheme();
-  const { TUYENTHU, TRANGTHAI, KYTHUBATDAU, KYTHUKETTHUC } = filters;
+  const { TUYENTHU, TRANGTHAI, KYTHUBATDAU, KYTHUKETTHUC, NHANVIENTHU } =
+    filters;
   return (
     <RootStyle>
       {TUYENTHU?.length > 0 && (
@@ -180,6 +183,44 @@ export default function TagFiltered({
                   fontSize: "0.8125rem",
                   "& .MuiSvgIcon-root": {
                     fontSize: 19,
+                  },
+                }}
+              />
+            ))}
+          </Stack>
+        </WrapperStyle>
+      )}
+
+      {NHANVIENTHU?.length > 0 && (
+        <WrapperStyle>
+          <LabelStyle>Tuyến thu:</LabelStyle>
+          <Stack direction="row" flexWrap="wrap" sx={{ p: 0 }}>
+            {NHANVIENTHU.map((NV: any) => (
+              <Chip
+                key={NV}
+                label={NV}
+                size="small"
+                onDelete={() => onRemoveStaff(NV)}
+                sx={{
+                  py: 1.3,
+                  m: 0.5,
+                  borderRadius: "8px",
+                  height: "24px",
+                  fontSize: "0.8125rem",
+                  "&:hover": {
+                    backgroundColor: "rgb(69, 79, 91)",
+                  },
+                  color: "#fff",
+                  backgroundColor: "rgb(33, 43, 54)",
+                  "& .MuiSvgIcon-root": {
+                    color: "#fff",
+                    opacity: 0.48,
+                    fontSize: 19,
+                  },
+                  "&:hover .MuiSvgIcon-root": {
+                    color: "#fff",
+                    opacity: 1,
+                    transition: "all 250ms ease-in-out",
                   },
                 }}
               />

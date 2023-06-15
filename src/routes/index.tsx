@@ -101,7 +101,6 @@ export default function Router({}: Props) {
             },
             { path: "list", element: <BillingPeriodList /> },
             { path: "new", element: <BillingPeriodAction /> },
-            { path: ":id/edit", element: <BillingPeriodAction /> },
           ],
         },
         {
