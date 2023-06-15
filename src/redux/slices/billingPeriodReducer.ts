@@ -31,8 +31,9 @@ const billingPeriodReducer = createSlice({
   reducers: {
     hasError(state, action) {
       state.error = action.payload;
-      const { TENKYTHU } = action.payload;
+      const { TENKYTHU, kythu } = action.payload;
       if (TENKYTHU?.length > 0) toast.error(TENKYTHU[0], { autoClose: 2000 });
+      if (kythu?.length > 0) toast.error(kythu[0], { autoClose: 2000 });
     },
     getAllBillingPeriodsSuccess(
       state,
@@ -129,7 +130,7 @@ export const createBillingPeriod = (billingPeriod: BillingPeriodModel) => {
 export const updateBillingPeriod = (billingPeriod: BillingPeriodModel) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response = await axios.put(
+      const response = await axios.patch(
         `api/KYTHUs/${billingPeriod.IDKYTHU}`,
         billingPeriod
       );
@@ -151,8 +152,8 @@ export const deleteBillingPeriod = (id: number) => {
       const action: PayloadAction<BillingPeriodModel> =
         deleteBillingPeriodSuccess(data);
       dispatch(action);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      dispatch(hasError(error.ModelState));
     }
   };
 };

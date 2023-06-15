@@ -8,12 +8,14 @@ import SvgIconStyle from "../../../components/SvgIconStyle";
 
 type IconName =
   | "ic_user"
+  | "ic_userType"
   | "ic_invoice"
   | "ic_analytics"
   | "ic_billing_period"
   | "ic_permission"
   | "ic_district"
-  | "ic_wards";
+  | "ic_wards"
+  | "ic_revenue_routes";
 
 const getIcon = (name: IconName): React.ReactNode => (
   <SvgIconStyle
@@ -25,11 +27,13 @@ const getIcon = (name: IconName): React.ReactNode => (
 const ICONS = {
   analytics: getIcon("ic_analytics"),
   user: getIcon("ic_user"),
+  userType: getIcon("ic_userType"),
   receipt: getIcon("ic_invoice"),
   billing: getIcon("ic_billing_period"),
   permission: getIcon("ic_permission"),
   district: getIcon("ic_district"),
   wards: getIcon("ic_wards"),
+  revenueRoutes: getIcon("ic_revenue_routes"),
 };
 
 const navConfig = [
@@ -65,7 +69,7 @@ const navConfig = [
       {
         title: "Loại Khách hàng",
         path: PATH_DASHBOARD.userType.root,
-        icon: ICONS.user,
+        icon: ICONS.userType,
         children: [{ title: "Danh sách", path: PATH_DASHBOARD.userType.list }],
       },
     ],
@@ -105,7 +109,7 @@ const navConfig = [
       {
         title: "Tuyến thu",
         path: PATH_DASHBOARD.revenueRoutes.root,
-        icon: ICONS.user,
+        icon: ICONS.revenueRoutes,
         children: [
           { title: "Danh sách", path: PATH_DASHBOARD.revenueRoutes.list },
         ],
