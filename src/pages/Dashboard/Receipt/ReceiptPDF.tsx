@@ -143,7 +143,7 @@ export default function ReceiptPDF({ receipt }: ReceiptPDFProps) {
                 {VNnum2words(CHITIETPHIEUTHUs[0]?.SOTIEN)}
               </Text>
             </Text>
-            <Text>Kièm theo: {Array(40).fill(".").join("")} Chứng từ gốc</Text>
+            <Text>Kèm theo: {Array(40).fill(".").join("")} Chứng từ gốc</Text>
           </View>
           {TRANGTHAIPHIEU && (
             <View style={[styles.gridColumn]}>
