@@ -24,7 +24,6 @@ export default function BillingPeriodAction({}: Props) {
 
   const isEdit = pathname.includes("edit");
   const { billingPeriodList } = useAppSelector((state) => state.billingPeriod);
-  console.log("billingPeriodList", billingPeriodList);
 
   const currentBillingPeriod = billingPeriodList?.find(
     (billingPeriod) => billingPeriod.IDKYTHU === Number(id)

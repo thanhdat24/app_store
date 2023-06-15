@@ -53,10 +53,10 @@ export default function BillingPeriodTableRow({
         {" "}
         <Label
           variant={"ghost"}
-          color={!TRANGTHAIKYTHU ? "success" : "error"}
+          color={TRANGTHAIKYTHU ? "success" : "error"}
           sx={{ textTransform: "uppercase", mb: 1 }}
         >
-          {!TRANGTHAIKYTHU ? "Đang hoạt động" : "Đã kết thúc"}
+          {TRANGTHAIKYTHU ? "Đang hoạt động" : "Đã kết thúc"}
         </Label>
       </TableCell>
       <TableCell align="right">
@@ -76,7 +76,12 @@ export default function BillingPeriodTableRow({
                 <Iconify icon={"eva:trash-2-outline"} />
                 Xóa
               </MenuItem>
-              <MenuItem onClick={onEditRow}>
+              <MenuItem
+                onClick={() => {
+                  onEditRow();
+                  handleCloseMenu();
+                }}
+              >
                 <Iconify icon={"eva:edit-fill"} />
                 Chỉnh sửa
               </MenuItem>

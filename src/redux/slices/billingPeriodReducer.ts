@@ -1,4 +1,3 @@
-
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // utils
 import axios from "../../utils/axios";
@@ -30,9 +29,18 @@ const billingPeriodReducer = createSlice({
   initialState,
   reducers: {
     hasError(state, action) {
-      state.error = action.payload;
-      const { TENKYTHU } = action.payload;
-      if (TENKYTHU?.length > 0) toast.error(TENKYTHU[0], { autoClose: 2000 });
+      switch (true) {
+        case "TENKYTHU" in action.payload:
+          toast.error(action.payload.TENKYTHU[0], { autoClose: 2000 });
+          break;
+        case "kythu" in action.payload:
+          toast.error(action.payload.kythu[0], { autoClose: 2000 });
+          break;
+        // Xử lý các trường hợp khác nếu cần thiết
+        default:
+          // Xử lý trường hợp mặc định nếu cần thiết
+          break;
+      }
     },
     getAllBillingPeriodsSuccess(
       state,
@@ -129,7 +137,7 @@ export const createBillingPeriod = (billingPeriod: BillingPeriodModel) => {
 export const updateBillingPeriod = (billingPeriod: BillingPeriodModel) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response = await axios.put(
+      const response = await axios.patch(
         `api/KYTHUs/${billingPeriod.IDKYTHU}`,
         billingPeriod
       );
@@ -151,8 +159,8 @@ export const deleteBillingPeriod = (id: number) => {
       const action: PayloadAction<BillingPeriodModel> =
         deleteBillingPeriodSuccess(data);
       dispatch(action);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      dispatch(hasError(error.ModelState));
     }
   };
 };
