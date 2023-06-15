@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 // @mui
 import {
   Box,
@@ -23,6 +24,7 @@ import {
   MenuItem,
   Checkbox,
   ListItemText,
+  Stack,
 } from "@mui/material";
 import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
@@ -46,6 +48,8 @@ import { getAllStaff } from "../../../redux/slices/staffReducer";
 import { toast } from "react-toastify";
 import { staffPermissionRoutes } from "../../../redux/slices/permissionRevenueRoutesReducer";
 import { CSVLink } from "react-csv";
+import { FormProvider } from "../../../components/hook-form";
+import TagFiltered from "../../../components/TagFiltered";
 
 type Props = {};
 
@@ -83,7 +87,7 @@ export default function RevenueRoutesList({}: Props) {
   );
 
   const { staffList } = useAppSelector((state) => state.staff);
-
+  console.log("staffList", staffList);
   const { createPermissionRevenueSuccess } = useAppSelector(
     (state) => state.permissionRevenueRoutes
   );
@@ -118,6 +122,16 @@ export default function RevenueRoutesList({}: Props) {
 
   const [tableData, setTableData] = useState<RevenueRoutesModel[]>([]);
 
+  const methods = useForm({});
+
+  const { reset, watch, setValue, handleSubmit } = methods;
+
+  const values = watch();
+
+  const onSubmit = () => {};
+
+  const isDefault = values.TUYENTHU?.length === 0;
+
   const [staffId, setStaffId] = useState<string[]>([]);
   console.log("staffId", staffId);
   const denseHeight = dense ? 60 : 80;
@@ -126,6 +140,7 @@ export default function RevenueRoutesList({}: Props) {
     tableData,
     filterName,
     filterUser,
+    values,
   });
 
   useEffect(() => {
@@ -152,6 +167,18 @@ export default function RevenueRoutesList({}: Props) {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setFilterUser(event.target.value);
+  };
+
+  const handleRemoveRevenueRoute = (value: any) => {
+    const newValue = values.TUYENTHU.filter((item: any) => item !== value);
+    setValue("TUYENTHU", newValue);
+  };
+  const handleRemoveStaff = (value: any) => {
+    const newValue = values.NHANVIENTHU.filter((item: any) => item !== value);
+    setValue("NHANVIENTHU", newValue);
+  };
+  const handleResetFilter = () => {
+    reset();
   };
 
   ///CSV
@@ -297,16 +324,40 @@ export default function RevenueRoutesList({}: Props) {
         />
         <Card>
           <Divider />
-          <RevenueRoutesTableToolbar
-            dataTable={dataCSV}
-            filterName={filterName}
-            onFilterName={handleFilterName}
-            filterUser={filterUser}
-            onFilterUser={(
-              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => handleFilterUser(event)}
-            optionsInfo={OPTIONS_INFO}
-          />
+          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+            <RevenueRoutesTableToolbar
+              optionStaffList={staffList || []}
+              optionRevenueRoute={tableData}
+              filterName={filterName}
+              onFilterName={handleFilterName}
+              filterUser={filterUser}
+              onFilterUser={(
+                event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => handleFilterUser(event)}
+              optionsInfo={OPTIONS_INFO}
+            />
+          </FormProvider>
+          {(values.TUYENTHU?.length > 0 || values.NHANVIENTHU?.length > 0) && (
+            <Stack
+              spacing={2}
+              direction={{ md: "column" }}
+              sx={{ py: 0, px: 3 }}
+            >
+              <Box>
+                <strong>{dataFiltered.length}</strong>
+                <span className="ml-1 !text-[#637381]">Kết quả tìm thấy</span>
+              </Box>
+              <TagFiltered
+                filters={values}
+                onRemoveStaff={handleRemoveStaff}
+                onRemoveRevenueRoute={handleRemoveRevenueRoute}
+                // onRemoveBillPeriod={handleRemoveBillPeriod}
+                isShowReset={!isDefault}
+                onResetAll={handleResetFilter}
+                // onRemoveActive={handleRemoveActive}
+              />
+            </Stack>
+          )}
           {/* <Scrollbar> */}
           <TableContainer sx={{ minWidth: 800, position: "relative" }}>
             {selected.length > 0 && (
@@ -379,12 +430,14 @@ interface ApplySortFilterProps {
   tableData: any[];
   filterName?: string;
   filterUser?: string;
+  values: any;
 }
 
 function applySortFilter({
   tableData,
   filterName,
   filterUser,
+  values,
 }: ApplySortFilterProps) {
   if (filterUser === "Mã tuyến thu") {
     if (filterName) {
@@ -407,6 +460,21 @@ function applySortFilter({
           )
       );
     }
+  }
+
+  if (values.TUYENTHU?.length > 0) {
+    tableData = tableData.filter((TT) =>
+      values.TUYENTHU.includes(TT.TENTUYENTHU)
+    );
+  }
+  console.log("tableData", tableData);
+  if (values.NHANVIENTHU?.length > 0) {
+    tableData = tableData.filter((item) => {
+      const phanQuyenThu = item.PHANQUYENTUYENTHUs.find((element: any) => {
+        return values.NHANVIENTHU.includes(element.NHANVIEN.HOTEN);
+      });
+      return phanQuyenThu !== undefined;
+    });
   }
 
   return tableData;
