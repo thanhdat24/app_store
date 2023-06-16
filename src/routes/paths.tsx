@@ -57,7 +57,6 @@ export const PATH_DASHBOARD = {
     new: (id: number) => path(ROOTS_DASHBOARD, `/receipt/user/${id}/new`),
     edit: (id: number) => path(ROOTS_DASHBOARD, `/receipt/user/${id}/edit`),
     list: path(ROOTS_DASHBOARD, "/receipt/list"),
-    
   },
 
   billingPeriod: {

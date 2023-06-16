@@ -171,7 +171,6 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
           ...account,
           IDKHACHHANG: currentCustomer?.IDKHACHHANG,
         };
-        console.log("account", account);
         await dispatch(updateCustomer(account));
       } else {
         await dispatch(createCustomer(account));

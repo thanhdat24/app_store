@@ -8,19 +8,36 @@ import { Form } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
 // components
 import { RHFTextField, FormProvider } from "../../../../components/hook-form";
+import RHFDatePickerField from "../../../../components/hook-form/RHFDatePickerField";
+import { useAppDispatch, useAppSelector } from "../../../../redux/store";
+import { updateStaff } from "../../../../redux/slices/staffReducer";
+import dayjs from "dayjs";
 type Props = {};
 
 export default function AccountGeneral({}: Props) {
+  const { userLogin } = useAppSelector((state) => state.admin);
+
+  const dispatch = useAppDispatch();
+  
   const UpdateUserSchema = Yup.object().shape({
-    // displayName: Yup.string().required('displayName is required'),
+    HOTEN: Yup.string().required("Họ tên là bắt buộc"),
+    SDT: Yup.string().required("Số điện thoại là bắt buộc"),
+    DIACHI: Yup.string().required("Địa chỉ là bắt buộc"),
+    NGAYSINH: Yup.date()
+      .required("Ngày sinh là bắt buộc")
+      .test("checkAge", "Ngày sinh phải nhỏ hơn ngày hiện tại", (value) => {
+        var today = new Date();
+        return value < today;
+      }),
+    USERNAME: Yup.string().required("Tên đăng nhập là bắt buộc"),
   });
 
   const defaultValues = {
-    displayName: "",
-    email: "",
-    photoURL: "",
-    phoneNumber: "",
-    address: "",
+    HOTEN: userLogin?.HOTEN || "",
+    SDT: userLogin?.SDT || "",
+    DIACHI: userLogin?.DIACHI || "",
+    NGAYSINH: dayjs(userLogin?.NGAYSINH) || dayjs(new Date()),
+    USERNAME: userLogin?.USERNAME || "",
   };
 
   const methods = useForm({
@@ -36,6 +53,10 @@ export default function AccountGeneral({}: Props) {
 
   const onSubmit = async (data: any) => {
     try {
+      data = { ...data, IDNHANVIEN: userLogin?.IDNHANVIEN };
+
+      console.log("data", data);
+      await dispatch(updateStaff(data));
     } catch (error) {
       console.error(error);
     }
@@ -45,28 +66,16 @@ export default function AccountGeneral({}: Props) {
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
-          <Card sx={{ py: 10, px: 3, textAlign: "center" }}>
-            {/* <RHFUploadAvatar
-                name="photoURL"
-                accept="image/*"
-                maxSize={3145728}
-                onDrop={handleDrop}
-                helperText={
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      mt: 2,
-                      mx: "auto",
-                      display: "block",
-                      textAlign: "center",
-                      color: "text.secondary",
-                    }}
-                  >
-                    Allowed *.jpeg, *.jpg, *.png, *.gif
-                    <br /> max size of {fData(3145728)}
-                  </Typography>
-                }
-              /> */}
+          <Card sx={{ px: 3, textAlign: "center", height: "100%" }}>
+            <div className="absolute md:h-44 md:w-44  w-36 rounded-full left-1/2 transform bottom-[20%]  -translate-x-1/2 border-4 border-white dark:border-dark-secondary  cursor-pointer">
+              <div className="relative flex-shrink-0 w-full h-full">
+                <img
+                  src="https://teeappapi.azurewebsites.net/default/default-male.svg"
+                  alt=""
+                  className="h-full w-full select-none bg-white rounded-full object-cover flex-shrink-0 filter hover:brightness-110"
+                />
+              </div>
+            </div>
           </Card>
         </Grid>
 
@@ -83,11 +92,17 @@ export default function AccountGeneral({}: Props) {
                 },
               }}
             >
-              <RHFTextField name="displayName" label="Name" />
-              <RHFTextField disabled name="email" label="Email Address" />
-
-              <RHFTextField name="phoneNumber" label="Phone Number" />
-              <RHFTextField name="address" label="Address" />
+              <RHFTextField name="HOTEN" label="Họ tên" />
+              <RHFTextField name="SDT" label="Số điện thoại" />
+              <RHFTextField name="DIACHI" label="Địa chỉ" />
+              <RHFDatePickerField
+                name="NGAYSINH"
+                views={["year", "month", "day"]}
+                label="Ngày sinh"
+                disableFuture
+                format="yyyy/dd/MM"
+              />
+              <RHFTextField name="USERNAME" label="Tên đăng nhập" />
             </Box>
 
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>

@@ -7,6 +7,7 @@ import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
 import { PATH_DASHBOARD } from "../../../routes/paths";
 import Iconify from "../../../components/Iconify";
 import AccountGeneral from "../../../sections/@dashboard/user/account/AccountGeneral";
+import AccountChangePassword from "../../../sections/@dashboard/user/account/AccountChangePassword";
 type Props = {};
 
 export default function Account({}: Props) {
@@ -24,7 +25,7 @@ export default function Account({}: Props) {
     {
       value: "Đổi mật khẩu",
       icon: <Iconify icon={"ic:round-vpn-key"} width={20} height={20} />,
-      //   component: <AccountChangePassword />,
+        component: <AccountChangePassword />,
     },
   ];
 
