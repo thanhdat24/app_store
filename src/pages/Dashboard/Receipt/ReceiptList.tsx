@@ -40,6 +40,8 @@ import { PDFViewer } from "@react-pdf/renderer";
 import ReceiptPDF from "./ReceiptPDF";
 import AlertDialog from "../../../components/Dialog";
 import {
+  cancelReceiptStatus,
+  cancelReceiptStatusSuccess,
   getBillingPeriodByCashier,
   getCustomersByCashier,
   resetCasher,
@@ -53,7 +55,9 @@ import { FormProvider } from "../../../components/hook-form";
 import TagFiltered from "../../../components/TagFiltered";
 import { CSVLink } from "react-csv";
 
-type Props = {};
+type Props = {
+  row: any;
+};
 
 // ----------------------------------------------------------------------
 
@@ -88,7 +92,7 @@ export default function ReceiptList({}: Props) {
     (state) => state.receipt
   );
 
-  const { updateReceiptStatusSuccess, billingPeriodByCashierList } =
+  const { updateReceiptStatusSuccess, billingPeriodByCashierList, cancelReceiptStatusSuccess } =
     useAppSelector((state) => state.cashier);
 
   const { userLogin } = useAppSelector((state) => state.admin);
@@ -101,8 +105,9 @@ export default function ReceiptList({}: Props) {
   }, [
     dispatch,
     deleteReceiptSuccess,
+    cancelReceiptStatusSuccess,
     updateReceiptStatusSuccess,
-    updateReceiptStatusSuccess,
+    cancelReceiptStatusSuccess
   ]);
 
   const {
@@ -173,8 +178,20 @@ export default function ReceiptList({}: Props) {
     dispatch(deleteReceipt(id));
   };
 
-  const handleCancelRow = async (id: number) => {
-    await dispatch(updateReceiptStatus(id, Number(userLogin?.IDNHANVIEN)));
+  const handleCancelRow = async (id: number, row: any) => {
+    console.log(row);
+    const rows = {
+      IDPHIEU: row.IDPHIEU,
+      IDKHACHHANG: row.IDKHACHHANG,
+      IDKYTHU: row.IDKYTHU,
+      IDNHANVIEN: row.IDNHANVIEN,
+      NGAYTAO: row.NGAYTAO,
+      MAUSOPHIEU: row.MAUSOPHIEU,
+      KYHIEU: row.KYHIEU,
+      TRANGTHAIHUY: true
+      
+    }
+    await dispatch(cancelReceiptStatus(id, Number(userLogin?.IDNHANVIEN), rows));
   };
 
   const handleEditRow = (id: number) => {
@@ -245,10 +262,10 @@ export default function ReceiptList({}: Props) {
   }));
 
   useEffect(() => {
-    if (updateReceiptStatusSuccess) {
+    if (updateReceiptStatusSuccess && cancelReceiptStatusSuccess) {
       dispatch(resetCasher());
     }
-  }, [updateReceiptStatusSuccess]);
+  }, [updateReceiptStatusSuccess, cancelReceiptStatusSuccess]);
 
   return (
     <Page title="Receipt: List">
@@ -343,7 +360,7 @@ export default function ReceiptList({}: Props) {
                     <ReceiptTableRow
                       key={index}
                       row={row}
-                      onCancelRow={() => handleCancelRow(row.IDPHIEU)}
+                      onCancelRow={() => handleCancelRow(row.IDPHIEU, row)}
                       onDeleteRow={() => handleDeleteRow(row.IDPHIEU)}
                       onEditRow={() => handleEditRow(row.IDPHIEU)}
                       onViewRow={() => handleViewRow(row)}
