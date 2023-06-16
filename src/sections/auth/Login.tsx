@@ -10,7 +10,8 @@ export default function Login({}: Props) {
           <div className="grid grid-cols-2 ">
             <div className=" text-center items-center flex justify-center">
               <img
-                src="https://nentang.vn/app/images/pages/login.png"
+                // src="https://nentang.vn/app/images/pages/login.png"
+                src="/logo/Bluewass.png"
                 alt="login"
               />
             </div>
@@ -20,7 +21,7 @@ export default function Login({}: Props) {
                   Đăng nhập
                 </h3>
                 <span className="mb-7">
-                  Chào mừng bạn đến với trang Quản Lý, vui lòng Đăng nhập.
+                  Chào mừng bạn đến với Bluewass, vui lòng Đăng nhập!
                 </span>
                 <LoginForm />
               </div>

@@ -7,12 +7,14 @@ import { CashierModel } from "../../interfaces/CashierModel";
 
 interface CashierState {
   updateReceiptStatusSuccess?: Number | null;
+  cancelReceiptStatusSuccess?: Number | null;
   customersByCashierList: CashierModel[] | null;
   billingPeriodByCashierList: CustomerModel[] | null;
 }
 
 const initialState: CashierState = {
   updateReceiptStatusSuccess: null,
+  cancelReceiptStatusSuccess: null,
   customersByCashierList: null,
   billingPeriodByCashierList: null,
 };
@@ -38,6 +40,12 @@ const cashierReducer = createSlice({
         toast.success("Cập nhật thành công!", { autoClose: 2000 });
       }
     },
+    cancelReceiptStatusSuccess(state, action: PayloadAction<Number>) {
+      if (action.payload === 204) {
+        state.cancelReceiptStatusSuccess = action.payload;
+        toast.success("Hủy thành công!", { autoClose: 2000 });
+      }
+    },
     getCustomersByCashierSuccess(state, action: PayloadAction<CashierModel[]>) {
       state.customersByCashierList = action.payload;
     },
@@ -55,6 +63,7 @@ const cashierReducer = createSlice({
 
 export const {
   updateReceiptStatusSuccess,
+  cancelReceiptStatusSuccess,
   getCustomersByCashierSuccess,
   resetCasherSuccess,
   getBillingPeriodByCashierSuccess,
@@ -72,6 +81,21 @@ export const updateReceiptStatus = (idPhieu: number, idNhanVien: number) => {
       dispatch(action);
     } catch (error: any) {
       dispatch(hasError(error.ModelState));
+    }
+  };
+};
+
+export const cancelReceiptStatus = (idPhieu: number, idNhanVien: number, rows: any) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      const response = await axios.patch(`capnhatphieuthu/${idPhieu}/${idNhanVien}`, 
+        rows
+      );
+      const data: Number = await response.status;
+      const action: PayloadAction<Number> = cancelReceiptStatusSuccess(data);
+      dispatch(action);
+    } catch (error: any) {
+      // dispatch(hasError(error.ModelState));
     }
   };
 };

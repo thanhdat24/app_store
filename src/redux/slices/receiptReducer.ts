@@ -121,6 +121,8 @@ export const updateReceipt = (receipt: ReceiptModel) => {
   };
 };
 
+
+
 export const deleteReceipt = (id: number) => {
   return async (dispatch: AppDispatch) => {
     try {

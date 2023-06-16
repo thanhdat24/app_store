@@ -52,6 +52,7 @@ export default function ReceiptTableRow({
     MASOPHIEU,
     NGAYTAO,
     TRANGTHAIPHIEU,
+    TRANGTHAIHUY,
     KYTHU,
     KHACHHANG,
     CHITIETPHIEUTHUs,
@@ -91,7 +92,8 @@ export default function ReceiptTableRow({
       </TableCell>
       <TableCell align="left">{KHACHHANG.TUYENTHU.TENTUYENTHU}</TableCell>
       <TableCell align="left">
-        {!TRANGTHAIPHIEU && (
+        
+        {!TRANGTHAIPHIEU  && !TRANGTHAIHUY && (
           <Button
             color="secondary"
             onClick={onConfirmRow}
@@ -107,6 +109,21 @@ export default function ReceiptTableRow({
             Thu phiếu
           </Button>
         )}
+        {TRANGTHAIHUY && (
+          <Button
+            color="error"
+            sx={{
+              borderRadius: 2,
+              textTransform: "none",
+              fontSize: 13,
+              padding: "6px 12px",
+              textWrap: "nowrap",
+            }}
+            variant="outlined"
+          >
+            Đã hủy
+          </Button>
+        )}
       </TableCell>
       <TableCell align="right">
         <TableMoreMenu
@@ -115,11 +132,13 @@ export default function ReceiptTableRow({
           onClose={handleCloseMenu}
           actions={
             <>
-              {TRANGTHAIPHIEU ? (
+              {TRANGTHAIPHIEU  || TRANGTHAIHUY ?  (
+                <>
                 <MenuItem onClick={onViewRow}>
                   <Iconify icon={"eva:eye-fill"} />
                   Chi tiết
                 </MenuItem>
+                </>
               ) : (
                 <>
                   <MenuItem onClick={onViewRow}>
@@ -147,8 +166,22 @@ export default function ReceiptTableRow({
                     }}
                     sx={{ color: "error.main" }}
                   >
-                    <Iconify icon={"eva:trash-2-outline"} />
+                    <Iconify icon={"flat-color-icons:cancel"} />
                     Huỷ phiếu
+                  </MenuItem>
+                </>
+              )}
+              {TRANGTHAIHUY && (
+                <>
+                <MenuItem
+                    onClick={() => {
+                      onDeleteRow();
+                      handleCloseMenu();
+                    }}
+                    sx={{ color: "error.main" }}
+                  >
+                    <Iconify icon={"eva:trash-2-outline"} />
+                    Xóa
                   </MenuItem>
                 </>
               )}

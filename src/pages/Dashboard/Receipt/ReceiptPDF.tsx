@@ -22,6 +22,7 @@ export default function ReceiptPDF({ receipt }: ReceiptPDFProps) {
     KHACHHANG,
     CHITIETPHIEUTHUs,
     NHANVIEN,
+    TRANGTHAIHUY,
     TRANGTHAIPHIEU,
     NGUOITHU,
     NGAYTAO,
@@ -145,11 +146,20 @@ export default function ReceiptPDF({ receipt }: ReceiptPDFProps) {
             </Text>
             <Text>Kèm theo: {Array(40).fill(".").join("")} Chứng từ gốc</Text>
           </View>
-          {TRANGTHAIPHIEU && (
+          {TRANGTHAIPHIEU && !TRANGTHAIHUY && (
             <View style={[styles.gridColumn]}>
               {" "}
               <Image
                 source="/logo/logo_confirm_receipt.png"
+                style={{ height: 100 }}
+              />
+            </View>
+          )}
+          {TRANGTHAIHUY && (
+            <View style={[styles.gridColumn]}>
+              {" "}
+              <Image
+                source="/logo/logo_cancel_receipt.png"
                 style={{ height: 100 }}
               />
             </View>
