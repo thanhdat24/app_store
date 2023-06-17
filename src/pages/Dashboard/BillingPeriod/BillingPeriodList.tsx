@@ -203,7 +203,6 @@ export default function BillingPeriodList({}: Props) {
         />
         <Grid container justifyContent="center" alignItems="center">
           <Card>
-            <Divider />
             <BillingPeriodTableToolbar
               dataTable={dataCSV}
               filterName={filterName}
@@ -266,7 +265,7 @@ export default function BillingPeriodList({}: Props) {
       </Container>
       <AlertDialog
         open={open}
-        title={"Chỉnh sửa phiếu thu"}
+        title={"Trạng thái kỳ thu"}
         onConfirm={() => handleConfirm(activeRow)}
         onClose={onClose}
         aria-labelledby="alert-dialog-title"

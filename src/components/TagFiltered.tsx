@@ -3,7 +3,7 @@ import { useTheme, styled } from "@mui/material/styles";
 import { Chip, Typography, Stack, Button } from "@mui/material";
 // utils
 import Iconify from "./Iconify";
-import { fMonthYear } from "../utils/formatTime";
+import { fMonthYear, fDate } from "../utils/formatTime";
 import { Icon } from "@iconify/react";
 // components
 
@@ -70,6 +70,9 @@ interface TagFilteredProps {
   onRemoveActive?: any;
   onRemoveBillPeriod?: any;
   onRemoveStaff?: any;
+  onRemoveDay?: any;
+  onRemoveMonth?: any;
+  onRemoveActiveBill?: any;
 }
 
 export default function TagFiltered({
@@ -80,12 +83,100 @@ export default function TagFiltered({
   onRemoveActive,
   onRemoveBillPeriod,
   onRemoveStaff,
+  onRemoveDay,
+  onRemoveMonth,
+  onRemoveActiveBill,
 }: TagFilteredProps) {
-  const theme = useTheme();
-  const { TUYENTHU, TRANGTHAI, KYTHUBATDAU, KYTHUKETTHUC, NHANVIENTHU } =
-    filters;
+  const {
+    TUYENTHU,
+    TUYENTHUTK,
+    TRANGTHAI,
+    KYTHUBATDAU,
+    KYTHUKETTHUC,
+    NHANVIENTHU,
+    NGAYTHUBATDAU,
+    NGAYTHUKETTHUC,
+    TRANGTHAIPHIEU,
+    KYTHU,
+    QUANHUYEN,
+    XAPHUONG,
+  } = filters;
   return (
     <RootStyle>
+      {KYTHU?.length > 0 && (
+        <WrapperStyle>
+          <LabelStyle>Kỳ thu:</LabelStyle>
+          <Stack direction="row" flexWrap="wrap" sx={{ p: 0 }}>
+            <Chip
+              key={KYTHU}
+              label={fMonthYear(KYTHU)}
+              size="small"
+              onDelete={() => onRemoveMonth(KYTHU)}
+              sx={{
+                py: 1.3,
+                m: 0.5,
+                borderRadius: "8px",
+                height: "24px",
+                fontSize: "0.8125rem",
+                "&:hover": {
+                  backgroundColor: "rgb(69, 79, 91)",
+                },
+                color: "#fff",
+                backgroundColor: "rgb(33, 43, 54)",
+                "& .MuiSvgIcon-root": {
+                  color: "#fff",
+                  opacity: 0.48,
+                  fontSize: 19,
+                },
+                "&:hover .MuiSvgIcon-root": {
+                  color: "#fff",
+                  opacity: 1,
+                  transition: "all 250ms ease-in-out",
+                },
+              }}
+            />
+          </Stack>
+        </WrapperStyle>
+      )}
+      {(NGAYTHUBATDAU || NGAYTHUKETTHUC) && (
+        <WrapperStyle>
+          <LabelStyle>Ngày thu:</LabelStyle>
+          <Stack direction="row" flexWrap="wrap" sx={{ p: 0 }}>
+            <Chip
+              key={NGAYTHUBATDAU}
+              label={
+                NGAYTHUBATDAU && NGAYTHUKETTHUC
+                  ? `${fDate(NGAYTHUBATDAU)} - ${fDate(NGAYTHUKETTHUC)}`
+                  : fDate(NGAYTHUBATDAU)
+              }
+              size="small"
+              onDelete={() => onRemoveDay(NGAYTHUBATDAU)}
+              sx={{
+                py: 1.3,
+                m: 0.5,
+                borderRadius: "8px",
+                height: "24px",
+                fontSize: "0.8125rem",
+                "&:hover": {
+                  backgroundColor: "rgb(69, 79, 91)",
+                },
+                color: "#fff",
+                backgroundColor: "rgb(33, 43, 54)",
+                "& .MuiSvgIcon-root": {
+                  color: "#fff",
+                  opacity: 0.48,
+                  fontSize: 19,
+                },
+                "&:hover .MuiSvgIcon-root": {
+                  color: "#fff",
+                  opacity: 1,
+                  transition: "all 250ms ease-in-out",
+                },
+              }}
+            />
+          </Stack>
+        </WrapperStyle>
+      )}
       {TUYENTHU?.length > 0 && (
         <WrapperStyle>
           <LabelStyle>Tuyến thu:</LabelStyle>
@@ -120,6 +211,42 @@ export default function TagFiltered({
                 }}
               />
             ))}
+          </Stack>
+        </WrapperStyle>
+      )}
+
+      {TUYENTHUTK && (
+        <WrapperStyle>
+          <LabelStyle>Tuyến thu:</LabelStyle>
+          <Stack direction="row" flexWrap="wrap" sx={{ p: 0 }}>
+            <Chip
+              key={TUYENTHUTK}
+              label={JSON.parse(TUYENTHUTK).tentuyenthu}
+              size="small"
+              onDelete={() => onRemoveRevenueRoute(TUYENTHUTK)}
+              sx={{
+                py: 1.3,
+                m: 0.5,
+                borderRadius: "8px",
+                height: "24px",
+                fontSize: "0.8125rem",
+                "&:hover": {
+                  backgroundColor: "rgb(69, 79, 91)",
+                },
+                color: "#fff",
+                backgroundColor: "rgb(33, 43, 54)",
+                "& .MuiSvgIcon-root": {
+                  color: "#fff",
+                  opacity: 0.48,
+                  fontSize: 19,
+                },
+                "&:hover .MuiSvgIcon-root": {
+                  color: "#fff",
+                  opacity: 1,
+                  transition: "all 250ms ease-in-out",
+                },
+              }}
+            />
           </Stack>
         </WrapperStyle>
       )}
@@ -225,6 +352,102 @@ export default function TagFiltered({
                 }}
               />
             ))}
+          </Stack>
+        </WrapperStyle>
+      )}
+
+      {TRANGTHAIPHIEU?.length > 0 && (
+        <WrapperStyle>
+          <LabelStyle>Trạng thái:</LabelStyle>
+          <Stack direction="row" flexWrap="wrap" sx={{ p: 0 }}>
+            {TRANGTHAIPHIEU.map((TT: any) => (
+              <Chip
+                color={TT === "Đã thu" ? "success" : "error"}
+                key={TT}
+                label={TT}
+                size="small"
+                onDelete={() => onRemoveActiveBill(TT)}
+                sx={{
+                  py: 1.3,
+                  m: 0.5,
+                  borderRadius: "8px",
+                  height: "24px",
+                  fontSize: "0.8125rem",
+                  "& .MuiSvgIcon-root": {
+                    fontSize: 19,
+                  },
+                }}
+              />
+            ))}
+          </Stack>
+        </WrapperStyle>
+      )}
+      {QUANHUYEN && (
+        <WrapperStyle>
+          <LabelStyle>Quận huyện:</LabelStyle>
+          <Stack direction="row" flexWrap="wrap" sx={{ p: 0 }}>
+            <Chip
+              key={QUANHUYEN}
+              label={JSON.parse(QUANHUYEN).TENQUANHUYEN}
+              size="small"
+              sx={{
+                py: 1.3,
+                m: 0.5,
+                borderRadius: "8px",
+                height: "24px",
+                fontSize: "0.8125rem",
+                "&:hover": {
+                  backgroundColor: "rgb(69, 79, 91)",
+                },
+                color: "#fff",
+                backgroundColor: "rgb(33, 43, 54)",
+                "& .MuiSvgIcon-root": {
+                  color: "#fff",
+                  opacity: 0.48,
+                  fontSize: 19,
+                },
+                "&:hover .MuiSvgIcon-root": {
+                  color: "#fff",
+                  opacity: 1,
+                  transition: "all 250ms ease-in-out",
+                },
+              }}
+            />
+          </Stack>
+        </WrapperStyle>
+      )}
+
+      {XAPHUONG && (
+        <WrapperStyle>
+          <LabelStyle>Xã phường:</LabelStyle>
+          <Stack direction="row" flexWrap="wrap" sx={{ p: 0 }}>
+            <Chip
+              key={XAPHUONG}
+              label={JSON.parse(XAPHUONG).TENXAPHUONG}
+              size="small"
+              sx={{
+                py: 1.3,
+                m: 0.5,
+                borderRadius: "8px",
+                height: "24px",
+                fontSize: "0.8125rem",
+                "&:hover": {
+                  backgroundColor: "rgb(69, 79, 91)",
+                },
+                color: "#fff",
+                backgroundColor: "rgb(33, 43, 54)",
+                "& .MuiSvgIcon-root": {
+                  color: "#fff",
+                  opacity: 0.48,
+                  fontSize: 19,
+                },
+                "&:hover .MuiSvgIcon-root": {
+                  color: "#fff",
+                  opacity: 1,
+                  transition: "all 250ms ease-in-out",
+                },
+              }}
+            />
           </Stack>
         </WrapperStyle>
       )}

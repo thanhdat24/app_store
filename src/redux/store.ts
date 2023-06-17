@@ -14,6 +14,7 @@ import receiptReducer from "./slices/receiptReducer";
 import cashierReducer from "./slices/cashierReducer";
 import permissionRevenueRoutesReducer from "./slices/permissionRevenueRoutesReducer";
 import menuReducer from "./slices/menuReducer";
+import statisticsReducer from "./slices/statisticsReducer";
 
 export const store = configureStore({
   reducer: {
@@ -31,6 +32,7 @@ export const store = configureStore({
     cashier: cashierReducer,
     permissionRevenueRoutes: permissionRevenueRoutesReducer,
     menu: menuReducer,
+    statistic: statisticsReducer,
   },
 });
 

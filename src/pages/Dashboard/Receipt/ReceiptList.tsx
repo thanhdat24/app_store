@@ -92,8 +92,11 @@ export default function ReceiptList({}: Props) {
     (state) => state.receipt
   );
 
-  const { updateReceiptStatusSuccess, billingPeriodByCashierList, cancelReceiptStatusSuccess } =
-    useAppSelector((state) => state.cashier);
+  const {
+    updateReceiptStatusSuccess,
+    billingPeriodByCashierList,
+    cancelReceiptStatusSuccess,
+  } = useAppSelector((state) => state.cashier);
 
   const { userLogin } = useAppSelector((state) => state.admin);
   useEffect(() => {
@@ -107,7 +110,7 @@ export default function ReceiptList({}: Props) {
     deleteReceiptSuccess,
     cancelReceiptStatusSuccess,
     updateReceiptStatusSuccess,
-    cancelReceiptStatusSuccess
+    cancelReceiptStatusSuccess,
   ]);
 
   const {
@@ -188,10 +191,11 @@ export default function ReceiptList({}: Props) {
       NGAYTAO: row.NGAYTAO,
       MAUSOPHIEU: row.MAUSOPHIEU,
       KYHIEU: row.KYHIEU,
-      TRANGTHAIHUY: true
-      
-    }
-    await dispatch(cancelReceiptStatus(id, Number(userLogin?.IDNHANVIEN), rows));
+      TRANGTHAIHUY: true,
+    };
+    await dispatch(
+      cancelReceiptStatus(id, Number(userLogin?.IDNHANVIEN), rows)
+    );
   };
 
   const handleEditRow = (id: number) => {
@@ -243,7 +247,6 @@ export default function ReceiptList({}: Props) {
     reset();
   };
 
-  console.log("dataFiltered ", dataFiltered);
   const dataCSV = dataFiltered.map((row, index) => ({
     STT: index + 1,
     "Mã số phiếu": row.MASOPHIEU,

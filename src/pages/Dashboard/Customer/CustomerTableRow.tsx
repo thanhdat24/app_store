@@ -14,6 +14,7 @@ import {
   Switch,
   FormControlLabel,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import { TableMoreMenu } from "../../../components/table";
 import Iconify from "../../../components/Iconify";
@@ -123,15 +124,17 @@ export default function CustomerTableRow({
         </TableCell>
       ) : (
         <TableCell align="right">
-          <IconButton
-            color="primary"
-            onClick={() => {
-              // onDeleteRow();
-              // handleCloseMenu();
-            }}
-          >
-            <Iconify icon={"raphael:view"} sx={{ width: 25, height: 25 }} />
-          </IconButton>
+          <Tooltip title="Chi tiết">
+            <IconButton
+              color="primary"
+              onClick={() => {
+                // onDeleteRow();
+                // handleCloseMenu();
+              }}
+            >
+              <Iconify icon={"raphael:view"} sx={{ width: 25, height: 25 }} />
+            </IconButton>
+          </Tooltip>
         </TableCell>
       )}
     </TableRow>
