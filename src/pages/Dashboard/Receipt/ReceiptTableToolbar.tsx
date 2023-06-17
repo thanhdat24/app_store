@@ -57,7 +57,7 @@ export default function ReceiptTableToolbar({
             },
           }}
           sx={{
-            maxWidth: { md: 220 },
+            maxWidth: { md: 350 },
             textTransform: "capitalize",
           }}
         >
@@ -107,7 +107,7 @@ export default function ReceiptTableToolbar({
         sx={{ pb: 2.5, px: 3 }}
       >
         <RHFDatePickerField
-          sx={{ width: 220 }}
+          sx={{ width: "100%" }}
           name="KYTHUBATDAU"
           label="Kỳ thu bắt đầu"
           views={["month", "year"]}
@@ -115,7 +115,7 @@ export default function ReceiptTableToolbar({
         />
 
         <RHFDatePickerField
-          sx={{ width: 190 }}
+          sx={{ width: "100%" }}
           name="KYTHUKETTHUC"
           label="Kỳ thu kết thúc"
           views={["month", "year"]}

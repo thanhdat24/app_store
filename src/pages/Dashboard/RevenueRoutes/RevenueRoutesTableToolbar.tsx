@@ -17,8 +17,6 @@ import { StaffModel } from "../../../interfaces/StaffModel";
 
 // ----------------------------------------------------------------------
 
-const INPUT_WIDTH = 250;
-
 interface RevenueRoutesTableToolbarProps {
   filterName: string;
   onFilterName: (value: string) => void;
@@ -60,7 +58,7 @@ export default function RevenueRoutesTableToolbar({
             },
           }}
           sx={{
-            maxWidth: { md: INPUT_WIDTH },
+            maxWidth: { md: 800 },
             textTransform: "capitalize",
           }}
         >
