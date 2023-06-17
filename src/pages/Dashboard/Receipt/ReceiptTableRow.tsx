@@ -51,6 +51,7 @@ export default function ReceiptTableRow({
   const {
     MASOPHIEU,
     NGAYTAO,
+    NGAYCAPNHAT,
     TRANGTHAIPHIEU,
     TRANGTHAIHUY,
     KYTHU,
@@ -61,6 +62,7 @@ export default function ReceiptTableRow({
     <TableRow hover>
       <TableCell align="left">{MASOPHIEU}</TableCell>
       <TableCell align="left">{fDateTime(NGAYTAO)}</TableCell>
+      <TableCell align="left">{fDateTime(NGAYCAPNHAT)}</TableCell>
       <TableCell align="left">
         {" "}
         <Label
@@ -92,8 +94,7 @@ export default function ReceiptTableRow({
       </TableCell>
       <TableCell align="left">{KHACHHANG.TUYENTHU.TENTUYENTHU}</TableCell>
       <TableCell align="left">
-        
-        {!TRANGTHAIPHIEU  && !TRANGTHAIHUY && (
+        {!TRANGTHAIPHIEU && !TRANGTHAIHUY && (
           <Button
             color="secondary"
             onClick={onConfirmRow}
@@ -126,68 +127,61 @@ export default function ReceiptTableRow({
         )}
       </TableCell>
       <TableCell align="right">
-        <TableMoreMenu
-          open={openMenu}
-          onOpen={handleOpenMenu}
-          onClose={handleCloseMenu}
-          actions={
-            <>
-              {TRANGTHAIPHIEU  || TRANGTHAIHUY ?  (
-                <>
-                <MenuItem onClick={onViewRow}>
-                  <Iconify icon={"eva:eye-fill"} />
-                  Chi tiết
-                </MenuItem>
-                </>
-              ) : (
-                <>
-                  <MenuItem onClick={onViewRow}>
-                    <Iconify icon={"eva:eye-fill"} />
-                    Chi tiết
-                  </MenuItem>
-                  <MenuItem onClick={onEditRow}>
-                    <Iconify icon={"eva:edit-fill"} />
-                    Chỉnh sửa
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => {
-                      onDeleteRow();
-                      handleCloseMenu();
-                    }}
-                    sx={{ color: "error.main" }}
-                  >
-                    <Iconify icon={"eva:trash-2-outline"} />
-                    Xóa
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => {
-                      onCancelRow();
-                      handleCloseMenu();
-                    }}
-                    sx={{ color: "error.main" }}
-                  >
-                    <Iconify icon={"flat-color-icons:cancel"} />
-                    Huỷ phiếu
-                  </MenuItem>
-                </>
-              )}
-              {TRANGTHAIHUY && (
-                <>
-                <MenuItem
-                    onClick={() => {
-                      onDeleteRow();
-                      handleCloseMenu();
-                    }}
-                    sx={{ color: "error.main" }}
-                  >
-                    <Iconify icon={"eva:trash-2-outline"} />
-                    Xóa
-                  </MenuItem>
-                </>
-              )}
-            </>
-          }
-        />
+        {TRANGTHAIHUY ? (
+          <></>
+        ) : (
+          <TableMoreMenu
+            open={openMenu}
+            onOpen={handleOpenMenu}
+            onClose={handleCloseMenu}
+            actions={
+              <>
+                {TRANGTHAIPHIEU || TRANGTHAIHUY ? (
+                  <></>
+                ) : (
+                  <>
+                    <MenuItem onClick={onViewRow}>
+                      <Iconify icon={"eva:eye-fill"} />
+                      Chi tiết
+                    </MenuItem>
+                    <MenuItem onClick={onEditRow}>
+                      <Iconify icon={"eva:edit-fill"} />
+                      Chỉnh sửa
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        onDeleteRow();
+                        handleCloseMenu();
+                      }}
+                      sx={{ color: "error.main" }}
+                    >
+                      <Iconify icon={"eva:trash-2-outline"} />
+                      Xóa
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        onCancelRow();
+                        handleCloseMenu();
+                      }}
+                      sx={{ color: "error.main" }}
+                    >
+                      <Iconify icon={"flat-color-icons:cancel"} />
+                      Huỷ phiếu
+                    </MenuItem>
+                  </>
+                )}
+                {TRANGTHAIPHIEU && (
+                  <>
+                    <MenuItem onClick={onViewRow}>
+                      <Iconify icon={"eva:eye-fill"} />
+                      Chi tiết
+                    </MenuItem>
+                  </>
+                )}
+              </>
+            }
+          />
+        )}
       </TableCell>
     </TableRow>
   );

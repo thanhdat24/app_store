@@ -68,6 +68,7 @@ const STATUS_OPTIONS = ["Tất cả", "chưa thu", "đã thu"];
 const TABLE_HEAD = [
   { id: "MASOPHIEU", label: "Mã số phiếu", align: "left" },
   { id: "NGAYTAO", label: "Ngày tạo", align: "left" },
+  { id: "NGAYCAPNHAT", label: "Ngày cập nhật", align: "left" },
   { id: "TRANGTHAIPHIEU", label: "Trạng thái", align: "left" },
   { id: "KYTHU", label: "Kỳ thu", align: "left" },
   { id: "KHACHHANG", label: "Người nộp/nhận", align: "left" },

@@ -94,8 +94,8 @@ export const cancelReceiptStatus = (idPhieu: number, idNhanVien: number, rows: a
       const data: Number = await response.status;
       const action: PayloadAction<Number> = cancelReceiptStatusSuccess(data);
       dispatch(action);
-    } catch (error: any) {
-      // dispatch(hasError(error.ModelState));
+    } catch (error) {
+      console.log(error);
     }
   };
 };
