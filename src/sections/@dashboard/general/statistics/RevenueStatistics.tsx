@@ -30,9 +30,12 @@ const TABLE_HEAD = [
   { id: "NHANVIENTHU", label: "Nhân viên thu", align: "left" },
   { id: "TENKYTHU", label: "Kỳ thu", align: "left" },
   { id: "TUYENTHU", label: "Tuyến thu", align: "left" },
+  { id: "SOLUONGTONG", label: "Số lượng", align: "left" },
   { id: "SOLUONGYHU", label: "Số lượng đã thu", align: "left" },
   { id: "SOLUONGCHUATHU", label: "Số lượng tồn kho", align: "left" },
+  { id: "SOLUONGHUY", label: "Số lượng phiếu hủy", align: "left" },
   { id: "TONGTIEN", label: "Tổng tiền đã thu", align: "left" },
+  { id: "PHANTRANDATHU", label: "Tỉ lệ đã thu", align: "left" },
 ];
 
 export default function RevenueStatistics({}: Props) {
@@ -70,11 +73,12 @@ export default function RevenueStatistics({}: Props) {
   const values = watch();
   const onSubmit = () => {};
   const isDefault =
+    values.KYTHU === undefined ||
     values.TUYENTHUTK === undefined ||
     values.NGAYTHUBATDAU === "" ||
     values.NGAYTHUKETTHUC === "" ||
-    values.QUANHUYEN === undefined ||
-    values.XAPHUONG === undefined;
+    values.QUANHUYEN === "" ||
+    values.XAPHUONG === "";
 
   const denseHeight = dense ? 60 : 80;
 
@@ -83,21 +87,21 @@ export default function RevenueStatistics({}: Props) {
     setValue("TUYENTHUTK", "");
   };
 
-  const handleRemoveRevenueRoute = (value: any) => {
+  const handleRemoveRevenueRoute = () => {
     setValue("TUYENTHUTK", "");
   };
-  const handleRemoveDay = (value: any) => {
-    setValue("NGAYTHUBATDAU", "");
-    setValue("NGAYTHUKETTHUC", "");
+  const handleRemoveDay = () => {
+    setValue("NGAYTHUBATDAU", undefined);
+    setValue("NGAYTHUKETTHUC", undefined);
   };
-  const handleRemoveMonth = (value: any) => {
+  const handleRemoveMonth = () => {
     setValue("KYTHU", "");
   };
-  const handleRemoveActiveBill = (value: any) => {
+  const handleRemoveActiveBill = () => {
     setValue("TRANGTHAIPHIEU", "");
   };
 
-  const handleRemoveBillPeriod = (value: any) => {
+  const handleRemoveBillPeriod = () => {
     setValue("KYTHUBATDAU", "");
     setValue("KYTHUKETTHUC", "");
   };

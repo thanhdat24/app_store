@@ -232,194 +232,186 @@ export default function RevenueRoutesList({}: Props) {
 
   return (
     <Page title="RevenueRoutes: List">
-      <Container maxWidth={"lg"}>
-        <HeaderBreadcrumbs
-          heading="Danh sách tuyến thu"
-          links={[
-            { name: "Trang chủ", href: PATH_DASHBOARD.root },
-            { name: "Tuyến thu", href: PATH_DASHBOARD.revenueRoutes.root },
-            { name: "Danh sách" },
-          ]}
-          action={
-            <Box
-              sx={{
-                display: "flex",
-                gap: "10px",
-              }}
-            >
-              <Box className="flex items-center">
-                <FormControl sx={{ m: 1, width: 300 }}>
-                  <InputLabel id="demo-multiple-checkbox-label">
-                    Nhân viên
-                  </InputLabel>
-                  <Select
-                    labelId="demo-multiple-checkbox-label"
-                    id="demo-multiple-checkbox"
-                    multiple
-                    value={staffId} // Thay đổi tại đây
-                    onChange={handleChangeStaff}
-                    input={<OutlinedInput label="Nhân viên" />}
-                    renderValue={(selected) =>
-                      selected
-                        .map((staffId) => {
-                          const staff = staffList?.find(
-                            (staff) =>
-                              Number(staff.IDNHANVIEN) === Number(staffId)
-                          );
-                          return staff ? staff.HOTEN : "";
-                        })
-                        .join(", ")
-                    }
-                    MenuProps={MenuProps}
-                  >
-                    {staffList?.map((name) => (
-                      <MenuItem key={name.IDNHANVIEN} value={name.IDNHANVIEN}>
-                        <Checkbox
-                          checked={
-                            staffId.indexOf(Number(name.IDNHANVIEN)) > -1
-                          }
-                        />{" "}
-                        {/* Thay đổi tại đây */}
-                        <ListItemText primary={name.HOTEN} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <Button
-                  sx={{
-                    borderRadius: 2,
-                    textTransform: "none",
-                    marginRight: 1,
-                  }}
-                  variant="contained"
-                  startIcon={<Iconify icon={"eva:plus-fill"} />}
-                  color="success"
-                  onClick={handleePermissionStaff}
+      <HeaderBreadcrumbs
+        heading="Danh sách tuyến thu"
+        links={[
+          { name: "Trang chủ", href: PATH_DASHBOARD.root },
+          { name: "Tuyến thu", href: PATH_DASHBOARD.revenueRoutes.root },
+          { name: "Danh sách" },
+        ]}
+        action={
+          <Box
+            sx={{
+              display: "flex",
+              gap: "10px",
+            }}
+          >
+            <Box className="flex items-center">
+              <FormControl sx={{ m: 1, width: 300 }}>
+                <InputLabel id="demo-multiple-checkbox-label">
+                  Nhân viên
+                </InputLabel>
+                <Select
+                  labelId="demo-multiple-checkbox-label"
+                  id="demo-multiple-checkbox"
+                  multiple
+                  value={staffId} // Thay đổi tại đây
+                  onChange={handleChangeStaff}
+                  input={<OutlinedInput label="Nhân viên" />}
+                  renderValue={(selected) =>
+                    selected
+                      .map((staffId) => {
+                        const staff = staffList?.find(
+                          (staff) =>
+                            Number(staff.IDNHANVIEN) === Number(staffId)
+                        );
+                        return staff ? staff.HOTEN : "";
+                      })
+                      .join(", ")
+                  }
+                  MenuProps={MenuProps}
                 >
-                  Phân quyền
-                </Button>
-                <Button
-                  sx={{ borderRadius: 2, textTransform: "none" }}
-                  variant="contained"
-                  component={RouterLink}
-                  to={PATH_DASHBOARD.revenueRoutes.new}
-                  startIcon={<Iconify icon={"eva:plus-fill"} />}
-                >
-                  Thêm tuyến thu
-                </Button>
-              </Box>
-              <Box className="flex items-center leading-[1]">
-                <CSVLink filename="Danh_sach_tuyen_thu" data={dataCSV}>
-                  <Tooltip title="Xuất danh sách">
-                    <img
-                      src="/icons/ic_excel.png"
-                      alt="export excel"
-                      className="w-7 h-7 leading-3 block"
-                    />
-                  </Tooltip>
-                </CSVLink>
-              </Box>
-            </Box>
-          }
-        />
-        <Card>
-          <Divider />
-          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-            <RevenueRoutesTableToolbar
-              optionStaffList={staffList || []}
-              optionRevenueRoute={tableData}
-              filterName={filterName}
-              onFilterName={handleFilterName}
-              filterUser={filterUser}
-              onFilterUser={(
-                event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-              ) => handleFilterUser(event)}
-              optionsInfo={OPTIONS_INFO}
-            />
-          </FormProvider>
-          {(values.TUYENTHU?.length > 0 || values.NHANVIENTHU?.length > 0) && (
-            <Stack
-              spacing={2}
-              direction={{ md: "column" }}
-              sx={{ py: 0, px: 3 }}
-            >
-              <Box>
-                <strong>{dataFiltered.length}</strong>
-                <span className="ml-1 !text-[#637381]">Kết quả tìm thấy</span>
-              </Box>
-              <TagFiltered
-                filters={values}
-                onRemoveStaff={handleRemoveStaff}
-                onRemoveRevenueRoute={handleRemoveRevenueRoute}
-                // onRemoveBillPeriod={handleRemoveBillPeriod}
-                isShowReset={!isDefault}
-                onResetAll={handleResetFilter}
-                // onRemoveActive={handleRemoveActive}
-              />
-            </Stack>
-          )}
-          {/* <Scrollbar> */}
-          <TableContainer sx={{ minWidth: 800, position: "relative" }}>
-            {selected.length > 0 && (
-              <TableSelectedActions
-                dense={dense}
-                numSelected={selected.length}
-                rowCount={tableData.length}
-                onSelectAllRows={(checked) =>
-                  onSelectAllRows(
-                    checked,
-                    tableData.map((row) => row.IDTUYENTHU)
-                  )
-                }
-              />
-            )}
-            <Table size={dense ? "small" : "medium"}>
-              <TableHeadCustom
-                order={order}
-                orderBy={orderBy}
-                headLabel={TABLE_HEAD}
-                rowCount={tableData.length}
-                numSelected={selected.length}
-                onSort={onSort}
-              />
-
-              <TableBody>
-                {dataFiltered
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row: any) => (
-                    <RevenueRoutesTableRow
-                      key={row.IDTUYENTHU}
-                      row={row}
-                      selected={selected.includes(row.IDTUYENTHU)}
-                      onSelectRow={() => onSelectRow(row.IDTUYENTHU)}
-                      onDeleteRow={() => handleDeleteRow(row.IDTUYENTHU)}
-                      onEditRow={() => handleEditRow(row.IDTUYENTHU)}
-                    />
+                  {staffList?.map((name) => (
+                    <MenuItem key={name.IDNHANVIEN} value={name.IDNHANVIEN}>
+                      <Checkbox
+                        checked={staffId.indexOf(Number(name.IDNHANVIEN)) > -1}
+                      />{" "}
+                      {/* Thay đổi tại đây */}
+                      <ListItemText primary={name.HOTEN} />
+                    </MenuItem>
                   ))}
-
-                <TableEmptyRows
-                  height={denseHeight}
-                  emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
-                />
-
-                {/* <TableNoData isNotFound={isNotFound} /> */}
-              </TableBody>
-            </Table>
-          </TableContainer>{" "}
-          <Box sx={{ position: "relative" }}>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={dataFiltered?.length ?? 0}
-              rowsPerPage={rowsPerPage ?? 5}
-              page={page}
-              onPageChange={onChangePage}
-              onRowsPerPageChange={onChangeRowsPerPage}
-            />
+                </Select>
+              </FormControl>
+              <Button
+                sx={{
+                  borderRadius: 2,
+                  textTransform: "none",
+                  marginRight: 1,
+                }}
+                variant="contained"
+                startIcon={<Iconify icon={"eva:plus-fill"} />}
+                color="success"
+                onClick={handleePermissionStaff}
+              >
+                Phân quyền
+              </Button>
+              <Button
+                sx={{ borderRadius: 2, textTransform: "none" }}
+                variant="contained"
+                component={RouterLink}
+                to={PATH_DASHBOARD.revenueRoutes.new}
+                startIcon={<Iconify icon={"eva:plus-fill"} />}
+              >
+                Thêm tuyến thu
+              </Button>
+            </Box>
+            <Box className="flex items-center leading-[1]">
+              <CSVLink filename="Danh_sach_tuyen_thu" data={dataCSV}>
+                <Tooltip title="Xuất danh sách">
+                  <img
+                    src="/icons/ic_excel.png"
+                    alt="export excel"
+                    className="w-7 h-7 leading-3 block"
+                  />
+                </Tooltip>
+              </CSVLink>
+            </Box>
           </Box>
-          {/* </Scrollbar> */}
-        </Card>
-      </Container>
+        }
+      />
+      <Card>
+        <Divider />
+        <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+          <RevenueRoutesTableToolbar
+            optionStaffList={staffList || []}
+            optionRevenueRoute={tableData}
+            filterName={filterName}
+            onFilterName={handleFilterName}
+            filterUser={filterUser}
+            onFilterUser={(
+              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => handleFilterUser(event)}
+            optionsInfo={OPTIONS_INFO}
+          />
+        </FormProvider>
+        {(values.TUYENTHU?.length > 0 || values.NHANVIENTHU?.length > 0) && (
+          <Stack spacing={2} direction={{ md: "column" }} sx={{ py: 0, px: 3 }}>
+            <Box>
+              <strong>{dataFiltered.length}</strong>
+              <span className="ml-1 !text-[#637381]">Kết quả tìm thấy</span>
+            </Box>
+            <TagFiltered
+              filters={values}
+              onRemoveStaff={handleRemoveStaff}
+              onRemoveRevenueRoute={handleRemoveRevenueRoute}
+              // onRemoveBillPeriod={handleRemoveBillPeriod}
+              isShowReset={!isDefault}
+              onResetAll={handleResetFilter}
+              // onRemoveActive={handleRemoveActive}
+            />
+          </Stack>
+        )}
+        {/* <Scrollbar> */}
+        <TableContainer sx={{ minWidth: 800, position: "relative" }}>
+          {selected.length > 0 && (
+            <TableSelectedActions
+              dense={dense}
+              numSelected={selected.length}
+              rowCount={tableData.length}
+              onSelectAllRows={(checked) =>
+                onSelectAllRows(
+                  checked,
+                  tableData.map((row) => row.IDTUYENTHU)
+                )
+              }
+            />
+          )}
+          <Table size={dense ? "small" : "medium"}>
+            <TableHeadCustom
+              order={order}
+              orderBy={orderBy}
+              headLabel={TABLE_HEAD}
+              rowCount={tableData.length}
+              numSelected={selected.length}
+              onSort={onSort}
+            />
+
+            <TableBody>
+              {dataFiltered
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row: any) => (
+                  <RevenueRoutesTableRow
+                    key={row.IDTUYENTHU}
+                    row={row}
+                    selected={selected.includes(row.IDTUYENTHU)}
+                    onSelectRow={() => onSelectRow(row.IDTUYENTHU)}
+                    onDeleteRow={() => handleDeleteRow(row.IDTUYENTHU)}
+                    onEditRow={() => handleEditRow(row.IDTUYENTHU)}
+                  />
+                ))}
+
+              <TableEmptyRows
+                height={denseHeight}
+                emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
+              />
+
+              {/* <TableNoData isNotFound={isNotFound} /> */}
+            </TableBody>
+          </Table>
+        </TableContainer>{" "}
+        <Box sx={{ position: "relative" }}>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={dataFiltered?.length ?? 0}
+            rowsPerPage={rowsPerPage ?? 5}
+            page={page}
+            onPageChange={onChangePage}
+            onRowsPerPageChange={onChangeRowsPerPage}
+          />
+        </Box>
+        {/* </Scrollbar> */}
+      </Card>
     </Page>
   );
 }

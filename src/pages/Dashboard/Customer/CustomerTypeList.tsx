@@ -129,31 +129,31 @@ export default function CustomerTypeList({}: Props) {
           ]}
           action={
             <Box
-                sx={{
-                  display: "flex",
-                  gap: "10px",
-                }}
-              >
-            <Button
-              sx={{ borderRadius: 2, textTransform: "none" }}
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.userType.new}
-              startIcon={<Iconify icon={"eva:plus-fill"} />}
+              sx={{
+                display: "flex",
+                gap: "10px",
+              }}
             >
-              Thêm loại khách hàng
-            </Button>
-            <Box className="flex items-center leading-[1]">
-                  <CSVLink filename="Danh_sach_loai_khach_hang" data={dataCSV}>
-                    <Tooltip title="Xuất danh sách">
-                      <img
-                        src="/icons/ic_excel.png"
-                        alt="export excel"
-                        className="w-7 h-7 leading-3 block"
-                      />
-                    </Tooltip>
-                  </CSVLink>
-                </Box>
+              <Button
+                sx={{ borderRadius: 2, textTransform: "none" }}
+                variant="contained"
+                component={RouterLink}
+                to={PATH_DASHBOARD.userType.new}
+                startIcon={<Iconify icon={"eva:plus-fill"} />}
+              >
+                Thêm loại khách hàng
+              </Button>
+              <Box className="flex items-center leading-[1]">
+                <CSVLink filename="Danh_sach_loai_khach_hang" data={dataCSV}>
+                  <Tooltip title="Xuất danh sách">
+                    <img
+                      src="/icons/ic_excel.png"
+                      alt="export excel"
+                      className="w-7 h-7 leading-3 block"
+                    />
+                  </Tooltip>
+                </CSVLink>
+              </Box>
             </Box>
           }
         />

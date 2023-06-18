@@ -89,7 +89,7 @@ export default function RevenueStatisticsToolbar({
           sx={{ width: "100%" }}
           name="NGAYTHUBATDAU"
           label="Ngày thu bắt đầu"
-          defaultCalendarMonth={values.KYTHU} 
+          defaultCalendarMonth={values.KYTHU}
         />
         <RHFDatePickerField
           sx={{ width: "100%" }}
@@ -129,7 +129,7 @@ export default function RevenueStatisticsToolbar({
           placeholder="Quyện huyện"
         />
         <RHFTextField
-          name="XAPUHONG"
+          name="XAPHUONG"
           label="Xã phường"
           value={data.setXAPHUONG}
           placeholder="Xã phường"

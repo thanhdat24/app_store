@@ -273,126 +273,120 @@ export default function ReceiptList({}: Props) {
 
   return (
     <Page title="Receipt: List">
-      <Container maxWidth={"lg"}>
-        <HeaderBreadcrumbs
-          heading="Danh sách phiếu thu"
-          links={[
-            { name: "Trang chủ", href: PATH_DASHBOARD.root },
-            { name: "Phiếu thu", href: PATH_DASHBOARD.receipt.root },
-            { name: "Danh sách" },
-          ]}
-          action={
-            <Box className="flex items-center leading-[1]">
-              <CSVLink filename="Danh_sach_phieu_thu" data={dataCSV}>
-                <Tooltip title="Excel Export">
-                  <img
-                    src="/icons/ic_excel.png"
-                    alt="export excel"
-                    className="w-7 h-7 leading-3 block"
-                  />
-                </Tooltip>
-              </CSVLink>
-            </Box>
-          }
-        />
-        <Card>
-          <Tabs
-            allowScrollButtonsMobile
-            variant="scrollable"
-            scrollButtons="auto"
-            value={filterStatus}
-            onChange={onChangeFilterStatus}
-            sx={{ px: 2, bgcolor: "background.neutral" }}
-          >
-            {STATUS_OPTIONS.map((tab) => (
-              <Tab disableRipple key={tab} label={tab} value={tab} />
-            ))}
-          </Tabs>
-          <Divider />
-          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-            <ReceiptTableToolbar
-              optionRevenueRoute={tableData}
-              dataTable={dataCSV}
-              filterName={filterName}
-              onFilterName={handleFilterName}
-              filterUser={filterUser}
-              onFilterUser={(
-                event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-              ) => handleFilterUser(event)}
-              optionsInfo={OPTIONS_INFO}
-            />
-          </FormProvider>
-          {(values.TUYENTHU?.length > 0 ||
-            values.KYTHU?.length > 0 ||
-            values.KYTHUBATDAU ||
-            values.KYTHUKETTHUC) && (
-            <Stack
-              spacing={2}
-              direction={{ md: "column" }}
-              sx={{ py: 0, px: 3 }}
-            >
-              <Box>
-                <strong>{dataFiltered.length}</strong>
-                <span className="ml-1 !text-[#637381]">Kết quả tìm thấy</span>
-              </Box>
-              <TagFiltered
-                filters={values}
-                onRemoveRevenueRoute={handleRemoveRevenueRoute}
-                onRemoveBillPeriod={handleRemoveBillPeriod}
-                isShowReset={!isDefault}
-                onResetAll={handleResetFilter}
-                onRemoveActive={handleRemoveActive}
-              />
-            </Stack>
-          )}
-          {/* <Scrollbar> */}
-          <TableContainer sx={{ minWidth: 800, position: "relative" }}>
-            <Table size={dense ? "small" : "medium"}>
-              <TableHeadCustom
-                order={order}
-                orderBy={orderBy}
-                headLabel={TABLE_HEAD}
-                rowCount={tableData.length}
-                numSelected={selected.length}
-                onSort={onSort}
-              />
-
-              <TableBody>
-                {dataFiltered
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row: any, index: number) => (
-                    <ReceiptTableRow
-                      key={index}
-                      row={row}
-                      onCancelRow={() => handleCancelRow(row.IDPHIEU, row)}
-                      onDeleteRow={() => handleDeleteRow(row.IDPHIEU)}
-                      onEditRow={() => handleEditRow(row.IDPHIEU)}
-                      onViewRow={() => handleViewRow(row)}
-                      onConfirmRow={() => handleOpenDialog(row.IDPHIEU)}
-                    />
-                  ))}
-                <TableEmptyRows
-                  height={denseHeight}
-                  emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
+      <HeaderBreadcrumbs
+        heading="Danh sách phiếu thu"
+        links={[
+          { name: "Trang chủ", href: PATH_DASHBOARD.root },
+          { name: "Phiếu thu", href: PATH_DASHBOARD.receipt.root },
+          { name: "Danh sách" },
+        ]}
+        action={
+          <Box className="flex items-center leading-[1]">
+            <CSVLink filename="Danh_sach_phieu_thu" data={dataCSV}>
+              <Tooltip title="Excel Export">
+                <img
+                  src="/icons/ic_excel.png"
+                  alt="export excel"
+                  className="w-7 h-7 leading-3 block"
                 />
-                {/* <TableNoData isNotFound={isNotFound} /> */}
-              </TableBody>
-            </Table>
-          </TableContainer>{" "}
-          <Box sx={{ position: "relative" }}>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={dataFiltered?.length ?? 0}
-              rowsPerPage={rowsPerPage ?? 5}
-              page={page}
-              onPageChange={onChangePage}
-              onRowsPerPageChange={onChangeRowsPerPage}
-            />
+              </Tooltip>
+            </CSVLink>
           </Box>
-          {/* </Scrollbar> */}
-        </Card>
-      </Container>
+        }
+      />
+      <Card>
+        <Tabs
+          allowScrollButtonsMobile
+          variant="scrollable"
+          scrollButtons="auto"
+          value={filterStatus}
+          onChange={onChangeFilterStatus}
+          sx={{ px: 2, bgcolor: "background.neutral" }}
+        >
+          {STATUS_OPTIONS.map((tab) => (
+            <Tab disableRipple key={tab} label={tab} value={tab} />
+          ))}
+        </Tabs>
+        <Divider />
+        <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+          <ReceiptTableToolbar
+            optionRevenueRoute={tableData}
+            dataTable={dataCSV}
+            filterName={filterName}
+            onFilterName={handleFilterName}
+            filterUser={filterUser}
+            onFilterUser={(
+              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => handleFilterUser(event)}
+            optionsInfo={OPTIONS_INFO}
+          />
+        </FormProvider>
+        {(values.TUYENTHU?.length > 0 ||
+          values.KYTHU?.length > 0 ||
+          values.KYTHUBATDAU ||
+          values.KYTHUKETTHUC) && (
+          <Stack spacing={2} direction={{ md: "column" }} sx={{ py: 0, px: 3 }}>
+            <Box>
+              <strong>{dataFiltered.length}</strong>
+              <span className="ml-1 !text-[#637381]">Kết quả tìm thấy</span>
+            </Box>
+            <TagFiltered
+              filters={values}
+              onRemoveRevenueRoute={handleRemoveRevenueRoute}
+              onRemoveBillPeriod={handleRemoveBillPeriod}
+              isShowReset={!isDefault}
+              onResetAll={handleResetFilter}
+              onRemoveActive={handleRemoveActive}
+            />
+          </Stack>
+        )}
+        {/* <Scrollbar> */}
+        <TableContainer sx={{ minWidth: 800, position: "relative" }}>
+          <Table size={dense ? "small" : "medium"}>
+            <TableHeadCustom
+              order={order}
+              orderBy={orderBy}
+              headLabel={TABLE_HEAD}
+              rowCount={tableData.length}
+              numSelected={selected.length}
+              onSort={onSort}
+            />
+
+            <TableBody>
+              {dataFiltered
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row: any, index: number) => (
+                  <ReceiptTableRow
+                    key={index}
+                    row={row}
+                    onCancelRow={() => handleCancelRow(row.IDPHIEU, row)}
+                    onDeleteRow={() => handleDeleteRow(row.IDPHIEU)}
+                    onEditRow={() => handleEditRow(row.IDPHIEU)}
+                    onViewRow={() => handleViewRow(row)}
+                    onConfirmRow={() => handleOpenDialog(row.IDPHIEU)}
+                  />
+                ))}
+              <TableEmptyRows
+                height={denseHeight}
+                emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
+              />
+              {/* <TableNoData isNotFound={isNotFound} /> */}
+            </TableBody>
+          </Table>
+        </TableContainer>{" "}
+        <Box sx={{ position: "relative" }}>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={dataFiltered?.length ?? 0}
+            rowsPerPage={rowsPerPage ?? 5}
+            page={page}
+            onPageChange={onChangePage}
+            onRowsPerPageChange={onChangeRowsPerPage}
+          />
+        </Box>
+        {/* </Scrollbar> */}
+      </Card>
 
       <Dialog fullScreen open={open}>
         <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>

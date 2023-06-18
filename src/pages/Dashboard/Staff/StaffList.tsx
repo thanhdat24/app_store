@@ -239,21 +239,20 @@ export default function StaffList({}: Props) {
 
   return (
     <Page title="StaffList: List">
-      <Container maxWidth={"lg"}>
-        <HeaderBreadcrumbs
-          heading="Danh sách nhân viên"
-          links={[
-            { name: "Trang chủ", href: PATH_DASHBOARD.root },
-            { name: "Nhân viên", href: PATH_DASHBOARD.staff.root },
-            { name: "Danh sách" },
-          ]}
-          action={
-            <Box
-                sx={{
-                  display: "flex",
-                  gap: "10px",
-                }}
-              >
+      <HeaderBreadcrumbs
+        heading="Danh sách nhân viên"
+        links={[
+          { name: "Trang chủ", href: PATH_DASHBOARD.root },
+          { name: "Nhân viên", href: PATH_DASHBOARD.staff.root },
+          { name: "Danh sách" },
+        ]}
+        action={
+          <Box
+            sx={{
+              display: "flex",
+              gap: "10px",
+            }}
+          >
             <Box
               sx={{
                 display: "grid",
@@ -297,139 +296,136 @@ export default function StaffList({}: Props) {
               </Button>
             </Box>
             <Box className="flex items-center leading-[1]">
-                  <CSVLink filename="Danh_sach_nhan_vien" data={dataCSV}>
-                    <Tooltip title="Xuất danh sách">
-                      <img
-                        src="/icons/ic_excel.png"
-                        alt="export excel"
-                        className="w-7 h-7 leading-3 block"
-                      />
-                    </Tooltip>
-                  </CSVLink>
-                </Box>
+              <CSVLink filename="Danh_sach_nhan_vien" data={dataCSV}>
+                <Tooltip title="Xuất danh sách">
+                  <img
+                    src="/icons/ic_excel.png"
+                    alt="export excel"
+                    className="w-7 h-7 leading-3 block"
+                  />
+                </Tooltip>
+              </CSVLink>
             </Box>
-          }
-        />
-        <Card>
-          <Tabs
-            allowScrollButtonsMobile
-            variant="scrollable"
-            scrollButtons="auto"
-            value={filterStatus}
-            onChange={onChangeFilterStatus}
-            sx={{ px: 2, bgcolor: "background.neutral" }}
-          >
-            {STATUS_OPTIONS.map((tab) => (
-              <Tab disableRipple key={tab} label={tab} value={tab} />
-            ))}
-          </Tabs>
-          <Divider />
-          <StaffTableToolbar
-            dataTable={dataCSV}
-            filterName={filterName}
-            onFilterName={handleFilterName}
-            filterUser={filterUser}
-            onFilterUser={(
-              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => handleFilterUser(event)}
-            optionsInfo={OPTIONS_INFO}
-          />
-          {/* <Scrollbar> */}
-          <TableContainer sx={{ minWidth: 800, position: "relative" }}>
-            {selected.length > 0 && (
-              <TableSelectedActions
-                dense={dense}
-                numSelected={selected.length}
-                rowCount={tableData.length}
-                onSelectAllRows={(checked) =>
-                  onSelectAllRows(
-                    checked,
-                    tableData.map((row) => row.IDNHANVIEN)
-                  )
-                }
-                actions={permissionList?.map((permission, index) => (
-                  <Button
-                    key={index}
-                    variant={
-                      selectPermission.includes(permission.IDQUYEN)
-                        ? "contained"
-                        : "outlined"
-                    }
-                    onClick={() => handleSelectPermission(permission.IDQUYEN)}
-                    color={
-                      permission.TENQUYEN === "Quản trị hệ thống"
-                        ? "error"
-                        : permission.TENQUYEN === "Nhân viên quản trị"
-                        ? "secondary"
-                        : "info"
-                    }
-                    sx={{
-                      borderRadius: 2,
-                      textTransform: "none",
-                      margin: 3,
-                    }}
-                    startIcon={
-                      <Iconify icon={"eva:checkmark-circle-outline"} />
-                    }
-                  >
-                    {permission.TENQUYEN}
-                  </Button>
-                ))}
-              />
-            )}
-            <Table size={dense ? "small" : "medium"}>
-              <TableHeadCustom
-                order={order}
-                orderBy={orderBy}
-                headLabel={TABLE_HEAD}
-                rowCount={tableData.length}
-                numSelected={selected.length}
-                onSort={onSort}
-                onSelectAllRows={(checked) =>
-                  onSelectAllRows(
-                    checked,
-                    tableData.map((row) => row.IDNHANVIEN)
-                  )
-                }
-              />
-
-              <TableBody>
-                {dataFiltered
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row: any, index: number) => (
-                    <StaffTableRow
-                      key={index}
-                      row={row}
-                      selected={selected.includes(row.IDNHANVIEN)}
-                      onSelectRow={() => onSelectRow(row.IDNHANVIEN)}
-                      onDeleteRow={() => handleDeleteRow(row.IDNHANVIEN)}
-                      onEditRow={() => handleEditRow(row.IDNHANVIEN)}
-                    />
-                  ))}
-
-                <TableEmptyRows
-                  height={denseHeight}
-                  emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
-                />
-
-                {/* <TableNoData isNotFound={isNotFound} /> */}
-              </TableBody>
-            </Table>
-          </TableContainer>{" "}
-          <Box sx={{ position: "relative" }}>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={dataFiltered?.length ?? 0}
-              rowsPerPage={rowsPerPage ?? 5}
-              page={page}
-              onPageChange={onChangePage}
-              onRowsPerPageChange={onChangeRowsPerPage}
-            />
           </Box>
-          {/* </Scrollbar> */}
-        </Card>
-      </Container>
+        }
+      />
+      <Card>
+        <Tabs
+          allowScrollButtonsMobile
+          variant="scrollable"
+          scrollButtons="auto"
+          value={filterStatus}
+          onChange={onChangeFilterStatus}
+          sx={{ px: 2, bgcolor: "background.neutral" }}
+        >
+          {STATUS_OPTIONS.map((tab) => (
+            <Tab disableRipple key={tab} label={tab} value={tab} />
+          ))}
+        </Tabs>
+        <Divider />
+        <StaffTableToolbar
+          dataTable={dataCSV}
+          filterName={filterName}
+          onFilterName={handleFilterName}
+          filterUser={filterUser}
+          onFilterUser={(
+            event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+          ) => handleFilterUser(event)}
+          optionsInfo={OPTIONS_INFO}
+        />
+        {/* <Scrollbar> */}
+        <TableContainer sx={{ minWidth: 800, position: "relative" }}>
+          {selected.length > 0 && (
+            <TableSelectedActions
+              dense={dense}
+              numSelected={selected.length}
+              rowCount={tableData.length}
+              onSelectAllRows={(checked) =>
+                onSelectAllRows(
+                  checked,
+                  tableData.map((row) => row.IDNHANVIEN)
+                )
+              }
+              actions={permissionList?.map((permission, index) => (
+                <Button
+                  key={index}
+                  variant={
+                    selectPermission.includes(permission.IDQUYEN)
+                      ? "contained"
+                      : "outlined"
+                  }
+                  onClick={() => handleSelectPermission(permission.IDQUYEN)}
+                  color={
+                    permission.TENQUYEN === "Quản trị hệ thống"
+                      ? "error"
+                      : permission.TENQUYEN === "Nhân viên quản trị"
+                      ? "secondary"
+                      : "info"
+                  }
+                  sx={{
+                    borderRadius: 2,
+                    textTransform: "none",
+                    margin: 3,
+                  }}
+                  startIcon={<Iconify icon={"eva:checkmark-circle-outline"} />}
+                >
+                  {permission.TENQUYEN}
+                </Button>
+              ))}
+            />
+          )}
+          <Table size={dense ? "small" : "medium"}>
+            <TableHeadCustom
+              order={order}
+              orderBy={orderBy}
+              headLabel={TABLE_HEAD}
+              rowCount={tableData.length}
+              numSelected={selected.length}
+              onSort={onSort}
+              onSelectAllRows={(checked) =>
+                onSelectAllRows(
+                  checked,
+                  tableData.map((row) => row.IDNHANVIEN)
+                )
+              }
+            />
+
+            <TableBody>
+              {dataFiltered
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row: any, index: number) => (
+                  <StaffTableRow
+                    key={index}
+                    row={row}
+                    selected={selected.includes(row.IDNHANVIEN)}
+                    onSelectRow={() => onSelectRow(row.IDNHANVIEN)}
+                    onDeleteRow={() => handleDeleteRow(row.IDNHANVIEN)}
+                    onEditRow={() => handleEditRow(row.IDNHANVIEN)}
+                  />
+                ))}
+
+              <TableEmptyRows
+                height={denseHeight}
+                emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
+              />
+
+              {/* <TableNoData isNotFound={isNotFound} /> */}
+            </TableBody>
+          </Table>
+        </TableContainer>{" "}
+        <Box sx={{ position: "relative" }}>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={dataFiltered?.length ?? 0}
+            rowsPerPage={rowsPerPage ?? 5}
+            page={page}
+            onPageChange={onChangePage}
+            onRowsPerPageChange={onChangeRowsPerPage}
+          />
+        </Box>
+        {/* </Scrollbar> */}
+      </Card>
     </Page>
   );
 }

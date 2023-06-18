@@ -202,7 +202,6 @@ export default function CustomerList({}: Props) {
 
   return (
     <Page title="Customer: List">
-      <Container maxWidth={"lg"}>
         <HeaderBreadcrumbs
           heading="Danh sách khách hàng"
           links={[
@@ -383,7 +382,6 @@ export default function CustomerList({}: Props) {
           </Box>
           {/* </Scrollbar> */}
         </Card>
-      </Container>
     </Page>
   );
 }

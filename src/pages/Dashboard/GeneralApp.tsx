@@ -1,7 +1,7 @@
 // @mui
 import { useEffect } from "react";
 
-import { Grid, Container, Typography } from "@mui/material";
+import { Grid, Container, Typography, Box } from "@mui/material";
 // hooks
 // components
 import Page from "../../components/Page";
@@ -55,7 +55,7 @@ export default function GeneralApp({}) {
 
   return (
     <Page title="General: Analytics">
-      <Container maxWidth={"xl"}>
+      <Box>
         <Typography variant="h4" sx={{ mb: 5 }}>
           Thống kê
         </Typography>
@@ -107,7 +107,7 @@ export default function GeneralApp({}) {
             <RevenueStatistics />
           </Grid>
         </Grid>
-      </Container>
+      </Box>
     </Page>
   );
 }

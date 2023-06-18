@@ -26,17 +26,42 @@ export default function RevenueStatisticsTable({ row, index }: Props) {
     tenkythu,
     soluongdathu,
     soluongchuathu,
+    soluongphieuhuy,
     tongtien,
+    lpq,
+    soluongtong,
+    phantramdathu,
   } = row;
   return (
-    <TableRow hover>
+    <TableRow
+      hover
+      sx={{
+        "&:nth-of-type(odd)": {
+          backgroundColor: "rgba(0, 120, 103, 0.04)",
+        },
+      }}
+    >
       <TableCell align="left">{index + 1}</TableCell>
-      <TableCell align="left">{nhanvienthu}</TableCell>
+      <TableCell align="left">
+        {" "}
+        {lpq.map((item: any, index: number) => (
+          <p key={index}>
+            <span className="!text-blue-500 underline cursor-pointer">
+              {item.NHANVIEN.MANHANVIEN}:
+            </span>
+            &nbsp;
+            {item.NHANVIEN.HOTEN}
+          </p>
+        ))}
+      </TableCell>
       <TableCell align="left">{fMonthYear(tenkythu)}</TableCell>
       <TableCell align="left">{tentuyenthu}</TableCell>
+      <TableCell align="left">{soluongtong}</TableCell>
       <TableCell align="left">{soluongdathu}</TableCell>
       <TableCell align="left">{soluongchuathu}</TableCell>
+      <TableCell align="left">{soluongphieuhuy}</TableCell>
       <TableCell align="left">{formatPriceInVND(tongtien)}</TableCell>
+      <TableCell align="left">{phantramdathu}%</TableCell>
     </TableRow>
   );
 }
