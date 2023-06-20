@@ -57,6 +57,7 @@ const cashierReducer = createSlice({
     },
     resetCasherSuccess(state) {
       state.updateReceiptStatusSuccess = null;
+      state.cancelReceiptStatusSuccess = null;
     },
   },
 });
@@ -85,10 +86,15 @@ export const updateReceiptStatus = (idPhieu: number, idNhanVien: number) => {
   };
 };
 
-export const cancelReceiptStatus = (idPhieu: number, idNhanVien: number, rows: any) => {
+export const cancelReceiptStatus = (
+  idPhieu: number,
+  idNhanVien: number,
+  rows: any
+) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response = await axios.patch(`capnhatphieuthu/${idPhieu}/${idNhanVien}`, 
+      const response = await axios.patch(
+        `capnhatphieuthu/${idPhieu}/${idNhanVien}`,
         rows
       );
       const data: Number = await response.status;

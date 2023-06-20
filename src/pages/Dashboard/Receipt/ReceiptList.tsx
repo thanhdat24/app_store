@@ -266,7 +266,7 @@ export default function ReceiptList({}: Props) {
   }));
 
   useEffect(() => {
-    if (updateReceiptStatusSuccess && cancelReceiptStatusSuccess) {
+    if (updateReceiptStatusSuccess || cancelReceiptStatusSuccess) {
       dispatch(resetCasher());
     }
   }, [updateReceiptStatusSuccess, cancelReceiptStatusSuccess]);

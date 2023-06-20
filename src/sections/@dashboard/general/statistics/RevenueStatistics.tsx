@@ -20,7 +20,7 @@ import TagFiltered from "../../../../components/TagFiltered";
 import { getAllRevenueRoutes } from "../../../../redux/slices/revenueRoutesReducer";
 import { getAllStaff } from "../../../../redux/slices/staffReducer";
 import RevenueStatisticsTable from "./RevenueStatisticsTable";
-import { getStatistics } from "../../../../redux/slices/statisticsReducer";
+import { filterStatistics } from "../../../../redux/slices/statisticsReducer";
 import { StatisticsModel } from "../../../../interfaces/StatisticsModel";
 
 type Props = {};
@@ -44,8 +44,8 @@ export default function RevenueStatistics({}: Props) {
 
   const { revenueRoutesList } = useAppSelector((state) => state.revenueRoutes);
 
-  const { statisticList } = useAppSelector((state) => state.statistic);
-  console.log("statisticList", statisticList);
+  const { filterStatisticList } = useAppSelector((state) => state.statistic);
+  console.log("filterStatisticList", filterStatisticList);
   const { staffList } = useAppSelector((state) => state.staff);
 
   const {
@@ -117,7 +117,7 @@ export default function RevenueStatistics({}: Props) {
     IDQUAN: 0,
     IDXA: 0,
     IDTUYEN: 0,
-    IDKYTHU: 10,
+    TENKYTHU: "June 2023",
   };
   useEffect(() => {
     if (values.NGAYTHUBATDAU) {
@@ -132,14 +132,25 @@ export default function RevenueStatistics({}: Props) {
         IDTUYEN: JSON.parse(values.TUYENTHUTK).idtuyenthu,
       };
     }
-    dispatch(getStatistics(filterValue));
-  }, [values.NGAYTHUBATDAU, values.NGAYTHUKETTHUC, values.TUYENTHUTK]);
+    if (values.KYTHU) {
+      filterValue = {
+        ...filterValue,
+        TENKYTHU: values.KYTHU,
+      };
+    }
+    dispatch(filterStatistics(filterValue));
+  }, [
+    values.NGAYTHUBATDAU,
+    values.NGAYTHUKETTHUC,
+    values.TUYENTHUTK,
+    values.KYTHU,
+  ]);
 
   useEffect(() => {
-    if (statisticList) {
-      setTableData(statisticList);
+    if (filterStatisticList) {
+      setTableData(filterStatisticList);
     }
-  }, [statisticList ?? []]);
+  }, [filterStatisticList ?? []]);
 
   return (
     <Card>

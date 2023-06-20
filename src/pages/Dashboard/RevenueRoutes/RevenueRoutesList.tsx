@@ -46,7 +46,11 @@ import RevenueRoutesTableRow from "./RevenueRoutesTableRow";
 import RevenueRoutesTableToolbar from "./RevenueRoutesTableToolbar";
 import { getAllStaff } from "../../../redux/slices/staffReducer";
 import { toast } from "react-toastify";
-import { staffPermissionRoutes } from "../../../redux/slices/permissionRevenueRoutesReducer";
+import {
+  deletePermissionRoutes,
+  resetPermissionRoutes,
+  staffPermissionRoutes,
+} from "../../../redux/slices/permissionRevenueRoutesReducer";
 import { CSVLink } from "react-csv";
 import { FormProvider } from "../../../components/hook-form";
 import TagFiltered from "../../../components/TagFiltered";
@@ -82,19 +86,18 @@ export default function RevenueRoutesList({}: Props) {
   ///
   const dispatch = useAppDispatch();
 
-  const { revenueRoutesList, deleteRevenueRoutesSuccess } = useAppSelector(
-    (state) => state.revenueRoutes
-  );
+  const { revenueRoutesList } = useAppSelector((state) => state.revenueRoutes);
 
   const { staffList } = useAppSelector((state) => state.staff);
-  console.log("staffList", staffList);
-  const { createPermissionRevenueSuccess } = useAppSelector(
-    (state) => state.permissionRevenueRoutes
-  );
+  const { createPermissionRevenueSuccess, deletePermissionRoutesSuccess } =
+    useAppSelector((state) => state.permissionRevenueRoutes);
   useEffect(() => {
     dispatch(getAllRevenueRoutes());
     dispatch(getAllStaff());
-  }, [dispatch, deleteRevenueRoutesSuccess, createPermissionRevenueSuccess]);
+    return () => {
+      dispatch(resetPermissionRoutes());
+    };
+  }, [dispatch, deletePermissionRoutesSuccess, createPermissionRevenueSuccess]);
 
   const {
     dense,
@@ -201,7 +204,7 @@ export default function RevenueRoutesList({}: Props) {
   };
 
   const handleePermissionStaff = async () => {
-    if (selected.length > 1 || selected.length === 0)
+    if (selected.length === 0)
       return (
         (selected.length === 0 || selected.length > 1) &&
         toast.warning("Vui lòng chọn duy nhất 1 tuyến thu!", {
@@ -217,14 +220,49 @@ export default function RevenueRoutesList({}: Props) {
       });
     const result: any[] = [];
     for (let i = 0; i < staffId.length; i++) {
-      const item = {
-        idTuyenThu: selected[0],
-        idNhanVien: staffId[i],
-      };
-      result.push(item);
+      for (let j = 0; j < selected.length; j++) {
+        const item = {
+          idTuyenThu: selected[j],
+          idNhanVien: staffId[i],
+        };
+        result.push(item);
+      }
     }
-    if (staffId.length > 0) {
+    if (result.length > 0) {
       await dispatch(staffPermissionRoutes(result));
+      setSelected([]);
+      setStaffId([]);
+    }
+  };
+
+  const handleDeletePermissionStaff = async () => {
+    if (selected.length === 0)
+      return (
+        (selected.length === 0 || selected.length > 1) &&
+        toast.warning("Vui lòng chọn duy nhất 1 tuyến thu!", {
+          autoClose: 2000,
+          position: "top-center",
+        })
+      );
+
+    if (staffId.length === 0)
+      return toast.warning("Vui lòng chọn ít nhất 1 nhân viên!", {
+        autoClose: 2000,
+        position: "top-center",
+      });
+    const result: any[] = [];
+    for (let i = 0; i < staffId.length; i++) {
+      for (let j = 0; j < selected.length; j++) {
+        const item = {
+          idTuyenThu: selected[j],
+          idNhanVien: staffId[i],
+        };
+        result.push(item);
+      }
+    }
+    console.log("result", result);
+    if (result.length > 0) {
+      await dispatch(deletePermissionRoutes(result));
       setSelected([]);
       setStaffId([]);
     }
@@ -294,6 +332,19 @@ export default function RevenueRoutesList({}: Props) {
                 onClick={handleePermissionStaff}
               >
                 Phân quyền
+              </Button>
+              <Button
+                sx={{
+                  borderRadius: 2,
+                  textTransform: "none",
+                  marginRight: 1,
+                }}
+                variant="contained"
+                startIcon={<Iconify icon={"eva:plus-fill"} />}
+                color="error"
+                onClick={handleDeletePermissionStaff}
+              >
+                Xóa quyền
               </Button>
               <Button
                 sx={{ borderRadius: 2, textTransform: "none" }}
