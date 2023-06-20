@@ -3,7 +3,7 @@ export interface StatisticsModel {
   tentuyenthu: string;
   nhanvienthu: string;
   idnhanvien: number;
-  soluongtong: null;
+  soluongtong: number;
   soluongdathu: number;
   soluongchuathu: number;
   tongtien: number;

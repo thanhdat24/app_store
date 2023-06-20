@@ -20,6 +20,7 @@ import {
   getCustomersByCashier,
 } from "../../redux/slices/cashierReducer";
 import RevenueStatistics from "../../sections/@dashboard/general/statistics/RevenueStatistics";
+import RevenueQuantity from "../../sections/@dashboard/general/statistics/RevenueQuantity";
 // ----------------------------------------------------------------------
 
 export default function GeneralApp({}) {
@@ -105,6 +106,11 @@ export default function GeneralApp({}) {
           </Grid>
           <Grid item xs={12} md={12} lg={12}>
             <RevenueStatistics />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={12} lg={12}>
+              <RevenueQuantity />
+            </Grid>
           </Grid>
         </Grid>
       </Box>
