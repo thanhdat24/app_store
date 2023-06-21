@@ -6,7 +6,31 @@ export interface StatisticsModel {
   soluongtong: number;
   soluongdathu: number;
   soluongchuathu: number;
+  soluongphieuhuy: number;
   tongtien: number;
-  phantramdathu: null;
-  phantramchuathu: null;
+  phantramdathu: number;
+  phantramchuathu: number;
+  lpq: Lpq[];
+}
+
+export interface Lpq {
+  IDPHANQUYENTUYENTHU: number;
+  IDNHANVIEN: number;
+  IDTUYENTHU: number;
+  NHANVIEN: Nhanvien;
+  TUYENTHU: null;
+}
+
+export interface Nhanvien {
+  IDNHANVIEN: number;
+  MANHANVIEN: string;
+  HOTEN: string;
+  SDT: number;
+  NGAYSINH: null;
+  DIACHI: string;
+  USERNAME: string;
+  PASSWORD: string;
+  CHITIETPHANQUYENs: any[];
+  PHANQUYENTUYENTHUs: null;
+  PHIEUTHUs: any[];
 }

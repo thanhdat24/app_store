@@ -190,6 +190,7 @@ export default function ReceiptList({}: Props) {
       IDKYTHU: row.IDKYTHU,
       IDNHANVIEN: row.IDNHANVIEN,
       NGAYTAO: row.NGAYTAO,
+      NGAYCAPNHAT: row.NGAYCAPNHAT,
       MAUSOPHIEU: row.MAUSOPHIEU,
       KYHIEU: row.KYHIEU,
       TRANGTHAIHUY: true,
