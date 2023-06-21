@@ -124,9 +124,9 @@ export default function RevenueStatisticsToolbar({
         </RHFSelect>
         <RHFTextField
           name="QUANHUYEN"
-          label="Quyện huyện"
+          label="Quận huyện"
           value={data.setQUANHUYEN}
-          placeholder="Quyện huyện"
+          placeholder="Quận huyện"
         />
         <RHFTextField
           name="XAPHUONG"

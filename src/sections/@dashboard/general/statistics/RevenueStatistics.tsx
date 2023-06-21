@@ -9,6 +9,7 @@ import {
   TablePagination,
   Stack,
   CardHeader,
+  Tooltip,
 } from "@mui/material";
 import { FormProvider } from "../../../../components/hook-form";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
@@ -22,8 +23,11 @@ import { getAllStaff } from "../../../../redux/slices/staffReducer";
 import RevenueStatisticsTable from "./RevenueStatisticsTable";
 import { filterStatistics } from "../../../../redux/slices/statisticsReducer";
 import { StatisticsModel } from "../../../../interfaces/StatisticsModel";
+import { fMonthYear } from "../../../../utils/formatTime";
+import { formatPriceInVND } from "../../../../utils/formatNumber";
+import { CSVLink } from "react-csv";
 
-type Props = {};
+type Props = { row: any; index: any };
 
 const TABLE_HEAD = [
   { id: "STT", label: "STT", align: "left" },
@@ -152,11 +156,38 @@ export default function RevenueStatistics({}: Props) {
     }
   }, [filterStatisticList ?? []]);
 
+  const dataCSV = tableData.map((row, index) => ({
+    STT: index + 1,
+    "Mã nhân viên": row.lpq[0]?.NHANVIEN.MANHANVIEN,
+    "Nhân viên thu": row.nhanvienthu,
+    "Kỳ thu": fMonthYear(row.tenkythu),
+    "Tuyến thu": row.tentuyenthu,
+    "Số lượng": row.soluongtong,
+    "Số lượng đã thu": row.soluongdathu,
+    "Số lượng tồn kho": row.soluongchuathu,
+    "Số lượng phiếu hủy": row.soluongphieuhuy,
+    "Tổng tiền đã thu": formatPriceInVND(row.tongtien),
+    "Tỉ lệ đã thu": row.phantramdathu + "%",
+  }));
+
   return (
     <Card>
       <CardHeader
         title="Thống kê tình hình thu"
         sx={{ ".MuiCardHeader-title": { fontSize: "25px " } }}
+        action={
+          <Box className="flex items-center leading-[1]">
+            <CSVLink filename="Danh_sach_thong_ke_tinh_hinh_thu" data={dataCSV}>
+              <Tooltip title="Xuất danh sách">
+                <img
+                  src="/icons/ic_excel.png"
+                  alt="export excel"
+                  className="w-7 h-7 leading-3 block"
+                />
+              </Tooltip>
+            </CSVLink>
+          </Box>
+        }
       />
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <RevenueStatisticsToolbar
