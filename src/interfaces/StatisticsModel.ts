@@ -9,4 +9,5 @@ export interface StatisticsModel {
   tongtien: number;
   phantramdathu: null;
   phantramchuathu: null;
+  soluongphieuhuy: number;
 }
