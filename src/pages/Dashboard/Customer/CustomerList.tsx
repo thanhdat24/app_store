@@ -49,8 +49,6 @@ import TagFiltered from "../../../components/TagFiltered";
 import { FormProvider } from "../../../components/hook-form";
 import { useForm } from "react-hook-form";
 import { CSVLink } from "react-csv";
-import Image from "../../../components/Image";
-import DialogAnimate from "../../../components/animate/DialogAnimate";
 type Props = {};
 
 // ----------------------------------------------------------------------
