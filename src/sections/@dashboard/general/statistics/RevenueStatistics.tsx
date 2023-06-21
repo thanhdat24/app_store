@@ -27,7 +27,6 @@ import { fMonthYear } from "../../../../utils/formatTime";
 import { formatPriceInVND } from "../../../../utils/formatNumber";
 import { CSVLink } from "react-csv";
 
-type Props = { row: any; index: any };
 
 const TABLE_HEAD = [
   { id: "STT", label: "STT", align: "left" },
@@ -42,7 +41,7 @@ const TABLE_HEAD = [
   { id: "PHANTRANDATHU", label: "Tỉ lệ đã thu", align: "left" },
 ];
 
-export default function RevenueStatistics({}: Props) {
+export default function RevenueStatistics() {
   ///
   const dispatch = useAppDispatch();
 
