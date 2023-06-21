@@ -5,7 +5,7 @@ export default function useTabs(defaultValue: string) {
 
   return {
     currentTab,
-    onChangeTab: (event: React.ChangeEvent<{}>, newValue: string) => {
+    onChangeTab: (newValue: any) => {
       setCurrentTab(newValue);
     },
     setCurrentTab,

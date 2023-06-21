@@ -1,5 +1,5 @@
 // @mui
-import { alpha, styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { ListItemText, ListItemButton, ListItemIcon } from "@mui/material";
 import { NAVBAR, ICON } from "../../../../utils/config";
 
@@ -53,7 +53,7 @@ interface ListItemTextStyleProps {
 
 export const ListItemTextStyle = styled(ListItemText, {
   shouldForwardProp: (prop) => prop !== "isCollapse",
-})<ListItemTextStyleProps>(({ theme, primary, activeRoot }) => ({
+})<ListItemTextStyleProps>(({ theme, activeRoot }) => ({
   whiteSpace: "nowrap",
   transition: theme.transitions.create(["width", "opacity"], {
     duration: theme.transitions.duration.shorter,
@@ -74,7 +74,7 @@ interface ListItemIconStyleProps {
 }
 
 export const ListItemIconStyle = styled(ListItemIcon)<ListItemIconStyleProps>(
-  ({ activeRoot }) => ({
+  () => ({
     width: ICON.NAVBAR_ITEM,
     height: ICON.NAVBAR_ITEM,
     minWidth: "auto",

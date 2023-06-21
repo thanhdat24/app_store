@@ -1,10 +1,8 @@
-import PropTypes from "prop-types";
 // @mui
-import { styled, useTheme } from "@mui/material/styles";
-import { Box, Stack, AppBar, Toolbar } from "@mui/material";
-import { HEADER, NAVBAR } from "../../../utils/config";
+import { styled } from "@mui/material/styles";
+import {  Stack, AppBar } from "@mui/material";
+import { HEADER } from "../../../utils/config";
 import cssStyles from "../../../utils/cssStyles";
-import useOffSetTop from "../../../hooks/useOffSetTop";
 import AccountPopover from "./AccountPopover";
 // hooks
 
@@ -39,7 +37,6 @@ const RootStyle = styled(AppBar, {
 }));
 
 export default function DashboardHeader({}: Props) {
-  const isOffset = useOffSetTop(HEADER.DASHBOARD_DESKTOP_HEIGHT);
   return (
     <RootStyle>
       <Stack

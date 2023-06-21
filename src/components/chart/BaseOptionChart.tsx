@@ -7,7 +7,7 @@ export default function BaseOptionChart() {
 
   const LABEL_TOTAL = {
     show: true,
-    label: "Total",
+    label: "Tổng",
     color: theme.palette.text.secondary,
     fontSize: theme.typography.subtitle2.fontSize,
     fontWeight: theme.typography.subtitle2.fontWeight,
@@ -27,7 +27,7 @@ export default function BaseOptionChart() {
     colors: [
       theme.palette.primary.main,
       "#FF6C40",
-      "#2D99FF",
+      "red",
       "#826AF9",
       "#2CD9C5",
       "#FF6C40",

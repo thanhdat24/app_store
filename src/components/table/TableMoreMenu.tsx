@@ -33,7 +33,7 @@ export default function TableMoreMenu({
         onClose={onClose}
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
-        arrow="right-top"
+        // arrow="right-top"
         sx={{
           mt: -1,
           width: 160,

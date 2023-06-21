@@ -53,10 +53,11 @@ export default function RevenueQuantity() {
   const CHART_DATA = [
     statisticAllList?.soluongdathu || 0,
     statisticAllList?.soluongchuathu || 0,
+    statisticAllList?.soluongphieuhuy || 0,
   ];
 
   const chartOptions = merge(BaseOptionChart(), {
-    labels: ["Đã thu", "Chưa thu"],
+    labels: ["Đã thu", "Chưa thu", "Đã hủy"],
     legend: { floating: true, horizontalAlign: "center" },
     fill: {
       type: "gradient",
@@ -82,6 +83,16 @@ export default function RevenueQuantity() {
               color: theme.palette.warning.main,
             },
           ],
+          [
+            {
+              offset: 0,
+              color: theme.palette.error.light,
+            },
+            {
+              offset: 100,
+              color: theme.palette.error.main,
+            },
+          ],
         ],
       },
     },
@@ -91,7 +102,6 @@ export default function RevenueQuantity() {
         dataLabels: {
           value: { offsetY: 16 },
           total: {
-            label: "Tổng",
             formatter: () =>
               statisticAllList?.soluongtong !== undefined
                 ? statisticAllList.soluongtong
@@ -110,7 +120,7 @@ export default function RevenueQuantity() {
           <ReactApexChart
             type="radialBar"
             series={CHART_DATA}
-            options={chartOptions}
+            options={chartOptions as any}
             height={310}
           />
         )}

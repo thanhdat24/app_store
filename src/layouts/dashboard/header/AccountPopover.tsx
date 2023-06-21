@@ -1,14 +1,11 @@
-import React, { MouseEvent, useState } from "react";
+import  { MouseEvent, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { PATH_AUTH, PATH_DASHBOARD } from "../../../routes/paths";
 // @mui
-import { alpha } from "@mui/material/styles";
 import {
-  Avatar as MUIAvatar,
   Box,
   Divider,
   Typography,
-  Stack,
   MenuItem,
 } from "@mui/material";
 import MenuPopover from "../../../components/MenuPopover";

@@ -1,5 +1,4 @@
 import { FC, ReactNode } from "react";
-import PropTypes from "prop-types";
 import { Container, Alert, AlertTitle } from "@mui/material";
 import { useAppSelector } from "../redux/store";
 

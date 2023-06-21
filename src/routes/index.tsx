@@ -10,6 +10,7 @@ import CustomerAction from "../pages/Dashboard/Customer/CustomerAction";
 import CustomerTypeList from "../pages/Dashboard/Customer/CustomerTypeList";
 import CustomerActionType from "../pages/Dashboard/Customer/CustomerActionType";
 import ReceiptList from "../pages/Dashboard/Receipt/ReceiptList";
+
 import ReceiptAction from "../pages/Dashboard/Receipt/ReceiptAction";
 import BillingPeriodList from "../pages/Dashboard/BillingPeriod/BillingPeriodList";
 import StaffList from "../pages/Dashboard/Staff/StaffList";

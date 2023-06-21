@@ -7,13 +7,6 @@ import {
   TableSortLabel,
 } from "@mui/material";
 
-interface HeadCell {
-  id: string;
-  align?: "left" | "right" | "center";
-  width?: string;
-  minWidth?: string;
-  label: string;
-}
 
 interface TableHeadCustomProps {
   order: any;

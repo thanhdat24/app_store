@@ -1,11 +1,9 @@
-import PropTypes from "prop-types";
 import { Link as RouterLink } from "react-router-dom";
 // @mui
 import { alpha, styled } from "@mui/material/styles";
 import { Box, Link, Typography } from "@mui/material";
 // hooks
 // routes
-import { PATH_DASHBOARD } from "../../../routes/paths";
 import { useAppSelector } from "../../../redux/store";
 // components
 
