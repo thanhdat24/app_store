@@ -54,7 +54,10 @@ export default function useTable(props: TableProps) {
     }
   };
 
-  const onChangePage = (event: any, newPage: number) => {
+  const onChangePage = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
+    newPage: number
+  ) => {
     setPage(newPage);
   };
 

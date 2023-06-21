@@ -1,5 +1,4 @@
 // @mui
-import PropTypes from "prop-types";
 import { TableRow, TableCell } from "@mui/material";
 //
 import EmptyContent from "../EmptyContent";

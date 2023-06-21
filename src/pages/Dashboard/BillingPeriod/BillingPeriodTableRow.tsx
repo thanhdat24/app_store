@@ -1,8 +1,5 @@
-import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-// @mui
-import { useTheme } from "@mui/material/styles";
+import { useState } from "react";
+
 import {
   Avatar,
   Checkbox,

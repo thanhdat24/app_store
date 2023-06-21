@@ -55,10 +55,6 @@ import { FormProvider } from "../../../components/hook-form";
 import TagFiltered from "../../../components/TagFiltered";
 import { CSVLink } from "react-csv";
 
-type Props = {
-  row: any;
-};
-
 // ----------------------------------------------------------------------
 
 const OPTIONS_INFO = ["Thông tin khách hàng", "Mã số phiếu"];
@@ -79,7 +75,7 @@ const TABLE_HEAD = [
   { id: "ACTION", label: "Thao Tác" },
 ];
 
-export default function ReceiptList({}: Props) {
+export default function ReceiptList() {
   ///
   const dispatch = useAppDispatch();
 

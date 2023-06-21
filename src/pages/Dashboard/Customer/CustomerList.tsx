@@ -202,186 +202,182 @@ export default function CustomerList({}: Props) {
 
   return (
     <Page title="Customer: List">
-        <HeaderBreadcrumbs
-          heading="Danh sách khách hàng"
-          links={[
-            { name: "Trang chủ", href: PATH_DASHBOARD.root },
-            { name: "Khách hàng", href: PATH_DASHBOARD.user.list },
-            { name: "Danh sách" },
-          ]}
-          action={
-            <Box
-              sx={{
-                display: "flex",
-                gap: "10px",
-              }}
-            >
-              {userLogin?.USERNAME === "admin" && (
-                <>
-                  <Button
-                    sx={{ borderRadius: 2, textTransform: "none" }}
-                    variant="contained"
-                    component={RouterLink}
-                    to={
-                      selected.length < 2 && selected.length === 1
-                        ? PATH_DASHBOARD.receipt.new(selected[0])
-                        : ""
-                    }
-                    onClick={() =>
-                      (selected.length === 0 || selected.length > 1) &&
-                      toast.warning(
-                        "Vui lòng chọn duy nhất 1 khách hàng để tạo!",
-                        {
-                          autoClose: 2000,
-                          position: "top-center",
-                        }
-                      )
-                    }
-                    // disabled={selected.length === 0 || selected.length > 1}
-                    startIcon={<Iconify icon={"eva:plus-fill"} />}
-                  >
-                    Tạo phiếu thu
-                  </Button>
-                  <Button
-                    sx={{ borderRadius: 2, textTransform: "none" }}
-                    variant="contained"
-                    component={RouterLink}
-                    to={PATH_DASHBOARD.user.new}
-                    startIcon={<Iconify icon={"eva:plus-fill"} />}
-                  >
-                    Thêm khách hàng
-                  </Button>
-                </>
-              )}
-              <Box className="flex items-center leading-[1]">
-                <CSVLink filename="Danh_sach_khach_hang" data={dataCSV}>
-                  <Tooltip title="Xuất danh sách">
-                    <img
-                      src="/icons/ic_excel.png"
-                      alt="export excel"
-                      className="w-7 h-7 leading-3 block"
-                    />
-                  </Tooltip>
-                </CSVLink>
-              </Box>
-            </Box>
-          }
-        />
-
-        <Card>
-          <Tabs
-            allowScrollButtonsMobile
-            variant="scrollable"
-            scrollButtons="auto"
-            value={filterStatus}
-            onChange={onChangeFilterStatus}
-            sx={{ px: 2, bgcolor: "background.neutral" }}
+      <HeaderBreadcrumbs
+        heading="Danh sách khách hàng"
+        links={[
+          { name: "Trang chủ", href: PATH_DASHBOARD.root },
+          { name: "Khách hàng", href: PATH_DASHBOARD.user.list },
+          { name: "Danh sách" },
+        ]}
+        action={
+          <Box
+            sx={{
+              display: "flex",
+              gap: "10px",
+            }}
           >
-            {STATUS_OPTIONS.map((tab) => (
-              <Tab disableRipple key={tab} label={tab} value={tab} />
-            ))}
-          </Tabs>
-          <Divider />
-          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-            <CustomerTableToolbar
-              optionRevenueRoute={tableData}
-              dataTable={dataCSV}
-              filterName={filterName}
-              onFilterName={handleFilterName}
-              filterUser={filterUser}
-              onFilterUser={(
-                event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-              ) => handleFilterUser(event)}
-              optionsInfo={OPTIONS_INFO}
-            />
-          </FormProvider>
-          {(values.TUYENTHU?.length > 0 || values.TRANGTHAI?.length > 0) && (
-            <Stack
-              spacing={2}
-              direction={{ md: "column" }}
-              sx={{ py: 0, px: 3 }}
-            >
-              <Box>
-                <strong>{dataFiltered.length}</strong>
-                <span className="ml-1 !text-[#637381]">Kết quả tìm thấy</span>
-              </Box>
-              <TagFiltered
-                filters={values}
-                onRemoveRevenueRoute={handleRemoveRevenueRoute}
-                isShowReset={!isDefault}
-                onResetAll={handleResetFilter}
-                onRemoveActive={handleRemoveActive}
-              />
-            </Stack>
-          )}
-          {/* <Scrollbar> */}
-          <TableContainer sx={{ minWidth: 800, position: "relative" }}>
-            {selected.length > 0 && (
-              <TableSelectedActions
-                dense={dense}
-                numSelected={selected.length}
-                rowCount={tableData.length}
-                onSelectAllRows={(checked) =>
-                  onSelectAllRows(
-                    checked,
-                    tableData.map((row) => row.IDKHACHHANG)
-                  )
-                }
-              />
+            {userLogin?.USERNAME === "admin" && (
+              <>
+                <Button
+                  sx={{ borderRadius: 2, textTransform: "none" }}
+                  variant="contained"
+                  component={RouterLink}
+                  to={
+                    selected.length < 2 && selected.length === 1
+                      ? PATH_DASHBOARD.receipt.new(selected[0])
+                      : ""
+                  }
+                  onClick={() =>
+                    (selected.length === 0 || selected.length > 1) &&
+                    toast.warning(
+                      "Vui lòng chọn duy nhất 1 khách hàng để tạo!",
+                      {
+                        autoClose: 2000,
+                        position: "top-center",
+                      }
+                    )
+                  }
+                  // disabled={selected.length === 0 || selected.length > 1}
+                  startIcon={<Iconify icon={"eva:plus-fill"} />}
+                >
+                  Tạo phiếu thu
+                </Button>
+                <Button
+                  sx={{ borderRadius: 2, textTransform: "none" }}
+                  variant="contained"
+                  component={RouterLink}
+                  to={PATH_DASHBOARD.user.new}
+                  startIcon={<Iconify icon={"eva:plus-fill"} />}
+                >
+                  Thêm khách hàng
+                </Button>
+              </>
             )}
-            <Table size={dense ? "small" : "medium"}>
-              <TableHeadCustom
-                order={order}
-                orderBy={orderBy}
-                headLabel={TABLE_HEAD}
-                rowCount={tableData.length}
-                numSelected={selected.length}
-                onSort={onSort}
-                // onSelectAllRows={(checked) =>
-                //   onSelectAllRows(
-                //     checked,
-                //     tableData.map((row) => row.IDKHACHHANG)
-                //   )
-                // }
+            <Box className="flex items-center leading-[1]">
+              <CSVLink filename="Danh_sach_khach_hang" data={dataCSV}>
+                <Tooltip title="Xuất danh sách">
+                  <img
+                    src="/icons/ic_excel.png"
+                    alt="export excel"
+                    className="w-7 h-7 leading-3 block"
+                  />
+                </Tooltip>
+              </CSVLink>
+            </Box>
+          </Box>
+        }
+      />
+
+      <Card>
+        <Tabs
+          allowScrollButtonsMobile
+          variant="scrollable"
+          scrollButtons="auto"
+          value={filterStatus}
+          onChange={onChangeFilterStatus}
+          sx={{ px: 2, bgcolor: "background.neutral" }}
+        >
+          {STATUS_OPTIONS.map((tab) => (
+            <Tab disableRipple key={tab} label={tab} value={tab} />
+          ))}
+        </Tabs>
+        <Divider />
+        <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+          <CustomerTableToolbar
+            optionRevenueRoute={tableData}
+            dataTable={dataCSV}
+            filterName={filterName}
+            onFilterName={handleFilterName}
+            filterUser={filterUser}
+            onFilterUser={(
+              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => handleFilterUser(event)}
+            optionsInfo={OPTIONS_INFO}
+          />
+        </FormProvider>
+        {(values.TUYENTHU?.length > 0 || values.TRANGTHAI?.length > 0) && (
+          <Stack spacing={2} direction={{ md: "column" }} sx={{ py: 0, px: 3 }}>
+            <Box>
+              <strong>{dataFiltered.length}</strong>
+              <span className="ml-1 !text-[#637381]">Kết quả tìm thấy</span>
+            </Box>
+            <TagFiltered
+              filters={values}
+              onRemoveRevenueRoute={handleRemoveRevenueRoute}
+              isShowReset={!isDefault}
+              onResetAll={handleResetFilter}
+              onRemoveActive={handleRemoveActive}
+            />
+          </Stack>
+        )}
+        {/* <Scrollbar> */}
+        <TableContainer sx={{ minWidth: 800, position: "relative" }}>
+          {selected.length > 0 && (
+            <TableSelectedActions
+              dense={dense}
+              numSelected={selected.length}
+              rowCount={tableData.length}
+              onSelectAllRows={(checked) =>
+                onSelectAllRows(
+                  checked,
+                  tableData.map((row) => row.IDKHACHHANG)
+                )
+              }
+            />
+          )}
+          <Table size={dense ? "small" : "medium"}>
+            <TableHeadCustom
+              order={order}
+              orderBy={orderBy}
+              headLabel={TABLE_HEAD}
+              rowCount={tableData.length}
+              numSelected={selected.length}
+              onSort={onSort}
+              // onSelectAllRows={(checked) =>
+              //   onSelectAllRows(
+              //     checked,
+              //     tableData.map((row) => row.IDKHACHHANG)
+              //   )
+              // }
+            />
+
+            <TableBody>
+              {dataFiltered
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row: any) => (
+                  <CustomerTableRow
+                    userLogin={userLogin}
+                    key={row.IDKHACHHANG}
+                    row={row}
+                    selected={selected.includes(row.IDKHACHHANG)}
+                    onSelectRow={() => onSelectRow(row.IDKHACHHANG)}
+                    onDeleteRow={() => handleDeleteRow(row.IDKHACHHANG)}
+                    onEditRow={() => handleEditRow(row.IDKHACHHANG)}
+                  />
+                ))}
+
+              <TableEmptyRows
+                height={denseHeight}
+                emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
               />
 
-              <TableBody>
-                {dataFiltered
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row: any) => (
-                    <CustomerTableRow
-                      userLogin={userLogin}
-                      key={row.IDKHACHHANG}
-                      row={row}
-                      selected={selected.includes(row.IDKHACHHANG)}
-                      onSelectRow={() => onSelectRow(row.IDKHACHHANG)}
-                      onDeleteRow={() => handleDeleteRow(row.IDKHACHHANG)}
-                      onEditRow={() => handleEditRow(row.IDKHACHHANG)}
-                    />
-                  ))}
-
-                <TableEmptyRows
-                  height={denseHeight}
-                  emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
-                />
-
-                {/* <TableNoData isNotFound={isNotFound} /> */}
-              </TableBody>
-            </Table>
-          </TableContainer>{" "}
-          <Box sx={{ position: "relative" }}>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={dataFiltered?.length ?? 0}
-              rowsPerPage={rowsPerPage ?? 5}
-              page={page}
-              onPageChange={onChangePage}
-              onRowsPerPageChange={onChangeRowsPerPage}
-            />
-          </Box>
-          {/* </Scrollbar> */}
-        </Card>
+              {/* <TableNoData isNotFound={isNotFound} /> */}
+            </TableBody>
+          </Table>
+        </TableContainer>{" "}
+        <Box sx={{ position: "relative" }}>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={dataFiltered?.length ?? 0}
+            rowsPerPage={rowsPerPage ?? 5}
+            page={page}
+            onPageChange={onChangePage}
+            onRowsPerPageChange={onChangeRowsPerPage}
+          />
+        </Box>
+        {/* </Scrollbar> */}
+      </Card>
     </Page>
   );
 }

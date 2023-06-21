@@ -1,6 +1,6 @@
 // @mui
 import { Box } from "@mui/material";
-import PropTypes, { InferProps } from "prop-types";
+import PropTypes from "prop-types";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 // ----------------------------------------------------------------------
 

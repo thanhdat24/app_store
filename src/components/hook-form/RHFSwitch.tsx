@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { useFormContext, Controller } from "react-hook-form";
 import { Switch, FormControlLabel } from "@mui/material";
 

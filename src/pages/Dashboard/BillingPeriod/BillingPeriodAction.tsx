@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 // @mui
 import { Container } from "@mui/material";
@@ -7,8 +7,7 @@ import { PATH_DASHBOARD } from "../../../routes/paths";
 // components
 import Page from "../../../components/Page";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
-import CustomerForm from "../../../sections/@dashboard/user/Form/CustomerForm";
-import ReceiptForm from "../../../sections/@dashboard/receipt/ReceiptForm";
+
 import BillingPeriodForm from "../../../sections/@dashboard/billingPeriod/BillingPeriodForm";
 import { getAllBillingPeriods } from "../../../redux/slices/billingPeriodReducer";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";

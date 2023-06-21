@@ -1,4 +1,3 @@
-import { useState } from "react";
 // routes
 import Router from "./routes";
 // theme

@@ -312,8 +312,10 @@ export default function RevenueRoutesList({}: Props) {
                   {staffList?.map((name) => (
                     <MenuItem key={name.IDNHANVIEN} value={name.IDNHANVIEN}>
                       <Checkbox
-                        checked={staffId.indexOf(Number(name.IDNHANVIEN)) > -1}
-                      />{" "}
+                        checked={
+                          staffId.indexOf(name.IDNHANVIEN.toString()) > -1
+                        }
+                      />
                       {/* Thay đổi tại đây */}
                       <ListItemText primary={name.HOTEN} />
                     </MenuItem>

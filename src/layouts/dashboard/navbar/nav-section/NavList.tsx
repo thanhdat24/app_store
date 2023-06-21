@@ -14,7 +14,7 @@ interface NavListRootProps {
   [key: string]: any;
 }
 
-const NavListRoot = ({ list, ...other }: NavListRootProps) => {
+const NavListRoot = ({ list }: NavListRootProps) => {
   const { pathname } = useLocation();
 
   const active = getActive(list.path, pathname);

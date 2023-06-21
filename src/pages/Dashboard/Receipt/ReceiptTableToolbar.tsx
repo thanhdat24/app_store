@@ -126,9 +126,12 @@ export default function ReceiptTableToolbar({
           name="TUYENTHU"
           options={Array.from(
             new Set(
-              optionRevenueRoute?.map(
-                (option) => option.KHACHHANG.TUYENTHU.TENTUYENTHU
-              )
+              optionRevenueRoute?.map((option) => {
+                if (option.KHACHHANG) {
+                  return option.KHACHHANG.TUYENTHU.TENTUYENTHU;
+                }
+                return null; // or any other fallback value
+              })
             )
           )}
           label="Tuyến thu"

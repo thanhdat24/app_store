@@ -2,11 +2,10 @@ import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 // @mui
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { Box, Stack, Drawer } from "@mui/material";
 import Logo from "../../../components/Logo";
 import Scrollbar from "../../../components/Scrollbar";
-import NavbarAccount from "./NavbarAccount";
 import { NAVBAR } from "../../../utils/config";
 import navConfig from "./NavConfig";
 import { NavSectionVertical } from "./nav-section";
@@ -24,8 +23,6 @@ const RootStyle = styled("div")(({ theme }) => ({
   },
 }));
 
-type Props = {};
-
 interface NavbarVerticalProps {
   isOpenSidebar: boolean;
   onCloseSidebar: () => void;
@@ -35,8 +32,6 @@ const NavbarVertical: React.FC<NavbarVerticalProps> = ({
   isOpenSidebar,
   onCloseSidebar,
 }) => {
-  const theme = useTheme();
-
   const { pathname } = useLocation();
 
   useEffect(() => {

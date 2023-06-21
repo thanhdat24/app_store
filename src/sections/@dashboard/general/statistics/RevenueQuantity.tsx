@@ -110,7 +110,7 @@ export default function RevenueQuantity() {
           <ReactApexChart
             type="radialBar"
             series={CHART_DATA}
-            options={chartOptions}
+            options={chartOptions as any}
             height={310}
           />
         )}

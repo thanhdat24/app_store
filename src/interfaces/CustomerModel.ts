@@ -14,6 +14,7 @@ export interface CustomerModel {
   LOAIKH: Loaikh;
   TUYENTHU: Tuyenthu;
   PHIEUTHUs: any[];
+  KHACHHANG?: null;
 }
 
 export interface Loaikh {

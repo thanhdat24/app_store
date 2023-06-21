@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { useFormContext, Controller } from "react-hook-form";
 import { Box, TextField } from "@mui/material";
 import { DateRangePicker, DateRange } from "@mui/lab";

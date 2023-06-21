@@ -20,7 +20,7 @@ import Avatar from "../../components/Avatar";
 import Menu from "./Menu";
 import navConfig from "./MenuConfig";
 // router-dom
-import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 // routes
 import { PATH_AUTH } from "../../routes/paths";
 import SearchNotFound from "../../components/SearchNotFound";
@@ -122,7 +122,7 @@ export default function MainHeader({}: Props) {
               popupIcon={null}
               PopperComponent={PopperStyle}
               options={searchResults}
-              onInputChange={(event, value) => handleChangeSearch(value)}
+              onInputChange={(_, value) => handleChangeSearch(value)}
               // getOptionLabel={(product) => product.name}
               noOptionsText={<SearchNotFound searchQuery={searchQuery} />}
               // isOptionEqualToValue={(option, value) => option.id === value.id}
