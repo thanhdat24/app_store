@@ -5,7 +5,7 @@ import ReactApexChart from "react-apexcharts";
 import { useTheme, styled } from "@mui/material/styles";
 import { Card, CardHeader } from "@mui/material";
 import { BaseOptionChart } from "../../../../components/chart";
-import { fNumber } from "../../../../utils/formatNumber";
+import { fNumber, formatPriceInVND } from "../../../../utils/formatNumber";
 import { getAllStatistics } from "../../../../redux/slices/statisticsReducer";
 import {
   RootState,
@@ -115,13 +115,20 @@ export default function RevenueQuantity() {
   return (
     <Card>
       <CardHeader title="Thống kê số lượng phiếu thu " />
+      <CardHeader
+        title={`Tổng tiền: ${formatPriceInVND(
+          statisticAllList?.tongtien || 0
+        )}`}
+        className="!pt-1 !text-gray-600"
+      />
+
       <ChartWrapperStyle dir="ltr">
         {statisticAllList?.soluongtong && (
           <ReactApexChart
             type="radialBar"
             series={CHART_DATA}
             options={chartOptions as any}
-            height={310}
+            height={330}
           />
         )}
       </ChartWrapperStyle>
