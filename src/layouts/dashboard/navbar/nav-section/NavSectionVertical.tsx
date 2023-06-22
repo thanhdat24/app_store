@@ -80,11 +80,11 @@ const NavSectionVertical = ({
               {group.items
                 .filter((item) => {
                   const isNhanVienThuNgan = userLogin.CHITIETPHANQUYENs.some(
-                    (chitietphanquyen) =>
+                    (chitietphanquyen: any) =>
                       chitietphanquyen.QUYEN.TENQUYEN === "Nhân viên thu ngân"
                   );
                   const isQuanTriHeThong = userLogin.CHITIETPHANQUYENs.some(
-                    (chitietphanquyen) =>
+                    (chitietphanquyen:  any) =>
                       chitietphanquyen.QUYEN.TENQUYEN === "Quản trị hệ thống"
                   );
 
