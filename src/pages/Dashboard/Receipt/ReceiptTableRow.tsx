@@ -20,6 +20,7 @@ import Iconify from "../../../components/Iconify";
 import Label from "../../../components/Label";
 import { formatPriceInVND } from "../../../utils/formatNumber";
 import { fDate, fDateTime, fMonthYear } from "../../../utils/formatTime";
+import { useAppSelector } from "../../../redux/store";
 type Props = {
   row: any;
   onDeleteRow: () => void;
@@ -27,6 +28,7 @@ type Props = {
   onEditRow: () => void;
   onViewRow: () => void;
   onConfirmRow: () => void;
+  userRole: string;
 };
 
 export default function ReceiptTableRow({
@@ -36,6 +38,7 @@ export default function ReceiptTableRow({
   onEditRow,
   onViewRow,
   onConfirmRow,
+  userRole,
 }: Props) {
   const [openMenu, setOpenMenuActions] = useState<null | HTMLElement>(null); // Add type annotation
 
@@ -58,6 +61,10 @@ export default function ReceiptTableRow({
     KHACHHANG,
     CHITIETPHIEUTHUs,
   } = row;
+
+  const { userLogin } = useAppSelector((state) => state.admin);
+  const isCashier =
+    userRole === "Quản trị hệ thống" || userRole === "Nhân viên quản trị";
   return (
     <TableRow hover>
       <TableCell align="left">{MASOPHIEU}</TableCell>
@@ -140,34 +147,42 @@ export default function ReceiptTableRow({
                   <></>
                 ) : (
                   <>
-                    <MenuItem onClick={onViewRow}>
-                      <Iconify icon={"eva:eye-fill"} />
-                      Chi tiết
-                    </MenuItem>
-                    <MenuItem onClick={onEditRow}>
-                      <Iconify icon={"eva:edit-fill"} />
-                      Chỉnh sửa
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => {
-                        onDeleteRow();
-                        handleCloseMenu();
-                      }}
-                      sx={{ color: "error.main" }}
-                    >
-                      <Iconify icon={"eva:trash-2-outline"} />
-                      Xóa
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => {
-                        onCancelRow();
-                        handleCloseMenu();
-                      }}
-                      sx={{ color: "error.main" }}
-                    >
-                      <Iconify icon={"flat-color-icons:cancel"} />
-                      Huỷ phiếu
-                    </MenuItem>
+                    {!isCashier && (
+                      <>
+                        <MenuItem onClick={onViewRow}>
+                          <Iconify icon={"eva:eye-fill"} />
+                          Chi tiết
+                        </MenuItem>
+                        <MenuItem onClick={onEditRow}>
+                          <Iconify icon={"eva:edit-fill"} />
+                          Chỉnh sửa
+                        </MenuItem>
+                      </>
+                    )}
+                    {userLogin?.USERNAME === "admin"  && (
+                      <>
+                        <MenuItem
+                          onClick={() => {
+                            onDeleteRow();
+                            handleCloseMenu();
+                          }}
+                          sx={{ color: "error.main" }}
+                        >
+                          <Iconify icon={"eva:trash-2-outline"} />
+                          Xóa
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            onCancelRow();
+                            handleCloseMenu();
+                          }}
+                          sx={{ color: "error.main" }}
+                        >
+                          <Iconify icon={"flat-color-icons:cancel"} />
+                          Huỷ phiếu
+                        </MenuItem>
+                      </>
+                    )}
                   </>
                 )}
                 {TRANGTHAIPHIEU && (

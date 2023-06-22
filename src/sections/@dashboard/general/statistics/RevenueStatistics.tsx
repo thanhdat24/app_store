@@ -27,7 +27,6 @@ import { fMonthYear } from "../../../../utils/formatTime";
 import { formatPriceInVND } from "../../../../utils/formatNumber";
 import { CSVLink } from "react-csv";
 
-
 const TABLE_HEAD = [
   { id: "STT", label: "STT", align: "left" },
   { id: "NHANVIENTHU", label: "Nhân viên thu", align: "left" },
