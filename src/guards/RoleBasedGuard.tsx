@@ -15,7 +15,7 @@ const useCurrentRole = (): string => {
 const RoleBasedGuard: FC<RoleBasedGuardProps> = ({ children }) => {
   const accessibleRoles = [
     "Quản trị hệ thống",
-    "Nhân vên quản trị",
+    "Nhân viên quản trị",
     "Nhân viên thu ngân",
   ];
   const { userLogin } = useAppSelector((state) => state.admin);
