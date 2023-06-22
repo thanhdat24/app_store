@@ -18,7 +18,7 @@ export default function AccountGeneral({}: Props) {
   const { userLogin } = useAppSelector((state) => state.admin);
 
   const dispatch = useAppDispatch();
-  
+
   const UpdateUserSchema = Yup.object().shape({
     HOTEN: Yup.string().required("Họ tên là bắt buộc"),
     SDT: Yup.string().required("Số điện thoại là bắt buộc"),
@@ -70,7 +70,7 @@ export default function AccountGeneral({}: Props) {
             <div className="absolute md:h-44 md:w-44  w-36 rounded-full left-1/2 transform bottom-[20%]  -translate-x-1/2 border-4 border-white dark:border-dark-secondary  cursor-pointer">
               <div className="relative flex-shrink-0 w-full h-full">
                 <img
-                  src="https://teeappapi.azurewebsites.net/default/default-male.svg"
+                  src="/images/default-male.svg"
                   alt=""
                   className="h-full w-full select-none bg-white rounded-full object-cover flex-shrink-0 filter hover:brightness-110"
                 />
