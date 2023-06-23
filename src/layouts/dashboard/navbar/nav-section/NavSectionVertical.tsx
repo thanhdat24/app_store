@@ -84,7 +84,7 @@ const NavSectionVertical = ({
                       chitietphanquyen.QUYEN.TENQUYEN === "Nhân viên thu ngân"
                   );
                   const isQuanTriHeThong = userLogin.CHITIETPHANQUYENs.some(
-                    (chitietphanquyen:  any) =>
+                    (chitietphanquyen: any) =>
                       chitietphanquyen.QUYEN.TENQUYEN === "Quản trị hệ thống"
                   );
 
@@ -97,7 +97,7 @@ const NavSectionVertical = ({
                     );
                   } else if (isNhanVienThuNgan) {
                     return (
-                      item.title === "Kỳ thu" ||
+                      item.title === "Phiếu thu" ||
                       item.title === "Khách hàng" ||
                       item.title === "Thống kê"
                     );

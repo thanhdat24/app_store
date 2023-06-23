@@ -116,7 +116,7 @@ export default function RevenueQuantity() {
     <Card>
       <CardHeader title="Thống kê số lượng phiếu thu " />
       <CardHeader
-        title={`Tổng tiền: ${formatPriceInVND(
+        title={`Tổng tiền đã thu: ${formatPriceInVND(
           statisticAllList?.tongtien || 0
         )}`}
         className="!pt-1 !text-gray-600"
