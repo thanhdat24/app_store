@@ -104,14 +104,18 @@ export default function GeneralApp({}) {
               icon={"clarity:map-solid"}
             />
           </Grid>
-          <Grid item xs={12} md={12} lg={12}>
-            <RevenueStatistics />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <Grid item xs={12} md={12} lg={12}>
-              <RevenueQuantity />
-            </Grid>
-          </Grid>
+          {userLogin.USERNAME === "admin" && (
+            <>
+              <Grid item xs={12} md={12} lg={12}>
+                <RevenueStatistics />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={12} lg={12}>
+                  <RevenueQuantity />
+                </Grid>
+              </Grid>
+            </>
+          )}
         </Grid>
       </Box>
     </Page>

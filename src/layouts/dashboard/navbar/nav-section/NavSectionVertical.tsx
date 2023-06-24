@@ -64,26 +64,49 @@ const NavSectionVertical = ({
           userLogin.USERNAME === "admin" ||
           (userLogin.CHITIETPHANQUYENs.some(
             (item: any) => item.QUYEN.TENQUYEN === "Nhân viên thu ngân"
-          ) &&
-            (group.subheader === "Quản lý khách hàng" ||
+          )
+            ? group.subheader === "Quản lý khách hàng" ||
               group.subheader === "Tổng quan" ||
-              group.subheader === "Quản lý thông tin sử dụng"))
+              group.subheader === "Quản lý thông tin sử dụng"
+            : (userLogin.CHITIETPHANQUYENs.some(
+                (item: any) => item.QUYEN.TENQUYEN === "Quản trị hệ thống"
+              ) &&
+                group.subheader === "Tổng quan") ||
+              group.subheader === "Quản lý thông tin sử dụng")
         ) {
           return (
             <List key={group.subheader} disablePadding sx={{ px: 2 }}>
               <ListSubheaderStyle subheader={group.subheader} />
               {group.items
-                .filter(
-                  (item) =>
-                    !(
-                      userLogin.CHITIETPHANQUYENs.some(
-                        (item: any) =>
-                          item.QUYEN.TENQUYEN === "Nhân viên thu ngân"
-                      ) &&
-                      (item.title === "Kỳ thu" ||
-                        item.title === "Loại Khách hàng")
-                    )
-                )
+                .filter((item) => {
+                  const isNhanVienThuNgan = userLogin.CHITIETPHANQUYENs.some(
+                    (chitietphanquyen: any) =>
+                      chitietphanquyen.QUYEN.TENQUYEN === "Nhân viên thu ngân"
+                  );
+                  const isQuanTriHeThong = userLogin.CHITIETPHANQUYENs.some(
+                    (chitietphanquyen: any) =>
+                      chitietphanquyen.QUYEN.TENQUYEN === "Quản trị hệ thống"
+                  );
+
+                  if (isNhanVienThuNgan && isQuanTriHeThong) {
+                    return (
+                      item.title === "Kỳ thu" ||
+                      item.title === "Khách hàng" ||
+                      item.title === "Phiếu thu" ||
+                      item.title === "Thống kê"
+                    );
+                  } else if (isNhanVienThuNgan) {
+                    return (
+                      item.title === "Phiếu thu" ||
+                      item.title === "Khách hàng" ||
+                      item.title === "Thống kê"
+                    );
+                  } else if (isQuanTriHeThong) {
+                    return item.title === "Kỳ thu" || item.title === "Thống kê";
+                  }
+
+                  return true;
+                })
                 .map((list) => (
                   <NavListRoot key={list.title} list={list} />
                 ))}

@@ -64,7 +64,7 @@ export default function AccountPopover({}: Props) {
         <div className="relative flex-shrink-0 flex items-center ml-1">
           <img
             className="h-6 w-6 md:h-8 md:w-8 select-none bg-white rounded-full object-cover flex-shrink-0 "
-            src="/src/assets/images/default-male.svg"
+            src="/images/default-male.svg"
             alt="Avatar"
           />
         </div>

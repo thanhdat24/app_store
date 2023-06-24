@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import * as Yup from "yup";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // form
 import { useForm, Controller } from "react-hook-form";
@@ -61,7 +61,7 @@ export default function ReceiptForm({
   }, [dispatch]);
 
   const { billingPeriodList } = useAppSelector((state) => state.billingPeriod);
-
+  
   const { userLogin } = useAppSelector((state) => state.admin);
 
   const { createReceiptSuccess, updateReceiptSuccess } = useAppSelector(
@@ -151,7 +151,6 @@ export default function ReceiptForm({
 
   const onSubmit = async (data: any) => {
     try {
-      console.log(data);
       if (isEdit) {
         data = {
           ...data,
@@ -319,13 +318,15 @@ export default function ReceiptForm({
                 disabled={isEdit ? true : false}
               >
                 <option></option>
-                {billingPeriodList?.map((option, index) => (
-                  <>
-                    <option key={index} value={option.IDKYTHU}>
-                      {fMonthYear(option.TENKYTHU)}
-                    </option>
-                  </>
-                ))}
+                {billingPeriodList
+                  ?.filter((option) => option.TRANGTHAIKYTHU === true)
+                  ?.map((option, index) => (
+                    <Fragment key={index}>
+                      <option value={option.IDKYTHU}>
+                        {fMonthYear(option.TENKYTHU)}
+                      </option>
+                    </Fragment>
+                  ))}
               </RHFSelect>
               <Controller
                 name="NGAYTAO"
