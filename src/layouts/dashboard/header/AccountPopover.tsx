@@ -1,13 +1,8 @@
-import  { MouseEvent, useState } from "react";
+import { MouseEvent, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { PATH_AUTH, PATH_DASHBOARD } from "../../../routes/paths";
 // @mui
-import {
-  Box,
-  Divider,
-  Typography,
-  MenuItem,
-} from "@mui/material";
+import { Box, Divider, Typography, MenuItem } from "@mui/material";
 import MenuPopover from "../../../components/MenuPopover";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { logout } from "../../../redux/slices/adminReducer";
@@ -56,9 +51,9 @@ export default function AccountPopover({}: Props) {
       <div
         onClick={handleOpen}
         className={
-          "active:transform active:scale-95 py-3 h-[70%] rounded-full flex items-center  transition-base cursor-pointer select-none mr-5 hover:bg-gray-200 " +
+          "active:transform active:scale-95 py-3 h-[70%] rounded-full flex items-center  transition-base cursor-pointer select-none mr-5 hover:bg-[#091c61]" +
           " " +
-          (open ? "bg-green-100 text-green-600" : "")
+          (open ? "bg-[#091c61] " : "")
         }
       >
         <div className="relative flex-shrink-0 flex items-center ml-1">
@@ -68,7 +63,7 @@ export default function AccountPopover({}: Props) {
             alt="Avatar"
           />
         </div>
-        <span className="px-2 font-semibold truncate w-full text-black">
+        <span className="px-2 font-semibold truncate w-full text-white">
           {userLogin?.USERNAME}
         </span>
       </div>

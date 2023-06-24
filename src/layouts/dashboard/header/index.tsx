@@ -1,6 +1,6 @@
 // @mui
 import { styled } from "@mui/material/styles";
-import {  Stack, AppBar } from "@mui/material";
+import { Stack, AppBar } from "@mui/material";
 import { HEADER } from "../../../utils/config";
 import cssStyles from "../../../utils/cssStyles";
 import AccountPopover from "./AccountPopover";
@@ -31,7 +31,7 @@ const RootStyle = styled(AppBar, {
     // ...(verticalLayout && {
     width: "100%",
     height: HEADER.DASHBOARD_DESKTOP_OFFSET_HEIGHT,
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: "#111c43",
     // }),
   },
 }));
@@ -44,7 +44,6 @@ export default function DashboardHeader({}: Props) {
         alignItems="center"
         justifyContent="flex-end"
         sx={{ height: "100%" }}
-        spacing={{ xs: 0.5, sm: 1.5 }}
       >
         <AccountPopover />
       </Stack>
