@@ -38,7 +38,7 @@ type Props = {};
 const OPTIONS_INFO = ["Thông tin loại khách hàng", "Giá"];
 
 const TABLE_HEAD = [
-  { id: "id", label: "Id", align: "left" },
+  { id: "STT", label: "STT", align: "left" },
   { id: "TENLOAI", label: "Tên loại", align: "left" },
   { id: "TENLOAIPHI", label: "Loại phí", align: "left" },
   { id: "GIA", label: "Giá", align: "left" },
@@ -112,9 +112,9 @@ export default function CustomerTypeList({}: Props) {
 
   const dataCSV = dataFiltered.map((row, index) => ({
     STT: index + 1,
-    IDLOAIKH: row.IDLOAIKH,
-    TENLOAI: row.TENLOAI,
-    GIA: row.GIA,
+    "Tên loại": row.TENLOAI,
+    "Tên loại phí": row.TENLOAIPHI,
+    "Giá": row.GIA,
   }));
 
   return (
@@ -184,10 +184,11 @@ export default function CustomerTypeList({}: Props) {
               <TableBody>
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row: any) => (
+                  .map((row: any, index: number) => (
                     <CustomerTypeTableRow
                       key={row.IDLOAIKH}
                       row={row}
+                      index={index}
                       // selected={selected.includes(row.id)}
                       // onSelectRow={() => onSelectRow(row.id)}
                       onDeleteRow={() => handleDeleteRow(row.IDLOAIKH)}

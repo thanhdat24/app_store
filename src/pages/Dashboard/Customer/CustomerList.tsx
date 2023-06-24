@@ -68,7 +68,7 @@ export default function CustomerList({}: Props) {
 
   const TABLE_HEAD = [
     { id: "" },
-    { id: "id", label: "Id", align: "left" },
+    { id: "STT", label: "STT", align: "left" },
     { id: "MAKHACHHANG", label: "Mã", align: "left" },
     { id: "HOTEN", label: "Họ tên", align: "left" },
     { id: "CMT", label: "CMT", align: "left" },
@@ -342,11 +342,12 @@ export default function CustomerList({}: Props) {
             <TableBody>
               {dataFiltered
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row: any) => (
+                .map((row: any, index: number) => (
                   <CustomerTableRow
                     userLogin={userLogin}
                     key={row.IDKHACHHANG}
                     row={row}
+                    index={index}
                     selected={selected.includes(row.IDKHACHHANG)}
                     onSelectRow={() => onSelectRow(row.IDKHACHHANG)}
                     onDeleteRow={() => handleDeleteRow(row.IDKHACHHANG)}

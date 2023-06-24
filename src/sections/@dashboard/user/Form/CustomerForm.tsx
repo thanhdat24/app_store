@@ -55,6 +55,16 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
     (state) => state.customer
   );
 
+  ///
+
+  const [checked, setChecked] = useState(currentCustomer?.TRANGTHAI || false);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+  };
+
+  ///
+
   useEffect(() => {
     dispatch(getAllCustomerTypes());
     dispatch(getAllRevenueRoutes());
@@ -129,7 +139,7 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
       IDLOAIKH: currentCustomer?.IDLOAIKH || "",
       // NGAYTAO: dayjs(new Date()),
       // NGAYCHINHSUA: dayjs(new Date()),
-      // TRANGTHAI: "",
+      TRANGTHAI: currentCustomer?.TRANGTHAI || "",
       TENQUANHUYEN:
         currentCustomer?.TUYENTHU.XAPHUONG.QUANHUYEN.IDQUANHUYEN || "",
     }),
@@ -170,6 +180,7 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
         account = {
           ...account,
           IDKHACHHANG: currentCustomer?.IDKHACHHANG,
+          TRANGTHAI: checked,
         };
         await dispatch(updateCustomer(account));
       } else {
@@ -247,18 +258,46 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
                   readOnly: true,
                 }}
               />
-              {/* <Controller
-                name="NGAYSINH"
-                control={control}
-                render={({ field }) => (
-                  <DatePicker
-                    label="Ngày sinh"
-                    defaultValue={dayjs("2022-04-17")}
-                    value={field.value}
-                    onChange={field.onChange}
-                  />
-                )}
-              /> */}
+              {isEdit && (
+                <>
+                  <Stack
+                    mx={2}
+                    direction="row"
+                    spacing={2}
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography>
+                      <Label
+                        variant={"outlined"}
+                        color={"error"}
+                        sx={{ textTransform: "uppercase", mb: 1 }}
+                      >
+                        Khóa
+                      </Label>
+                    </Typography>
+                    <Switch
+                      name="TRANGTHAI"
+                      checked={
+                        typeof checked === "string"
+                          ? checked === "true"
+                          : checked
+                      }
+                      onChange={handleChange}
+                      inputProps={{ "aria-label": "controlled" }}
+                    />
+                    <Typography>
+                      <Label
+                        variant={"outlined"}
+                        color={"success"}
+                        sx={{ textTransform: "uppercase", mb: 1 }}
+                      >
+                        Hoạt động
+                      </Label>
+                    </Typography>
+                  </Stack>
+                </>
+              )}
             </Box>
           </Card>
         </Grid>

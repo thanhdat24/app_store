@@ -23,12 +23,14 @@ type Props = {
   row: any;
   onDeleteRow: () => void;
   onEditRow: () => void;
+  index: any;
 };
 
 export default function CustomerTypeTableRow({
   row,
   onDeleteRow,
   onEditRow,
+  index,
 }: Props) {
   const [openMenu, setOpenMenuActions] = useState<null | HTMLElement>(null); // Add type annotation
 
@@ -41,10 +43,10 @@ export default function CustomerTypeTableRow({
     setOpenMenuActions(null);
   };
 
-  const { IDLOAIKH, TENLOAI, TENLOAIPHI, GIA } = row;
+  const { TENLOAI, TENLOAIPHI, GIA } = row;
   return (
     <TableRow hover>
-      <TableCell align="left">{IDLOAIKH}</TableCell>
+      <TableCell align="left">{index + 1}</TableCell>
       <TableCell align="left">{TENLOAI}</TableCell>
       <TableCell align="left">{TENLOAIPHI}</TableCell>
       <TableCell align="left">{formatPriceInVND(GIA)}</TableCell>

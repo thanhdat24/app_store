@@ -25,6 +25,7 @@ type Props = {
   onDeleteRow: () => void;
   onSelectRow: () => void;
   onEditRow: () => void;
+  index: any;
 };
 
 export default function StaffTableRow({
@@ -33,6 +34,7 @@ export default function StaffTableRow({
   onDeleteRow,
   onSelectRow,
   onEditRow,
+  index,
 }: Props) {
   const [openMenu, setOpenMenuActions] = useState<null | HTMLElement>(null); // Add type annotation
 
@@ -46,7 +48,6 @@ export default function StaffTableRow({
   };
 
   const {
-    IDNHANVIEN,
     MANHANVIEN,
     HOTEN,
     SDT,
@@ -61,7 +62,7 @@ export default function StaffTableRow({
       </TableCell>
       <TableCell align="left"></TableCell>
 
-      <TableCell align="left">{IDNHANVIEN}</TableCell>
+      <TableCell align="left">{index + 1}</TableCell>
       <TableCell align="left">{MANHANVIEN}</TableCell>
       <TableCell align="left">{HOTEN}</TableCell>
       <TableCell align="left">{SDT}</TableCell>

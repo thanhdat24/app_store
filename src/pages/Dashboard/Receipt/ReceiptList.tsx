@@ -354,6 +354,7 @@ export default function ReceiptList() {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row: any, index: number) => (
                   <ReceiptTableRow
+                    userRole=""
                     key={index}
                     row={row}
                     onCancelRow={() => handleCancelRow(row.IDPHIEU, row)}

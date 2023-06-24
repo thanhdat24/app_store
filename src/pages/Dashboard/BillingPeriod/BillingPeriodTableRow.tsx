@@ -21,12 +21,14 @@ type Props = {
   row: any;
   onDeleteRow: () => void;
   onEditRow: () => void;
+  index: any
 };
 
 export default function BillingPeriodTableRow({
   row,
   onDeleteRow,
   onEditRow,
+  index
 }: Props) {
   const [openMenu, setOpenMenuActions] = useState<null | HTMLElement>(null); // Add type annotation
 
@@ -39,12 +41,11 @@ export default function BillingPeriodTableRow({
     setOpenMenuActions(null);
   };
 
-  const { IDKYTHU, TENKYTHU, TRANGTHAIKYTHU } = row;
+  const {TENKYTHU, TRANGTHAIKYTHU } = row;
   console.log(row);
   return (
     <TableRow hover>
-      <TableCell align="left">{IDKYTHU}</TableCell>
-      {/* <TableCell align="left">{TENKYTHU}</TableCell> */}
+      <TableCell align="left">{index + 1}</TableCell>
       <TableCell align="left">{fMonthYear(TENKYTHU)}</TableCell>
       <TableCell align="left">
         {" "}

@@ -50,7 +50,7 @@ type Props = {};
 const OPTIONS_INFO = ["Tên kỳ thu"];
 
 const TABLE_HEAD = [
-  { id: "id", label: "ID", align: "left" },
+  { id: "STT", label: "STT", align: "left" },
   { id: "TENKYTHU", label: "Tên kỳ thu", align: "left" },
   { id: "TRANGTHAIKYTHU", label: "Trạng thái kỳ thu", align: "left" },
   { id: "THAOTAC", label: "Thao tác", align: "right" },
@@ -70,6 +70,7 @@ export default function BillingPeriodList({}: Props) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
   };
+  
   const {
     billingPeriodList,
     deleteBillingPeriodSuccess,
@@ -226,10 +227,11 @@ export default function BillingPeriodList({}: Props) {
                 <TableBody>
                   {dataFiltered
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row: any) => (
+                    .map((row: any, index: number) => (
                       <BillingPeriodTableRow
                         key={row.IDKYTHU}
                         row={row}
+                        index={index}
                         // selected={selected.includes(row.id)}
                         // onSelectRow={() => onSelectRow(row.id)}
                         onDeleteRow={() => handleDeleteRow(row.IDKYTHU)}

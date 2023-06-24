@@ -156,8 +156,12 @@ export default function RevenueStatistics() {
 
   const dataCSV = tableData.map((row, index) => ({
     STT: index + 1,
-    "Mã nhân viên": row.lpq[0]?.NHANVIEN.MANHANVIEN,
-    "Nhân viên thu": row.nhanvienthu,
+    "Mã nhân viên": row.lpq.map((item: any) => item.NHANVIEN.MANHANVIEN).join(
+      ", "
+    ),
+    "Nhân viên thu": row.lpq.map((item: any) => item.NHANVIEN.HOTEN).join(
+      ", "
+    ),
     "Kỳ thu": fMonthYear(row.tenkythu),
     "Tuyến thu": row.tentuyenthu,
     "Số lượng": row.soluongtong,

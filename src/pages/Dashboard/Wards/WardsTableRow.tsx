@@ -23,12 +23,14 @@ type Props = {
   row: any;
   onDeleteRow: () => void;
   onEditRow: () => void;
+  index: any;
 };
 
 export default function WardsTableRow({
   row,
   onDeleteRow,
   onEditRow,
+  index,
 }: Props) {
   const [openMenu, setOpenMenuActions] = useState<null | HTMLElement>(null); // Add type annotation
 
@@ -41,10 +43,10 @@ export default function WardsTableRow({
     setOpenMenuActions(null);
   };
 
-  const { IDXAPHUONG, TENXAPHUONG, QUANHUYEN, THAOTAC} = row;
+  const { TENXAPHUONG, QUANHUYEN, THAOTAC} = row;
   return (
     <TableRow hover>
-      <TableCell align="left">{IDXAPHUONG}</TableCell>
+      <TableCell align="left">{index + 1}</TableCell>
       <TableCell align="left">{TENXAPHUONG}</TableCell>
       <TableCell align="left">{QUANHUYEN.TENQUANHUYEN}</TableCell>
       <TableCell align="right">

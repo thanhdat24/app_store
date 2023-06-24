@@ -154,7 +154,7 @@ export default function ReceiptTableRow({
                     </MenuItem>
                     {userLogin?.USERNAME === "admin" && (
                       <>
-                        <MenuItem
+                        {/* <MenuItem
                           onClick={() => {
                             onDeleteRow();
                             handleCloseMenu();
@@ -163,7 +163,7 @@ export default function ReceiptTableRow({
                         >
                           <Iconify icon={"eva:trash-2-outline"} />
                           Xóa
-                        </MenuItem>
+                        </MenuItem> */}
                         <MenuItem
                           onClick={() => {
                             onCancelRow();

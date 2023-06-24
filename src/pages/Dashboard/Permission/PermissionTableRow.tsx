@@ -22,12 +22,14 @@ type Props = {
   row: any;
   onDeleteRow: () => void;
   onEditRow: () => void;
+  index: any;
 };
 
 export default function PermissionTableRow({
   row,
   onDeleteRow,
   onEditRow,
+  index,
 }: Props) {
   const [openMenu, setOpenMenuActions] = useState<null | HTMLElement>(null); // Add type annotation
 
@@ -40,10 +42,10 @@ export default function PermissionTableRow({
     setOpenMenuActions(null);
   };
 
-  const { IDQUYEN, TENQUYEN } = row;
+  const { TENQUYEN } = row;
   return (
     <TableRow hover>
-      <TableCell align="left">{IDQUYEN}</TableCell>
+      <TableCell align="left">{index + 1}</TableCell>
       <TableCell align="left">{TENQUYEN}</TableCell>
       <TableCell align="right">
         <TableMoreMenu

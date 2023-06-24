@@ -25,6 +25,7 @@ type Props = {
   onEditRow: () => void;
   selected: boolean;
   onSelectRow : () => void;
+  index: any;
 };
 
 export default function RevenueRoutesTableRow({
@@ -33,6 +34,7 @@ export default function RevenueRoutesTableRow({
   onDeleteRow,
   onEditRow,
   onSelectRow,
+  index,
 }: Props) {
   const [openMenu, setOpenMenuActions] = useState<null | HTMLElement>(null); // Add type annotation
 
@@ -45,7 +47,7 @@ export default function RevenueRoutesTableRow({
     setOpenMenuActions(null);
   };
 
-  const { IDTUYENTHU, MATUYENTHU, TENTUYENTHU, XAPHUONG, PHANQUYENTUYENTHUs } =
+  const { MATUYENTHU, TENTUYENTHU, XAPHUONG, PHANQUYENTUYENTHUs } =
     row;
   console.log("row", row);
   return (
@@ -53,7 +55,7 @@ export default function RevenueRoutesTableRow({
       <TableCell padding="checkbox">
         <Checkbox checked={selected} onClick={onSelectRow} />
       </TableCell>
-      <TableCell align="left">{IDTUYENTHU}</TableCell>
+      <TableCell align="left">{index + 1}</TableCell>
       <TableCell align="left">{MATUYENTHU}</TableCell>
       <TableCell align="left">{TENTUYENTHU}</TableCell>
       <TableCell align="left">{XAPHUONG.QUANHUYEN.TENQUANHUYEN}</TableCell>
