@@ -37,7 +37,7 @@ type Props = {};
 const OPTIONS_INFO = ["Tên quyền"];
 
 const TABLE_HEAD = [
-  { id: "id", label: "ID", align: "left" },
+  { id: "STT", label: "STT", align: "left" },
   { id: "TENQUYEN", label: "Tên quyền", align: "left" },
   { id: "THAOTAC", label: "Thao tác", align: "right" },
 ];
@@ -188,10 +188,11 @@ export default function PermissionList({}: Props) {
                 <TableBody>
                   {dataFiltered
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row: any) => (
+                    .map((row: any, index: number) => (
                       <PermissionTableRow
                         key={row.IDQUYEN}
                         row={row}
+                        index={index}
                         // selected={selected.includes(row.id)}
                         // onSelectRow={() => onSelectRow(row.id)}
                         onDeleteRow={() => handleDeleteRow(row.IDQUYEN)}

@@ -29,6 +29,7 @@ type Props = {
   onEditRow: () => void;
   onSelectRow: () => void;
   userLogin: any;
+  index: any;
 };
 
 export default function CustomerTableRow({
@@ -38,6 +39,7 @@ export default function CustomerTableRow({
   onEditRow,
   onSelectRow,
   userLogin,
+  index,
 }: Props) {
   const [openMenu, setOpenMenuActions] = useState<null | HTMLElement>(null); // Add type annotation
 
@@ -67,7 +69,7 @@ export default function CustomerTableRow({
       <TableCell padding="checkbox">
         <Checkbox checked={selected} onClick={onSelectRow} />
       </TableCell>
-      <TableCell align="left">{IDKHACHHANG}</TableCell>
+      <TableCell align="left">{index + 1}</TableCell>
       <TableCell align="left">{MAKHACHHANG}</TableCell>
       <TableCell align="left">{HOTEN}</TableCell>
       <TableCell align="left">{CMT}</TableCell>

@@ -61,7 +61,7 @@ const OPTIONS_INFO = ["Thông tin tuyến thu", "Mã tuyến thu"];
 
 const TABLE_HEAD = [
   { id: "" },
-  { id: "id", label: "ID", align: "left" },
+  { id: "STT", label: "STT", align: "left" },
   { id: "MATUYENTHU", label: "Mã tuyến thu", align: "left" },
   { id: "TENTUYENTHU", label: "Tên tuyến thu", align: "left" },
   { id: "TENQUANHUYEN", label: "Tên quận huyện", align: "left" },
@@ -432,10 +432,11 @@ export default function RevenueRoutesList({}: Props) {
             <TableBody>
               {dataFiltered
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row: any) => (
+                .map((row: any, index: number) => (
                   <RevenueRoutesTableRow
                     key={row.IDTUYENTHU}
                     row={row}
+                    index={index}
                     selected={selected.includes(row.IDTUYENTHU)}
                     onSelectRow={() => onSelectRow(row.IDTUYENTHU)}
                     onDeleteRow={() => handleDeleteRow(row.IDTUYENTHU)}

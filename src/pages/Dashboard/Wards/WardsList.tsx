@@ -34,7 +34,7 @@ type Props = {};
 const OPTIONS_INFO = ["Tên xã phường", "Tên quận huyện"];
 
 const TABLE_HEAD = [
-  { id: "id", label: "ID", align: "left" },
+  { id: "STT", label: "STT", align: "left" },
   { id: "TENXAPHUONG", label: "Tên xã phường", align: "left" },
   { id: "IDQUANHUYEN", label: "Tên quận huyện", align: "left" },
   { id: "THAOTAC", label: "Thao tác", align: "right" },
@@ -183,10 +183,11 @@ export default function WardsList({}: Props) {
               <TableBody>
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row: any) => (
+                  .map((row: any, index: number) => (
                     <WardsTableRow
                       key={row.IDXAPHUONG}
                       row={row}
+                      index={index}
                       // selected={selected.includes(row.id)}
                       // onSelectRow={() => onSelectRow(row.id)}
                       onDeleteRow={() => handleDeleteRow(row.IDXAPHUONG)}

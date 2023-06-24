@@ -56,7 +56,7 @@ const STATUS_OPTIONS = [
 ];
 const TABLE_HEAD = [
   { id: "" },
-  { id: "id", label: "ID", align: "left" },
+  { id: "STT", label: "STT", align: "left" },
   { id: "MANHANVIEN", label: "Mã NV", align: "left" },
   { id: "HOTEN", label: "Họ tên", align: "left" },
   { id: "SDT", label: "Số điện thoại", align: "left" },
@@ -397,6 +397,7 @@ export default function StaffList({}: Props) {
                   <StaffTableRow
                     key={index}
                     row={row}
+                    index={index}
                     selected={selected.includes(row.IDNHANVIEN)}
                     onSelectRow={() => onSelectRow(row.IDNHANVIEN)}
                     onDeleteRow={() => handleDeleteRow(row.IDNHANVIEN)}
