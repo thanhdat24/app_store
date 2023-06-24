@@ -31,6 +31,7 @@ import { TableEmptyRows, TableHeadCustom } from "../../../components/table";
 import CustomerTypeTableRow from "./CustomerTypeTableRow";
 import CustomerTypeTableToolbar from "./CustomerTypeTableToolbar";
 import { CSVLink } from "react-csv";
+import { formatPriceInVND } from "../../../utils/formatNumber";
 
 type Props = {};
 
@@ -114,7 +115,7 @@ export default function CustomerTypeList({}: Props) {
     STT: index + 1,
     "Tên loại": row.TENLOAI,
     "Tên loại phí": row.TENLOAIPHI,
-    "Giá": row.GIA,
+    "Giá": formatPriceInVND(row.GIA),
   }));
 
   return (
