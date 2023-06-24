@@ -26,6 +26,7 @@ import RevenueRoutesAction from "../pages/Dashboard/RevenueRoutes/RevenueRoutesA
 import BillingPeriodAction from "../pages/Dashboard/BillingPeriod/BillingPeriodAction";
 import GuestGuard from "../guards/GuestGuard";
 import AuthGuard from "../guards/AuthGuard";
+import RevenueRoutesApp from "../pages/Dashboard/RevenueRoutesApp";
 
 type Props = {};
 
@@ -65,7 +66,18 @@ export default function Router({}: Props) {
       ),
       children: [
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
-        { path: "dashboard", element: <GeneralApp /> },
+        {
+          path: "statistic",
+          children: [
+            {
+              element: <Navigate to="/admin/statistic/dashboard" replace />,
+              index: true,
+            },
+
+            { path: "dashboard", element: <GeneralApp /> },
+            { path: "revenue-routes", element: <RevenueRoutesApp /> },
+          ],
+        },
         {
           path: "user",
           children: [

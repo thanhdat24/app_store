@@ -20,8 +20,6 @@ import { CashierModel } from "../../../interfaces/CashierModel";
 
 // ----------------------------------------------------------------------
 
-const INPUT_WIDTH = 250;
-
 interface CustomerTableToolbarProps {
   filterName: string;
   onFilterName: (value: string) => void;
@@ -64,7 +62,7 @@ export default function CustomerTableToolbar({
             },
           }}
           sx={{
-            maxWidth: { md: INPUT_WIDTH },
+            maxWidth: { md: 260 },
             textTransform: "capitalize",
           }}
         >

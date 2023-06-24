@@ -29,15 +29,15 @@ import { CSVLink } from "react-csv";
 
 const TABLE_HEAD = [
   { id: "STT", label: "STT", align: "left" },
-  { id: "NHANVIENTHU", label: "Nhân viên thu", align: "left" },
   { id: "TENKYTHU", label: "Kỳ thu", align: "left" },
   { id: "TUYENTHU", label: "Tuyến thu", align: "left" },
-  { id: "SOLUONGTONG", label: "Số lượng", align: "left" },
+  { id: "SOLUONGTONG", label: "Số lượng thu", align: "left" },
   { id: "SOLUONGYHU", label: "Số lượng đã thu", align: "left" },
   { id: "SOLUONGCHUATHU", label: "Số lượng tồn kho", align: "left" },
   { id: "SOLUONGHUY", label: "Số lượng phiếu hủy", align: "left" },
   { id: "TONGTIEN", label: "Tổng tiền đã thu", align: "left" },
   { id: "PHANTRANDATHU", label: "Tỉ lệ đã thu", align: "left" },
+  { id: "PHANTRAMCHUATHU", label: "Tỉ lệ chưa thu", align: "left" },
 ];
 
 export default function RevenueStatistics() {
@@ -171,7 +171,6 @@ export default function RevenueStatistics() {
   return (
     <Card>
       <CardHeader
-        title="Thống kê tình hình thu"
         sx={{ ".MuiCardHeader-title": { fontSize: "25px " } }}
         action={
           <Box className="flex items-center leading-[1]">

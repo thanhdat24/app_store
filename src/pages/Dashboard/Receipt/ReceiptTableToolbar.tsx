@@ -57,7 +57,7 @@ export default function ReceiptTableToolbar({
             },
           }}
           sx={{
-            maxWidth: { md: 350 },
+            maxWidth: { md: 370 },
             textTransform: "capitalize",
           }}
         >

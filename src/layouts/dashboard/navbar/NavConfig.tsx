@@ -36,19 +36,6 @@ const ICONS = {
 };
 
 const navConfig = [
-  // GENERAL
-  // ----------------------------------------------------------------------
-  {
-    subheader: "Tổng quan",
-    items: [
-      {
-        title: "Thống kê",
-        path: PATH_DASHBOARD.general.dashboard,
-        icon: ICONS.analytics,
-      },
-    ],
-  },
-
   // MANAGEMENT
   // ----------------------------------------------------------------------
   {
@@ -132,6 +119,29 @@ const navConfig = [
         path: PATH_DASHBOARD.wards.root,
         icon: ICONS.wards,
         children: [{ title: "Danh sách", path: PATH_DASHBOARD.wards.list }],
+      },
+    ],
+  },
+
+  // GENERAL
+  // ----------------------------------------------------------------------
+  {
+    subheader: "Tổng quan",
+    items: [
+      {
+        title: "Thống kê",
+        path: PATH_DASHBOARD.general.dashboard,
+        icon: ICONS.analytics,
+        children: [
+          {
+            title: "Thống kê tổng quan",
+            path: PATH_DASHBOARD.general.dashboard,
+          },
+          {
+            title: "Thống kê theo tuyến thu",
+            path: PATH_DASHBOARD.general.revenueRoute,
+          },
+        ],
       },
     ],
   },

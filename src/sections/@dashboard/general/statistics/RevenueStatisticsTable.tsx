@@ -31,6 +31,7 @@ export default function RevenueStatisticsTable({ row, index }: Props) {
     lpq,
     soluongtong,
     phantramdathu,
+    phantramchuathu,
   } = row;
   return (
     <TableRow
@@ -42,18 +43,7 @@ export default function RevenueStatisticsTable({ row, index }: Props) {
       }}
     >
       <TableCell align="left">{index + 1}</TableCell>
-      <TableCell align="left">
-        {" "}
-        {lpq.map((item: any, index: number) => (
-          <p key={index}>
-            <span className="!text-blue-500 underline cursor-pointer">
-              {item.NHANVIEN.MANHANVIEN}:
-            </span>
-            &nbsp;
-            {item.NHANVIEN.HOTEN}
-          </p>
-        ))}
-      </TableCell>
+
       <TableCell align="left">{fMonthYear(tenkythu)}</TableCell>
       <TableCell align="left">{tentuyenthu}</TableCell>
       <TableCell align="left">{soluongtong}</TableCell>
@@ -62,6 +52,7 @@ export default function RevenueStatisticsTable({ row, index }: Props) {
       <TableCell align="left">{soluongphieuhuy}</TableCell>
       <TableCell align="left">{formatPriceInVND(tongtien)}</TableCell>
       <TableCell align="left">{phantramdathu}%</TableCell>
+      <TableCell align="left">{phantramchuathu}%</TableCell>
     </TableRow>
   );
 }

@@ -25,7 +25,8 @@ export const PATH_PAGE = {
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
   general: {
-    dashboard: path(ROOTS_DASHBOARD, "/dashboard"),
+    dashboard: path(ROOTS_DASHBOARD, "/statistic/dashboard"),
+    revenueRoute: path(ROOTS_DASHBOARD, "/statistic/revenue-routes"),
   },
   user: {
     root: path(ROOTS_DASHBOARD, "/user"),
