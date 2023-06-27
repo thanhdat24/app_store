@@ -19,7 +19,6 @@ const RoleBasedGuard: FC<RoleBasedGuardProps> = ({ children }) => {
     "Nhân viên thu ngân",
   ];
   const { userLogin } = useAppSelector((state) => state.admin);
-  console.log("userLogin", userLogin);
   const currentRole = useCurrentRole();
 
   if (!accessibleRoles.includes(currentRole)) {

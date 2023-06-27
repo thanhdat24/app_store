@@ -136,7 +136,6 @@ export default function RevenueRoutesList({}: Props) {
   const isDefault = values.TUYENTHU?.length === 0;
 
   const [staffId, setStaffId] = useState<string[]>([]);
-  console.log("staffId", staffId);
   const denseHeight = dense ? 60 : 80;
 
   const dataFiltered = applySortFilter({
@@ -260,7 +259,6 @@ export default function RevenueRoutesList({}: Props) {
         result.push(item);
       }
     }
-    console.log("result", result);
     if (result.length > 0) {
       await dispatch(deletePermissionRoutes(result));
       setSelected([]);
@@ -513,7 +511,6 @@ function applySortFilter({
       values.TUYENTHU.includes(TT.TENTUYENTHU)
     );
   }
-  console.log("tableData", tableData);
   if (values.NHANVIENTHU?.length > 0) {
     tableData = tableData.filter((item) => {
       const phanQuyenThu = item.PHANQUYENTUYENTHUs.find((element: any) => {

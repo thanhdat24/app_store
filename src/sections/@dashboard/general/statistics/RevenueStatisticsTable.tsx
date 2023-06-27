@@ -17,18 +17,21 @@ import {
 import { formatPriceInVND } from "../../../../utils/formatNumber";
 import { fMonthYear } from "../../../../utils/formatTime";
 
-type Props = { row: any; index: any };
+type Props = { row: any; index: any; isStaffStatistic?: boolean };
 
-export default function RevenueStatisticsTable({ row, index }: Props) {
+export default function RevenueStatisticsTable({
+  row,
+  index,
+  isStaffStatistic,
+}: Props) {
   const {
     tentuyenthu,
-    nhanvienthu,
     tenkythu,
     soluongdathu,
     soluongchuathu,
+    nhanvienthu,
     soluongphieuhuy,
     tongtien,
-    lpq,
     soluongtong,
     phantramdathu,
     phantramchuathu,
@@ -45,14 +48,20 @@ export default function RevenueStatisticsTable({ row, index }: Props) {
       <TableCell align="left">{index + 1}</TableCell>
 
       <TableCell align="left">{fMonthYear(tenkythu)}</TableCell>
+      {isStaffStatistic && <TableCell align="left">{nhanvienthu}</TableCell>}
+
       <TableCell align="left">{tentuyenthu}</TableCell>
       <TableCell align="left">{soluongtong}</TableCell>
       <TableCell align="left">{soluongdathu}</TableCell>
       <TableCell align="left">{soluongchuathu}</TableCell>
       <TableCell align="left">{soluongphieuhuy}</TableCell>
       <TableCell align="left">{formatPriceInVND(tongtien)}</TableCell>
-      <TableCell align="left">{phantramdathu}%</TableCell>
-      <TableCell align="left">{phantramchuathu}%</TableCell>
+      {!isStaffStatistic && (
+        <TableCell align="left">{phantramdathu}%</TableCell>
+      )}
+      {!isStaffStatistic && (
+        <TableCell align="left">{phantramchuathu}%</TableCell>
+      )}
     </TableRow>
   );
 }

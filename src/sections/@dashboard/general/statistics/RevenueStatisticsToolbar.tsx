@@ -70,7 +70,6 @@ export default function RevenueStatisticsToolbar({
     fetchData();
   }, [values.TUYENTHUTK]);
 
-  console.log("values123", values);
   return (
     <Stack>
       <Stack

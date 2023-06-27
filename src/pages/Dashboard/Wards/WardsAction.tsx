@@ -25,7 +25,6 @@ export default function WardsAction({}: Props) {
 
   const isEdit = pathname.includes("edit");
 
-  console.log("isEdit", isEdit);
   const { wardList } = useAppSelector((state) => state.ward);
   const currentWard = wardList?.find(
     (ward) => ward.IDXAPHUONG === Number(id)

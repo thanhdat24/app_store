@@ -49,7 +49,6 @@ export default function RevenueRoutesTableRow({
 
   const { MATUYENTHU, TENTUYENTHU, XAPHUONG, PHANQUYENTUYENTHUs } =
     row;
-  console.log("row", row);
   return (
     <TableRow hover selected={selected}>
       <TableCell padding="checkbox">

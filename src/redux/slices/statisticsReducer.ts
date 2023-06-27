@@ -6,11 +6,13 @@ import { AppDispatch } from "../store";
 interface StatisticState {
   filterStatisticList: StatisticsModel[] | null;
   statisticAllList: StatisticsModel | null;
+  filterStaffStatisticList: StatisticsModel[] | null;
 }
 
 const initialState: StatisticState = {
   filterStatisticList: null,
   statisticAllList: null,
+  filterStaffStatisticList: null,
 };
 
 const statisticsReducer = createSlice({
@@ -23,16 +25,24 @@ const statisticsReducer = createSlice({
     getAllStatisticsSuccess(state, action: PayloadAction<StatisticsModel[]>) {
       state.statisticAllList = action.payload[0];
     },
+    filterStaffStatisticsSuccess(
+      state,
+      action: PayloadAction<StatisticsModel[]>
+    ) {
+      state.filterStaffStatisticList = action.payload;
+    },
   },
 });
 
-export const { filterStatisticsSuccess, getAllStatisticsSuccess } =
-  statisticsReducer.actions;
+export const {
+  filterStatisticsSuccess,
+  getAllStatisticsSuccess,
+  filterStaffStatisticsSuccess,
+} = statisticsReducer.actions;
 
 export const filterStatistics = (dataFilter: any) => {
   return async (dispatch: AppDispatch) => {
     try {
-      console.log("dataFilter", dataFilter);
       const response = await axios.post("api/vd", dataFilter);
       const data: StatisticsModel[] = await response.data;
       const action: PayloadAction<StatisticsModel[]> =
@@ -51,6 +61,20 @@ export const getAllStatistics = () => {
       const data: StatisticsModel[] = await response.data;
       const action: PayloadAction<StatisticsModel[]> =
         getAllStatisticsSuccess(data);
+      dispatch(action);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const filterStaffStatistics = (dataFilter: any) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      const response = await axios.post("api/TKnhanvien", dataFilter);
+      const data: StatisticsModel[] = await response.data;
+      const action: PayloadAction<StatisticsModel[]> =
+        filterStaffStatisticsSuccess(data);
       dispatch(action);
     } catch (error) {
       console.log(error);

@@ -16,6 +16,8 @@ import permissionRevenueRoutesReducer from "./slices/permissionRevenueRoutesRedu
 import menuReducer from "./slices/menuReducer";
 import statisticsReducer from "./slices/statisticsReducer";
 
+import logger from "redux-logger";
+
 export const store = configureStore({
   reducer: {
     customer: customerReducer,
@@ -34,6 +36,11 @@ export const store = configureStore({
     menu: menuReducer,
     statistic: statisticsReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      immutableCheck: false,
+      serializableCheck: false,
+    }),
 });
 
 export type AppDispatch = typeof store.dispatch;

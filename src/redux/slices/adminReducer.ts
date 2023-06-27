@@ -54,7 +54,6 @@ export const login = (userLogin: UserLoginModel) => {
     try {
       const response = await axios.post("api/Login", userLogin);
       const data: UserLoginModel = await response.data;
-      console.log("data", data);
       setSession(data.token);
       setUser(data);
       const action: PayloadAction<UserLoginModel> = loginSuccess(data);

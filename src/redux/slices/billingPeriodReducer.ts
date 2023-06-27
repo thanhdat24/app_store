@@ -145,7 +145,6 @@ export const updateBillingPeriod = (billingPeriod: BillingPeriodModel) => {
       const data: Number = await response.status;
       const action: PayloadAction<Number> = updateBillingPeriodSuccess(data);
       dispatch(action);
-      console.log(response);
     } catch (error: any) {
       dispatch(hasError(error.ModelState));
     }

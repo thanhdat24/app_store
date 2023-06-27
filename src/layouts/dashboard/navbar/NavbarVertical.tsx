@@ -42,7 +42,6 @@ const NavbarVertical: React.FC<NavbarVerticalProps> = ({
   }, [pathname]);
 
   const { userLogin } = useAppSelector((state) => state.admin);
-  console.log("userLogin", userLogin);
   const renderContent = (
     <Scrollbar
       sx={{

@@ -83,7 +83,6 @@ export default function BillingPeriodForm({
 
   const onSubmit = async (account: any) => {
     try {
-      console.log(account);
       if (isEdit) {
         account = { ...account, IDKYTHU: currentBillingPeriod?.IDKYTHU };
         await dispatch(updateBillingPeriod(account));

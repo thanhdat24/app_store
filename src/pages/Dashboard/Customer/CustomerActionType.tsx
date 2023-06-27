@@ -21,7 +21,6 @@ export default function CustomerActionType({}: Props) {
   const { id = "" } = useParams();
 
   const isEdit = pathname.includes("edit");
-  console.log("isEdit", isEdit);
   const { customerTypeList } = useAppSelector((state) => state.customerType);
 
   const currentCustomerType = customerTypeList?.find(

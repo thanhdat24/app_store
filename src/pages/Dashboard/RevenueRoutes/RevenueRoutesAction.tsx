@@ -22,7 +22,6 @@ export default function RevenueRoutesAction({}: Props) {
 
   const isEdit = pathname.includes("edit");
 
-  console.log("isEdit", isEdit);
   const { revenueRoutesList } = useAppSelector((state) => state.revenueRoutes);
 
   const currentRevenueRoutes = revenueRoutesList?.find(

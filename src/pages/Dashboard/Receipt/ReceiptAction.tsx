@@ -42,7 +42,6 @@ export default function ReceiptAction({}: Props) {
     (receipt) => receipt.IDPHIEU === Number(id)
   );
 
-  console.log("currentCustomer", currentCustomer);
 
   useEffect(() => {
     dispatch(getAllCustomer());

@@ -22,7 +22,6 @@ export default function DistrictAction({}: Props) {
   const { id = "" } = useParams();
 
   const isEdit = pathname.includes("edit");
-  console.log("isEdit", isEdit);
   const { districtList } = useAppSelector((state) => state.district);
 
   const currentDistrict = districtList?.find(

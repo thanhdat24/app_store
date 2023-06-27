@@ -74,7 +74,6 @@ export default function DistrictForm({ isEdit, currentDistrict }: Props) {
 
   const onSubmit = async (account: any) => {
     try {
-      console.log(account);
       if (isEdit) {
         account = { ...account, IDQUANHUYEN: currentDistrict?.IDQUANHUYEN };
         await dispatch(updateDistrict(account));

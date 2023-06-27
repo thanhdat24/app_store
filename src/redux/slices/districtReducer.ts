@@ -105,7 +105,6 @@ export const createDistrict = (district: DistrictModel) => {
   return async (dispatch: AppDispatch) => {
     try {
       const response = await axios.post("api/QUANHUYENs", district);
-      console.log("response", response);
       const data: DistrictModel = await response.data;
       const action: PayloadAction<DistrictModel> = createDistrictSuccess(data);
       dispatch(action);

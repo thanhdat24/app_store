@@ -55,7 +55,6 @@ export default function AccountGeneral({}: Props) {
     try {
       data = { ...data, IDNHANVIEN: userLogin?.IDNHANVIEN };
 
-      console.log("data", data);
       await dispatch(updateStaff(data));
     } catch (error) {
       console.error(error);

@@ -77,7 +77,6 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
     (state: RootState) => state.customerType
   );
 
-  console.log("revenueRoutesList", revenueRoutesList);
 
   const [data, setData] = useState({
     setWard: currentCustomer?.TUYENTHU.XAPHUONG.TENXAPHUONG || "",
@@ -87,10 +86,8 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
   });
 
   const handleSelectrevenueRoutes = async (selectedValue: number) => {
-    console.log("selectedValue", selectedValue);
     try {
       const response = await axios.get(`api/TUYENTHUs/${selectedValue}`);
-      console.log("Route details:", response.data);
       setData({
         ...data,
         setDistrict: response.data.XAPHUONG.QUANHUYEN.TENQUANHUYEN,
@@ -101,7 +98,6 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
       console.log(error);
     }
   };
-  console.log("data", data);
 
   const NewUserSchema = Yup.object().shape({
     MAKHACHHANG: Yup.string()
@@ -175,7 +171,6 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
 
   const onSubmit = async (account: any) => {
     try {
-      console.log(account);
       if (isEdit) {
         account = {
           ...account,

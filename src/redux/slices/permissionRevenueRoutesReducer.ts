@@ -24,7 +24,6 @@ const permissionRevenueRoutesReducer = createSlice({
       }
     },
     deletePermissionRoutesSuccess(state, action: PayloadAction<any>) {
-      console.log("action.payload", action.payload);
       if (action.payload.status === 200) {
         state.deletePermissionRoutesSuccess = action.payload.data;
         toast.success("Xóa quyền thành công!", { autoClose: 2000 });
@@ -45,7 +44,6 @@ export const {
 export const staffPermissionRoutes = (staffList: any[]) => {
   return async (dispatch: AppDispatch) => {
     try {
-      console.log("staffList", staffList);
       const response = await axios.post(`api/PHANQUYENTUYENTHUs`, staffList);
       const data: any = await response.status;
       const action: PayloadAction<any> = staffPermissionRoutesSuccess(data);

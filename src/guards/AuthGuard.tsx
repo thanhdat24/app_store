@@ -16,8 +16,6 @@ const AuthGuard: FC<AuthGuardProps> = ({ children }) => {
   const [requestedLocation, setRequestedLocation] = useState<string | null>(
     null
   );
-  console.log("requestedLocation", requestedLocation);
-  console.log("pathname", pathname);
 
   if (!isAuthenticated && !userLogin) {
     if (pathname !== requestedLocation) {

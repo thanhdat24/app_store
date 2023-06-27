@@ -46,8 +46,6 @@ export default function RevenueQuantity() {
     (state: RootState) => state.statistic
   );
 
-  console.log("statisticAllList", statisticAllList);
-
   const theme = useTheme();
 
   const CHART_DATA = [

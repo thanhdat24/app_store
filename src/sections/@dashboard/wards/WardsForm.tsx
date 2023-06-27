@@ -104,7 +104,6 @@ export default function WardsForm({ isEdit, currentWard }: Props) {
 
   const onSubmit = async (account: any) => {
     try {
-      console.log(account);
       if (isEdit) {
         account = { ...account, IDXAPHUONG: currentWard?.IDXAPHUONG };
         await dispatch(updateWard(account));

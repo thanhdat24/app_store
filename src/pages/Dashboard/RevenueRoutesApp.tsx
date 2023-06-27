@@ -21,6 +21,7 @@ import {
 } from "../../redux/slices/cashierReducer";
 import RevenueStatistics from "../../sections/@dashboard/general/statistics/RevenueStatistics";
 import RevenueQuantity from "../../sections/@dashboard/general/statistics/RevenueQuantity";
+import RevenueStaffStatistics from "../../sections/@dashboard/general/statistics/RevenueStaffStatistics";
 // ----------------------------------------------------------------------
 
 export default function RevenueRoutesApp({}) {
@@ -57,6 +58,20 @@ export default function RevenueRoutesApp({}) {
             <>
               <Grid item xs={12} md={12} lg={12}>
                 <RevenueStatistics />
+              </Grid>
+              <Grid item xs={12} md={4}></Grid>
+            </>
+          )}
+        </Grid>
+        <Typography variant="h4" sx={{ mb: 5 }}>
+          Thống kê tình hình thu
+        </Typography>
+
+        <Grid container spacing={3}>
+          {userLogin.USERNAME === "admin" && (
+            <>
+              <Grid item xs={12} md={12} lg={12}>
+                <RevenueStaffStatistics />
               </Grid>
               <Grid item xs={12} md={4}></Grid>
             </>

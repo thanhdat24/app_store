@@ -22,7 +22,6 @@ export default function StaffAction({}: Props) {
 
   const isEdit = pathname.includes("edit");
 
-  console.log("isEdit", isEdit);
   const { staffList } = useAppSelector((state) => state.staff);
 
   const currentStaff = staffList?.find(

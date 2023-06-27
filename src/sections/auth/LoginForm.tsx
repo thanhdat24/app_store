@@ -44,7 +44,6 @@ export default function LoginForm({}: Props) {
 
   const onSubmit = async (data: any) => {
     try {
-      console.log(data);
       await dispatch(login(data));
     } catch (error) {
       console.error(error);

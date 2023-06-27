@@ -70,7 +70,6 @@ export default function PermissionForm({ isEdit, currentPermission }: Props) {
 
   const onSubmit = async (account: any) => {
     try {
-      console.log(account);
       if (isEdit) {
         account = { ...account, IDQUYEN: currentPermission?.IDQUYEN };
         await dispatch(updatePermission(account));

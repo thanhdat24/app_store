@@ -50,7 +50,6 @@ export const employeePermission = (detailPermissionSuccess: any[]) => {
         detailPermissionSuccess
       );
       const data: any = await response.status;
-      console.log("data", data);
       const action: PayloadAction<any> = employeePermissionSuccess(data);
       dispatch(action);
     } catch (error) {
@@ -62,7 +61,6 @@ export const employeePermission = (detailPermissionSuccess: any[]) => {
 export const deleteDetailPermission = (detailPermission: any) => {
   return async (dispatch: AppDispatch) => {
     try {
-      console.log("detailPermission", detailPermission);
       const response = await axios.delete(`api/CHITIETPHANQUYENs`, {
         data: detailPermission,
       });
@@ -70,7 +68,7 @@ export const deleteDetailPermission = (detailPermission: any) => {
       const action: PayloadAction<any> = deleteDetailPermissionSuccess(data);
       dispatch(action);
     } catch (error) {
-      console.log("error123", error);
+      console.log("error", error);
     }
   };
 };

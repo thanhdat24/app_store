@@ -94,12 +94,10 @@ export const createReceipt = (receipt: ReceiptModel) => {
     try {
       const response = await axios.post("api/PHIEUTHUs", receipt);
       const data: ReceiptModel = await response.data;
-      console.log(response);
 
       const action: PayloadAction<ReceiptModel> = createReceiptSuccess(data);
       dispatch(action);
     } catch (error: any) {
-      console.log(error);
       dispatch(hasError(error.ModelState));
     }
   };

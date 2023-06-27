@@ -91,7 +91,6 @@ export default function CustomerList({}: Props) {
     // dispatch(getCustomersByCashier(userLogin?.idNhanVien));
   }, [dispatch, deleteCustomerSuccess]);
 
-  console.log("customersByCashierList", customersByCashierList);
 
   const {
     dense,
@@ -441,7 +440,6 @@ function applySortFilter({
       );
     }
   }
-  console.log("tableData", tableData);
   if (values.TUYENTHU?.length > 0) {
     tableData = tableData.filter((TT) =>
       values.TUYENTHU.includes(TT.TUYENTHU.TENTUYENTHU)

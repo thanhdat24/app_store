@@ -62,7 +62,7 @@ export default function CustomerTableToolbar({
             },
           }}
           sx={{
-            maxWidth: { md: 260 },
+            maxWidth: { md: 265 },
             textTransform: "capitalize",
           }}
         >

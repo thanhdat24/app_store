@@ -181,7 +181,6 @@ export default function ReceiptForm({
             },
           ],
         };
-        console.log("convertedData", convertedData);
         await dispatch(createReceipt(convertedData));
       }
     } catch (error) {

@@ -12,7 +12,6 @@ interface GuestGuardProps {
 
 export default function GuestGuard({ children }: GuestGuardProps) {
   const { isAuthenticated, userLogin } = useAppSelector((state) => state.admin);
-  console.log("userLogin",  userLogin);
   if (isAuthenticated || userLogin) {
     return <Navigate to={PATH_DASHBOARD.root} />;
   }

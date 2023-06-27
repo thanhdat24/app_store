@@ -47,7 +47,6 @@ const customerTypeReducer = createSlice({
       toast.success("Thêm thành công!", { autoClose: 2000 });
     },
     updateCustomerSuccessType(state, action: PayloadAction<Number>) {
-      console.log("action.payload", action.payload);
       if (action.payload === 204) {
         state.updateCustomerTypeSuccess = action.payload;
         toast.success("Cập nhật thành công!", { autoClose: 2000 });
@@ -88,9 +87,7 @@ export const createCustomerType = (customerType: CustomerTypeModel) => {
   return async (dispatch: AppDispatch) => {
     try {
       const response = await axios.post("api/LOAIKHs", customerType);
-      console.log("response", response);
       const data: CustomerTypeModel = await response.data;
-      console.log(data);
       const action: PayloadAction<CustomerTypeModel> =
         createCustomerSuccessType(data);
       dispatch(action);
@@ -137,7 +134,6 @@ export const updateCustomerType = (customerType: CustomerTypeModel) => {
         `api/LOAIKHs/${customerType.IDLOAIKH}`,
         customerType
       );
-      console.log("response", response);
       const data: Number = await response.status;
       const action: PayloadAction<Number> = updateCustomerSuccessType(data);
       dispatch(action);

@@ -16,7 +16,6 @@ interface ReceiptPDFProps {
   receipt: any;
 }
 export default function ReceiptPDF({ receipt }: ReceiptPDFProps) {
-  console.log("receipt", receipt);
   const {
     MAUSOPHIEU,
     KHACHHANG,

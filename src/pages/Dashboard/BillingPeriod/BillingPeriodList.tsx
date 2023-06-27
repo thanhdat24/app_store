@@ -324,7 +324,6 @@ function applySortFilter({
   filterUser,
 }: ApplySortFilterProps) {
   if (filterUser === "Tên kỳ thu") {
-    console.log("tableData", tableData);
     if (filterName) {
       tableData = tableData.filter((item) =>
         fMonthYear(item.TENKYTHU).includes(filterName)

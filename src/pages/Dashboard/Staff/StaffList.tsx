@@ -224,7 +224,6 @@ export default function StaffList({}: Props) {
       setSelectPermission([]);
     }
   };
-  console.log("dataFiltered", dataFiltered);
   const dataCSV = dataFiltered.map((row, index) => ({
     STT: index + 1,
     "Mã nhân viên": row.MANHANVIEN,

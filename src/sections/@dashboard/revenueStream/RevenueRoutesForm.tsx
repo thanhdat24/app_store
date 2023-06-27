@@ -102,7 +102,6 @@ export default function RevenueRoutesForm({
 
   const onSubmit = async (account: any) => {
     try {
-      console.log(account);
       if (isEdit) {
         account = {
           ...account,

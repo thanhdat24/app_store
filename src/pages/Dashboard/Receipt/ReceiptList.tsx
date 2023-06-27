@@ -162,13 +162,11 @@ export default function ReceiptList() {
 
   useEffect(() => {
     if (receiptList && receiptList.length > 0) {
-      console.log("receiptList", receiptList);
       setTableData(receiptList);
     } else if (
       billingPeriodByCashierList &&
       billingPeriodByCashierList.length > 0
     ) {
-      console.log("billingPeriodByCashierList", billingPeriodByCashierList);
 
       setTableData(billingPeriodByCashierList);
     }
@@ -179,7 +177,6 @@ export default function ReceiptList() {
   };
 
   const handleCancelRow = async (id: number, row: any) => {
-    console.log(row);
     const rows = {
       IDPHIEU: row.IDPHIEU,
       IDKHACHHANG: row.IDKHACHHANG,
@@ -456,7 +453,6 @@ function applySortFilter({
     return a[1] - b[1];
   });
 
-  console.log("tableData", tableData);
   tableData = stabilizedThis.map((el) => el[0]);
 
   if (filterStatus !== "Tất cả") {

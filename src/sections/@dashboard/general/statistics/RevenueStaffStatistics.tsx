@@ -21,7 +21,10 @@ import TagFiltered from "../../../../components/TagFiltered";
 import { getAllRevenueRoutes } from "../../../../redux/slices/revenueRoutesReducer";
 import { getAllStaff } from "../../../../redux/slices/staffReducer";
 import RevenueStatisticsTable from "./RevenueStatisticsTable";
-import { filterStatistics } from "../../../../redux/slices/statisticsReducer";
+import {
+  filterStaffStatistics,
+  filterStatistics,
+} from "../../../../redux/slices/statisticsReducer";
 import { StatisticsModel } from "../../../../interfaces/StatisticsModel";
 import { fMonthYear } from "../../../../utils/formatTime";
 import { formatPriceInVND } from "../../../../utils/formatNumber";
@@ -30,23 +33,26 @@ import { CSVLink } from "react-csv";
 const TABLE_HEAD = [
   { id: "STT", label: "STT", align: "left" },
   { id: "TENKYTHU", label: "Kỳ thu", align: "left" },
+  { id: "NHANVIENTHU", label: "Nhân viên thu", align: "left" },
   { id: "TUYENTHU", label: "Tuyến thu", align: "left" },
   { id: "SOLUONGTONG", label: "Số lượng thu", align: "left" },
   { id: "SOLUONGYHU", label: "Số lượng đã thu", align: "left" },
   { id: "SOLUONGCHUATHU", label: "Số lượng tồn kho", align: "left" },
   { id: "SOLUONGHUY", label: "Số lượng phiếu hủy", align: "left" },
   { id: "TONGTIEN", label: "Tổng tiền đã thu", align: "left" },
-  { id: "PHANTRANDATHU", label: "Tỉ lệ đã thu", align: "left" },
-  { id: "PHANTRAMCHUATHU", label: "Tỉ lệ chưa thu", align: "left" },
+  //   { id: "PHANTRANDATHU", label: "Tỉ lệ đã thu", align: "left" },
+  //   { id: "PHANTRAMCHUATHU", label: "Tỉ lệ chưa thu", align: "left" },
 ];
 
-export default function RevenueStatistics() {
+export default function RevenueStaffStatistics() {
   ///
   const dispatch = useAppDispatch();
 
   const { revenueRoutesList } = useAppSelector((state) => state.revenueRoutes);
 
-  const { filterStatisticList } = useAppSelector((state) => state.statistic);
+  const { filterStaffStatisticList } = useAppSelector(
+    (state) => state.statistic
+  );
   const { staffList } = useAppSelector((state) => state.staff);
 
   const {
@@ -107,10 +113,10 @@ export default function RevenueStatistics() {
     setValue("KYTHUKETTHUC", "");
   };
 
-  useEffect(() => {
-    dispatch(getAllRevenueRoutes());
-    dispatch(getAllStaff());
-  }, [dispatch]);
+  //   useEffect(() => {
+  //     dispatch(getAllRevenueRoutes());
+  //     dispatch(getAllStaff());
+  //   }, [dispatch]);
 
   let filterValue = {
     NGAYBATDAU: "",
@@ -139,7 +145,7 @@ export default function RevenueStatistics() {
         TENKYTHU: values.KYTHU,
       };
     }
-    dispatch(filterStatistics(filterValue));
+    dispatch(filterStaffStatistics(filterValue));
   }, [
     values.NGAYTHUBATDAU,
     values.NGAYTHUKETTHUC,
@@ -148,17 +154,15 @@ export default function RevenueStatistics() {
   ]);
 
   useEffect(() => {
-    if (filterStatisticList) {
-      setTableData(filterStatisticList);
+    if (filterStaffStatisticList) {
+      setTableData(filterStaffStatisticList);
     }
-  }, [filterStatisticList ?? []]);
+  }, [filterStaffStatisticList ?? []]);
 
   const dataCSV = tableData.map((row, index) => ({
     STT: index + 1,
-    "Mã nhân viên": row.lpq
-      .map((item: any) => item.NHANVIEN.MANHANVIEN)
-      .join(", "),
-    "Nhân viên thu": row.lpq.map((item: any) => item.NHANVIEN.HOTEN).join(", "),
+
+    "Nhân viên thu": row.nhanvienthu,
     "Kỳ thu": fMonthYear(row.tenkythu),
     "Tuyến thu": row.tentuyenthu,
     "Số lượng": row.soluongtong,
@@ -240,7 +244,12 @@ export default function RevenueStatistics() {
             {tableData
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row: any, index: number) => (
-                <RevenueStatisticsTable key={index} row={row} index={index} />
+                <RevenueStatisticsTable
+                  key={index}
+                  row={row}
+                  index={index}
+                  isStaffStatistic={true}
+                />
               ))}
             <TableEmptyRows
               height={denseHeight}

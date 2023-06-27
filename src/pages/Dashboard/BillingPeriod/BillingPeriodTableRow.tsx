@@ -42,7 +42,6 @@ export default function BillingPeriodTableRow({
   };
 
   const {TENKYTHU, TRANGTHAIKYTHU } = row;
-  console.log(row);
   return (
     <TableRow hover>
       <TableCell align="left">{index + 1}</TableCell>
