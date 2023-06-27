@@ -16,8 +16,6 @@ import permissionRevenueRoutesReducer from "./slices/permissionRevenueRoutesRedu
 import menuReducer from "./slices/menuReducer";
 import statisticsReducer from "./slices/statisticsReducer";
 
-import logger from "redux-logger";
-
 export const store = configureStore({
   reducer: {
     customer: customerReducer,
