@@ -34,13 +34,18 @@ export default function EmptyContent({
 }: EmptyContentProps) {
   return (
     <RootStyle {...other}>
-      <Image
+      <img
+        className="max-w-[160px] mb-3"
+        src={img || "/images/empty_content.svg"}
+        alt="Avatar"
+      />
+      {/* <Image
         // disabledEffect
         // visibleByDefault
         alt="empty content"
-        src={img || "/static/illustrations/illustration_empty_content.svg"}
+        src={img || "/images/empty_content.svg"}
         sx={{ height: 240, mb: 3 }}
-      />
+      /> */}
 
       <Typography variant="h5" gutterBottom>
         {title}

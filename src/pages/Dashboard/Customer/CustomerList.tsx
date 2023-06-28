@@ -91,7 +91,6 @@ export default function CustomerList({}: Props) {
     // dispatch(getCustomersByCashier(userLogin?.idNhanVien));
   }, [dispatch, deleteCustomerSuccess]);
 
-
   const {
     dense,
     page,

@@ -126,7 +126,7 @@ const navConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
   {
-    subheader: "Tổng quan",
+    subheader: "Thống kê báo cáo",
     items: [
       {
         title: "Thống kê",

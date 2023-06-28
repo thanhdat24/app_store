@@ -80,7 +80,7 @@ export default function CustomerTableRow({
           variant={"ghost"}
           color={
             (LOAIKH.TENLOAI === "Hộ Dân" && "info") ||
-            (LOAIKH.TENLOAI === "Doanh Nghiệp" && "error") ||
+            (LOAIKH.TENLOAI === "Doanh Nghiệp" && "secondary") ||
             "default"
           }
           sx={{ textTransform: "uppercase", mb: 1 }}

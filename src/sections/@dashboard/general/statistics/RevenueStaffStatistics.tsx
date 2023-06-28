@@ -15,7 +15,7 @@ import { FormProvider } from "../../../../components/hook-form";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 import useTable, { emptyRows } from "../../../../hooks/useTable";
 import { useForm } from "react-hook-form";
-import { TableEmptyRows, TableHeadCustom } from "../../../../components/table";
+import { TableEmptyRows, TableHeadCustom, TableNoData } from "../../../../components/table";
 import RevenueStatisticsToolbar from "./RevenueStatisticsToolbar";
 import TagFiltered from "../../../../components/TagFiltered";
 import { getAllRevenueRoutes } from "../../../../redux/slices/revenueRoutesReducer";
@@ -88,6 +88,8 @@ export default function RevenueStaffStatistics() {
     values.XAPHUONG === "";
 
   const denseHeight = dense ? 60 : 80;
+
+  const isNotFound = !tableData.length;
 
   const handleResetFilter = () => {
     reset();
@@ -255,7 +257,7 @@ export default function RevenueStaffStatistics() {
               height={denseHeight}
               emptyRows={emptyRows(page, rowsPerPage, tableData.length)}
             />
-            {/* <TableNoData isNotFound={isNotFound} /> */}
+            <TableNoData isNotFound={isNotFound} />
           </TableBody>
         </Table>
       </TableContainer>{" "}
