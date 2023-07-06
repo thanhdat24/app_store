@@ -29,7 +29,6 @@ export default function AccountGeneral({}: Props) {
         var today = new Date();
         return value < today;
       }),
-    USERNAME: Yup.string().required("Tên đăng nhập là bắt buộc"),
   });
 
   const defaultValues = {
@@ -101,7 +100,7 @@ export default function AccountGeneral({}: Props) {
                 disableFuture
                 format="yyyy/dd/MM"
               />
-              <RHFTextField name="USERNAME" label="Tên đăng nhập" />
+              <RHFTextField disabled name="USERNAME" label="Tên đăng nhập" />
             </Box>
 
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>

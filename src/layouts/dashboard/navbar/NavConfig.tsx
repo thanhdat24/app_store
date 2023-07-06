@@ -64,6 +64,7 @@ const navConfig = [
   {
     subheader: "Quản lý thông tin sử dụng",
     items: [
+      
       // RECEIPT
       {
         title: "Kỳ thu",
