@@ -193,7 +193,7 @@ export default function CustomerList({}: Props) {
     "Tên tuyến thu": row.TUYENTHU.TENTUYENTHU,
     "Quận huyện": row.TUYENTHU.XAPHUONG.QUANHUYEN.TENQUANHUYEN,
     "Xã phường": row.TUYENTHU.XAPHUONG.TENXAPHUONG,
-    "Trạng thái": row.TRANGTHAI,
+    "Trạng thái": row.TRANGTHAI ? "Đang hoạt động" : "Ngừng hoạt động",
   }));
 
   return (
