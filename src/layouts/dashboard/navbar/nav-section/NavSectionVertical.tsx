@@ -38,6 +38,7 @@ interface NavSectionVerticalProps {
   navConfig: any;
   [key: string]: any;
   userLogin: any;
+  menuList: any;
 }
 
 interface NavGroup {
@@ -55,6 +56,7 @@ interface NavItem {
 const NavSectionVertical = ({
   navConfig,
   userLogin,
+  menuList,
   ...other
 }: NavSectionVerticalProps) => {
   return (
@@ -68,11 +70,14 @@ const NavSectionVertical = ({
             ? group.subheader === "Quản lý khách hàng" ||
               group.subheader === "Tổng quan" ||
               group.subheader === "Quản lý thông tin sử dụng"
-            : (userLogin.CHITIETPHANQUYENs.some(
+            : userLogin.CHITIETPHANQUYENs.some(
                 (item: any) => item.QUYEN.TENQUYEN === "Quản trị hệ thống"
-              ) &&
-                group.subheader === "Tổng quan") ||
-              group.subheader === "Quản lý thông tin sử dụng")
+              )
+            ? group.subheader === "Tổng quan" ||
+              group.subheader === "Quản lý thông tin sử dụng"
+            : userLogin.CHITIETPHANQUYENs.some(
+                (item: any) => item.QUYEN.TENQUYEN === "Nhân viên quản trị"
+              ) && group.subheader === "Quản lý khách hàng")
         ) {
           return (
             <List key={group.subheader} disablePadding sx={{ px: 2 }}>
@@ -88,6 +93,10 @@ const NavSectionVertical = ({
                       chitietphanquyen.QUYEN.TENQUYEN === "Quản trị hệ thống"
                   );
 
+                  const isNhanVienQuanTri = userLogin.CHITIETPHANQUYENs.some(
+                    (chitietphanquyen: any) =>
+                      chitietphanquyen.QUYEN.TENQUYEN === "Nhân viên quản trị"
+                  );
                   if (isNhanVienThuNgan && isQuanTriHeThong) {
                     return (
                       item.title === "Kỳ thu" ||
@@ -103,6 +112,10 @@ const NavSectionVertical = ({
                     );
                   } else if (isQuanTriHeThong) {
                     return item.title === "Kỳ thu" || item.title === "Thống kê";
+                  }
+
+                  if (isNhanVienQuanTri) {
+                    return item.title === "Khách hàng";
                   }
 
                   return true;

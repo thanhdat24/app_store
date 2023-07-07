@@ -96,18 +96,14 @@ export default function TypeForm({ isEdit, currentCustomerType }: Props) {
   }, [createCustomerTypeSuccess, updateCustomerTypeSuccess]);
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={12}>
+      <Grid container spacing={3} justifyContent="center" alignItems="center">
+        <Grid item xs={12} md={6}>
           <Card sx={{ p: 3 }}>
             <Box
               sx={{
-                display: "grid",
-                columnGap: 1,
-                rowGap: 3,
-                gridTemplateColumns: {
-                  xs: "repeat(1, 1fr)",
-                  sm: "repeat(2, 1fr)",
-                },
+                display: "flex",
+                gap: 2,
+                flexDirection: "column",
               }}
             >
               <RHFTextField name="TENLOAI" label="Tên loại" />

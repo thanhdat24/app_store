@@ -28,6 +28,7 @@ type Props = {
   onEditRow: () => void;
   onViewRow: () => void;
   onConfirmRow: () => void;
+  userRole: string;
 };
 
 export default function ReceiptTableRow({
@@ -37,6 +38,7 @@ export default function ReceiptTableRow({
   onEditRow,
   onViewRow,
   onConfirmRow,
+  userRole,
 }: Props) {
   const [openMenu, setOpenMenuActions] = useState<null | HTMLElement>(null); // Add type annotation
 
@@ -61,7 +63,8 @@ export default function ReceiptTableRow({
   } = row;
 
   const { userLogin } = useAppSelector((state) => state.admin);
-
+  const isCashier =
+    userRole === "Quản trị hệ thống" || userRole === "Nhân viên quản trị";
   return (
     <TableRow hover>
       <TableCell align="left">{MASOPHIEU}</TableCell>
@@ -144,14 +147,18 @@ export default function ReceiptTableRow({
                   <></>
                 ) : (
                   <>
-                    <MenuItem onClick={onViewRow}>
-                      <Iconify icon={"eva:eye-fill"} />
-                      Chi tiết
-                    </MenuItem>
-                    <MenuItem onClick={onEditRow}>
-                      <Iconify icon={"eva:edit-fill"} />
-                      Chỉnh sửa
-                    </MenuItem>
+                    {!isCashier && (
+                      <>
+                        <MenuItem onClick={onViewRow}>
+                          <Iconify icon={"eva:eye-fill"} />
+                          Chi tiết
+                        </MenuItem>
+                        <MenuItem onClick={onEditRow}>
+                          <Iconify icon={"eva:edit-fill"} />
+                          Chỉnh sửa
+                        </MenuItem>
+                      </>
+                    )}
                     {userLogin?.USERNAME === "admin" && (
                       <>
                         {/* <MenuItem

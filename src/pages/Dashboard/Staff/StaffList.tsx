@@ -462,6 +462,7 @@ function applySortFilter({
   });
 
   tableData = stabilizedThis.map((el) => el[0]);
+  tableData = tableData.filter((item) => item.HOTEN !== "Admin");
   if (filterStatus !== "Tất cả") {
     tableData = tableData.filter((item) =>
       item.CHITIETPHANQUYENs.some(

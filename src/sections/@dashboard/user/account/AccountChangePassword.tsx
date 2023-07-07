@@ -30,7 +30,7 @@ export default function AccountChangePassword() {
       .min(8, "Mật khẩu phải ít nhất 8 ký tự")
       .matches(/^\S*$/, "Mật khẩu không được chứa khoảng trắng")
       .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
         "Mật khẩu phải có ít nhất một chữ cái hoa, một chữ cái thường, một số và một ký tự đặc biệt"
       )
       .required("New Password is required"),

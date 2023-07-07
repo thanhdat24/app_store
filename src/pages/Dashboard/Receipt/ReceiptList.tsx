@@ -75,6 +75,7 @@ const TABLE_HEAD = [
   { id: "ACTION", label: "Thao Tác" },
 ];
 
+
 export default function ReceiptList() {
   ///
   const dispatch = useAppDispatch();
@@ -97,7 +98,12 @@ export default function ReceiptList() {
 
   const { userLogin } = useAppSelector((state) => state.admin);
   useEffect(() => {
-    if (userLogin?.USERNAME === "admin") {
+    if (
+      userLogin?.USERNAME === "admin" ||
+      userLogin?.CHITIETPHANQUYENs.some(
+        (item) => item.QUYEN?.TENQUYEN === "Nhân viên quản trị"
+      )
+    ) {
       dispatch(getAllReceipt());
     } else {
       dispatch(getBillingPeriodByCashier(Number(userLogin?.IDNHANVIEN)));
@@ -167,7 +173,6 @@ export default function ReceiptList() {
       billingPeriodByCashierList &&
       billingPeriodByCashierList.length > 0
     ) {
-
       setTableData(billingPeriodByCashierList);
     }
   }, [receiptList ?? [], billingPeriodByCashierList ?? []]);

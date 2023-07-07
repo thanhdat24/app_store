@@ -29,10 +29,17 @@ const wardReducer = createSlice({
   initialState,
   reducers: {
     hasError(state, action) {
-      state.error = action.payload;
-      const { TENXAPHUONG } = action.payload;
-      if (TENXAPHUONG ?.length > 0)
-        toast.error(TENXAPHUONG[0], { autoClose: 2000 });
+       switch (true) {
+        case "TENXAPHUONG" in action.payload:
+          toast.error(action.payload.TENXAPHUONG[0], { autoClose: 2000 });
+             case "checkname" in action.payload:
+          toast.error(action.payload.checkname[0], { autoClose: 2000 });
+          break;
+        // Xử lý các trường hợp khác nếu cần thiết
+        default:
+          // Xử lý trường hợp mặc định nếu cần thiết
+          break;
+      }
       },
 
 

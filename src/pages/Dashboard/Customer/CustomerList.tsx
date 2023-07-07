@@ -81,7 +81,7 @@ export default function CustomerList({}: Props) {
   ];
 
   useEffect(() => {
-    if (userLogin?.USERNAME === "admin") {
+    if (userLogin?.USERNAME === "admin" || userLogin?.CHITIETPHANQUYENs.some(item => item.QUYEN?.TENQUYEN === "Nhân viên quản trị")) {
       dispatch(getAllCustomer());
     } else {
       dispatch(getCustomersByCashier(Number(userLogin?.IDNHANVIEN)));
@@ -248,6 +248,31 @@ export default function CustomerList({}: Props) {
                   Thêm khách hàng
                 </Button>
               </>
+            )}
+            {userLogin?.CHITIETPHANQUYENs.some(
+              (item) => item.QUYEN?.TENQUYEN === "Nhân viên quản trị"
+            ) && (
+              <Button
+                sx={{ borderRadius: 2, textTransform: "none" }}
+                variant="contained"
+                component={RouterLink}
+                to={
+                  selected.length < 2 && selected.length === 1
+                    ? PATH_DASHBOARD.receipt.new(selected[0])
+                    : ""
+                }
+                onClick={() =>
+                  (selected.length === 0 || selected.length > 1) &&
+                  toast.warning("Vui lòng chọn duy nhất 1 khách hàng để tạo!", {
+                    autoClose: 2000,
+                    position: "top-center",
+                  })
+                }
+                // disabled={selected.length === 0 || selected.length > 1}
+                startIcon={<Iconify icon={"eva:plus-fill"} />}
+              >
+                Tạo phiếu thu
+              </Button>
             )}
             <Box className="flex items-center leading-[1]">
               <CSVLink filename="Danh_sach_khach_hang" data={dataCSV}>

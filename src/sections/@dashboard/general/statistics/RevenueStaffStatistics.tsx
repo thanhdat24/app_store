@@ -163,7 +163,6 @@ export default function RevenueStaffStatistics() {
 
   const dataCSV = tableData.map((row, index) => ({
     STT: index + 1,
-
     "Nhân viên thu": row.nhanvienthu,
     "Kỳ thu": fMonthYear(row.tenkythu),
     "Tuyến thu": row.tentuyenthu,

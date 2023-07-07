@@ -77,7 +77,6 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
     (state: RootState) => state.customerType
   );
 
-
   const [data, setData] = useState({
     setWard: currentCustomer?.TUYENTHU.XAPHUONG.TENXAPHUONG || "",
     setDistrict:
@@ -317,6 +316,7 @@ export default function CustomerForm({ isEdit, currentCustomer }: Props) {
                   <DatePicker
                     label="Ngày cấp"
                     defaultValue={dayjs("2022-04-17")}
+                    disableFuture
                     value={field.value}
                     onChange={field.onChange}
                   />

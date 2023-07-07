@@ -61,7 +61,7 @@ export default function ReceiptForm({
   }, [dispatch]);
 
   const { billingPeriodList } = useAppSelector((state) => state.billingPeriod);
-  
+
   const { userLogin } = useAppSelector((state) => state.admin);
 
   const { createReceiptSuccess, updateReceiptSuccess } = useAppSelector(
@@ -189,9 +189,19 @@ export default function ReceiptForm({
   };
 
   useEffect(() => {
-    if (createReceiptSuccess || updateReceiptSuccess) {
-      navigate(PATH_DASHBOARD.receipt.list);
+    if (
+      userLogin?.CHITIETPHANQUYENs.some(
+        (item) => item.QUYEN?.TENQUYEN === "Nhân viên quản trị"
+      ) &&
+      createReceiptSuccess
+    ) {
+      navigate(PATH_DASHBOARD.user.list);
+    } else {
+      if (createReceiptSuccess || updateReceiptSuccess) {
+        navigate(PATH_DASHBOARD.receipt.list);
+      }
     }
+
     return () => {
       dispatch(resetReceipt());
     };

@@ -42,12 +42,15 @@ const adminReducer = createSlice({
     },
     hasError(state, action) {
       switch (true) {
-        case "LoginFail" in action.payload:
-          state.errorLogin = action.payload.LoginFail[0];
+        case "checkuser" in action.payload:
+          state.errorLogin = action.payload.checkuser[0];
           break;
         case "password" in action.payload:
           state.errorUpdatePassword = action.payload.password[0];
           toast.error(action.payload.password[0], { autoClose: 2000 });
+          break;
+        case "checkname" in action.payload:
+          toast.error(action.payload.checkname[0], { autoClose: 2000 });
           break;
         // Xử lý các trường hợp khác nếu cần thiết
         default:

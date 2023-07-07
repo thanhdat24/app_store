@@ -78,12 +78,11 @@ export default function StaffForm({ isEdit, currentStaff }: Props) {
       .matches(/^\d+$/, "Số điện thoại chỉ chứa số")
       .matches(/^\d{10}$/, "Số điện thoại phải có 10 chữ số"),
     DIACHI: Yup.string().required("Địa chỉ là bắt buộc"),
-    // ...(isEdit
-    //   ? {}
-    //   : {
-    //       USERNAME: Yup.string().required("Tên đăng nhập là bắt buộc"),
-    //       PASSWORD: Yup.string().required("Mật khẩu là bắt buộc"),
-    //     }),
+    ...(isEdit
+      ? {}
+      : {
+          USERNAME: Yup.string().required("Tên đăng nhập là bắt buộc"),
+        }),
   });
   const defaultValues = useMemo(() => {
     const baseValues = {
@@ -98,7 +97,6 @@ export default function StaffForm({ isEdit, currentStaff }: Props) {
       return {
         ...baseValues,
         USERNAME: "",
-        PASSWORD: "",
       };
     }
 
@@ -155,37 +153,64 @@ export default function StaffForm({ isEdit, currentStaff }: Props) {
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
+      <Grid
+        container
+        spacing={3}
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Grid item xs={12} md={6} sx={{ paddingTop: "0px !important" }}>
           <Card sx={{ p: 3 }}>
             <Box
               sx={{
-                display: "grid",
-                columnGap: 2,
-                rowGap: 3,
-                gridTemplateColumns: {
-                  xs: "repeat(1, 1fr)",
-                  sm: "repeat(2, 1fr)",
-                },
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
               }}
             >
+              <RHFTextField fullWidth name="HOTEN" label="Họ tên " />
+              {!isEdit && (
+                <>
+                  {" "}
+                  <RHFTextField name="USERNAME" label="Tên đăng nhập" />
+                </>
+              )}
               <RHFTextField
+                fullWidth
                 name="MANHANVIEN"
                 label="Mã nhân viên"
                 InputProps={{
                   readOnly: isEdit ? true : false,
                 }}
               />
-              <RHFTextField name="HOTEN" label="Họ tên " />
               <RHFTextField
                 name="DIACHI"
                 label="Địa chỉ"
                 sx={{ gridColumn: { sm: "1 / 3" } }}
               />
+              <RHFDatePickerField
+                name="NGAYSINH"
+                views={["year", "month", "day"]}
+                label="Ngày sinh"
+                disableFuture
+                format="yyyy/dd/MM"
+              />
+
+              <RHFTextField name="SDT" label="Số điện thoại" />
+
+              <Stack alignItems="flex-end" sx={{ mt: 3 }}>
+                <LoadingButton
+                  type="submit"
+                  variant="contained"
+                  loading={isSubmitting}
+                >
+                  Lưu thay đổi
+                </LoadingButton>
+              </Stack>
             </Box>
           </Card>
         </Grid>
-        <Grid item xs={12} md={6}>
+        {/* <Grid item xs={12} md={6}>
           <Card sx={{ p: 3 }}>
             <Box
               sx={{
@@ -201,8 +226,8 @@ export default function StaffForm({ isEdit, currentStaff }: Props) {
               {!isEdit && (
                 <>
                   {" "}
-                  {/* <RHFTextField name="USERNAME" label="Tên đăng nhập" /> */}
-                  {/* <RHFTextField
+                  <RHFTextField name="USERNAME" label="Tên đăng nhập" />
+                  <RHFTextField
                     name="PASSWORD"
                     label="Mật khẩu"
                     type={showPassword ? "text" : "password"}
@@ -224,7 +249,7 @@ export default function StaffForm({ isEdit, currentStaff }: Props) {
                         </InputAdornment>
                       ),
                     }}
-                  /> */}
+                  />
                 </>
               )}
               <RHFDatePickerField
@@ -247,7 +272,7 @@ export default function StaffForm({ isEdit, currentStaff }: Props) {
               </LoadingButton>
             </Stack>
           </Card>
-        </Grid>
+        </Grid> */}
       </Grid>
     </FormProvider>
   );

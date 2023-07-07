@@ -26,7 +26,7 @@ export const { getAllMenuSuccess } = menuReducer.actions;
 export const getAllMenus = () => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response = await axios.get("/api/PHIEUTHUs");
+      const response = await axios.get("/api/MENUs");
       const data: MenuModel[] = await response.data;
       const action: PayloadAction<MenuModel[]> = getAllMenuSuccess(data);
       dispatch(action);

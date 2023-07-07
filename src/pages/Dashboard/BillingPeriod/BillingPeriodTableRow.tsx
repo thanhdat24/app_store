@@ -16,19 +16,20 @@ import Iconify from "../../../components/Iconify";
 import Label from "../../../components/Label";
 import { formatPriceInVND } from "../../../utils/formatNumber";
 import { fMonthYear } from "../../../utils/formatTime";
+import { useAppSelector } from "../../../redux/store";
 
 type Props = {
   row: any;
   onDeleteRow: () => void;
   onEditRow: () => void;
-  index: any
+  index: any;
 };
 
 export default function BillingPeriodTableRow({
   row,
   onDeleteRow,
   onEditRow,
-  index
+  index,
 }: Props) {
   const [openMenu, setOpenMenuActions] = useState<null | HTMLElement>(null); // Add type annotation
 
@@ -41,7 +42,9 @@ export default function BillingPeriodTableRow({
     setOpenMenuActions(null);
   };
 
-  const {TENKYTHU, TRANGTHAIKYTHU } = row;
+  const { TENKYTHU, TRANGTHAIKYTHU } = row;
+
+  const { userLogin } = useAppSelector((state) => state.admin);
   return (
     <TableRow hover>
       <TableCell align="left">{index + 1}</TableCell>
@@ -56,36 +59,40 @@ export default function BillingPeriodTableRow({
           {TRANGTHAIKYTHU ? "Đang hoạt động" : "Đã kết thúc"}
         </Label>
       </TableCell>
-      <TableCell align="right">
-        <TableMoreMenu
-          open={openMenu}
-          onOpen={handleOpenMenu}
-          onClose={handleCloseMenu}
-          actions={
-            <>
-              <MenuItem
-                onClick={() => {
-                  onDeleteRow();
-                  handleCloseMenu();
-                }}
-                sx={{ color: "error.main" }}
-              >
-                <Iconify icon={"eva:trash-2-outline"} />
-                Xóa
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  onEditRow();
-                  handleCloseMenu();
-                }}
-              >
-                <Iconify icon={"eva:edit-fill"} />
-                Chỉnh sửa
-              </MenuItem>
-            </>
-          }
-        />
-      </TableCell>
+      {userLogin?.USERNAME === "admin" ? (
+        <TableCell align="right">
+          <TableMoreMenu
+            open={openMenu}
+            onOpen={handleOpenMenu}
+            onClose={handleCloseMenu}
+            actions={
+              <>
+                <MenuItem
+                  onClick={() => {
+                    onDeleteRow();
+                    handleCloseMenu();
+                  }}
+                  sx={{ color: "error.main" }}
+                >
+                  <Iconify icon={"eva:trash-2-outline"} />
+                  Xóa
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    onEditRow();
+                    handleCloseMenu();
+                  }}
+                >
+                  <Iconify icon={"eva:edit-fill"} />
+                  Chỉnh sửa
+                </MenuItem>
+              </>
+            }
+          />
+        </TableCell>
+      ) : (
+        <TableCell align="right"></TableCell>
+      )}
     </TableRow>
   );
 }

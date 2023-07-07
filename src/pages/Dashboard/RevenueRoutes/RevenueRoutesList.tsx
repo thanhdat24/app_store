@@ -89,6 +89,15 @@ export default function RevenueRoutesList({}: Props) {
   const { revenueRoutesList } = useAppSelector((state) => state.revenueRoutes);
 
   const { staffList } = useAppSelector((state) => state.staff);
+  console.log("staffList", staffList);
+
+  const adminStaffIds = staffList?.filter((staff: any) => {
+    return staff?.CHITIETPHANQUYENs?.some(
+      (phongban: any) => phongban.QUYEN.TENQUYEN === "Nhân viên thu ngân"
+    );
+  });
+  console.log("adminStaffIds", adminStaffIds);
+  // console.log("selected", selected);
   const { createPermissionRevenueSuccess, deletePermissionRoutesSuccess } =
     useAppSelector((state) => state.permissionRevenueRoutes);
   useEffect(() => {
@@ -297,8 +306,8 @@ export default function RevenueRoutesList({}: Props) {
                   renderValue={(selected) =>
                     selected
                       .map((staffId) => {
-                        const staff = staffList?.find(
-                          (staff) =>
+                        const staff = adminStaffIds?.find(
+                          (staff: any) =>
                             Number(staff.IDNHANVIEN) === Number(staffId)
                         );
                         return staff ? staff.HOTEN : "";
@@ -307,7 +316,7 @@ export default function RevenueRoutesList({}: Props) {
                   }
                   MenuProps={MenuProps}
                 >
-                  {staffList?.map((name) => (
+                  {adminStaffIds?.map((name: any) => (
                     <MenuItem key={name.IDNHANVIEN} value={name.IDNHANVIEN}>
                       <Checkbox
                         checked={
@@ -374,7 +383,7 @@ export default function RevenueRoutesList({}: Props) {
         <Divider />
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <RevenueRoutesTableToolbar
-            optionStaffList={staffList || []}
+            optionStaffList={adminStaffIds || []}
             optionRevenueRoute={tableData}
             filterName={filterName}
             onFilterName={handleFilterName}

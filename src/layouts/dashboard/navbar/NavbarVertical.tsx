@@ -79,7 +79,10 @@ const NavbarVertical: React.FC<NavbarVerticalProps> = ({
         </Stack>
       </Stack>
 
-      <NavSectionVertical navConfig={navConfig} userLogin={userLogin} />
+      <NavSectionVertical
+        navConfig={navConfig}
+        userLogin={userLogin}
+      />
 
       <Box sx={{ flexGrow: 1 }} />
 

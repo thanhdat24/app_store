@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 
 // @mui
@@ -9,6 +9,7 @@ import { HEADER, NAVBAR } from "../../utils/config";
 //
 import NavbarVertical from "./navbar/NavbarVertical";
 import DashboardHeader from "./header";
+import { useAppDispatch } from "../../redux/store";
 
 // ----------------------------------------------------------------------
 
@@ -35,6 +36,7 @@ type Props = {};
 
 export default function DashboardLayout({}: Props) {
   const [open, setOpen] = useState(false);
+
   return (
     <Box
       sx={{
