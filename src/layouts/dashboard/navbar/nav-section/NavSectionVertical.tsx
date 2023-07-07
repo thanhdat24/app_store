@@ -38,7 +38,6 @@ interface NavSectionVerticalProps {
   navConfig: any;
   [key: string]: any;
   userLogin: any;
-  menuList: any;
 }
 
 interface NavGroup {
@@ -56,7 +55,6 @@ interface NavItem {
 const NavSectionVertical = ({
   navConfig,
   userLogin,
-  menuList,
   ...other
 }: NavSectionVerticalProps) => {
   return (
